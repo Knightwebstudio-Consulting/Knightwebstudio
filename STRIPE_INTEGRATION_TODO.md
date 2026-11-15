@@ -124,6 +124,7 @@ static (GitHub Pages), so every Stripe call goes through a small server in
 | `CALENDLY_URL` | Optional | Booking link in the client email. Default `https://calendly.com/knightwebstudio1` |
 | `AUTOMATIC_TAX` | Optional | Leave unset (off). See [Stripe Tax](#stripe-tax) |
 | `DOMAIN` | Optional | One extra CORS origin, e.g. a staging URL |
+| `SENTRY_DSN` | Optional | Error reports go to the Sentry project `knightwebstudio-payments` by default (key in `server/instrument.js`). Set another DSN to send them elsewhere, or `off` to stop them |
 
 The template, with comments, is [`server/.env.example`](server/.env.example).
 Never put keys in code or commit a `.env` file (`.env` is git-ignored).

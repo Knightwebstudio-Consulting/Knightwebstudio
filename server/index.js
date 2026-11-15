@@ -14,6 +14,8 @@
 // Every setting comes from environment variables (Render → Environment, or
 // server/.env locally); see .env.example and STRIPE_INTEGRATION_TODO.md.
 
+// Error monitoring first, so it can see everything that follows (see instrument.js)
+const Sentry = require("./instrument");
 require("dotenv").config();
 
 const express = require("express");
@@ -78,6 +80,7 @@ app.post("/api/webhook", express.raw({ type: "application/json" }), async (req, 
     // Anyone can POST to this URL, so an event is never acted on unless its
     // signature checks out. 503 makes Stripe retry once the secret is set.
     console.error("Webhook rejected: STRIPE_WEBHOOK_SECRET is not set.");
+    Sentry.captureMessage("Webhook rejected: STRIPE_WEBHOOK_SECRET is not set.", "error");
     return res.sendStatus(503);
   }
 
@@ -95,6 +98,7 @@ app.post("/api/webhook", express.raw({ type: "application/json" }), async (req, 
     // A non-2xx reply makes Stripe retry the event later. Each email carries
     // an idempotency key, so a retry never sends the same email twice.
     console.error(`Webhook ${event.type} (${event.id}) failed:`, err.message);
+    Sentry.captureException(err, { tags: { area: "webhook", event_type: event.type } });
     return res.sendStatus(500);
   }
   res.sendStatus(200);
@@ -210,6 +214,7 @@ app.post("/api/create-checkout-session", async (req, res) => {
     });
   } catch (err) {
     console.error(`Failed to create Checkout Session for plan ${planKey}:`, err.message);
+    Sentry.captureException(err, { tags: { area: "create-checkout-session", plan: planKey } });
     res.status(500).json({ error: "Could not start checkout." });
   }
 });
@@ -241,6 +246,7 @@ app.get("/api/session-status", async (req, res) => {
       return res.status(404).json({ error: "Session not found." });
     }
     console.error(`Failed to retrieve Checkout Session ${sessionId}:`, err.message);
+    Sentry.captureException(err, { tags: { area: "session-status" } });
     res.status(500).json({ error: "Could not check the payment." });
   }
 });
@@ -298,6 +304,7 @@ async function confirmPayment(summary) {
       clientNote = "The client has been sent a confirmation email with the kickoff booking link.";
     } catch (err) {
       console.error(`Client confirmation for ${summary.id} failed:`, err.message);
+      Sentry.captureException(err, { tags: { area: "client-confirmation-email" } });
       clientNote = "The client's confirmation email could NOT be sent. Email them directly.";
     }
   }
@@ -502,6 +509,9 @@ async function sendEmail({ to, subject, text, html, idempotencyKey }) {
   }
   console.log(`Email sent: "${subject}" to ${to}`);
 }
+
+// Anything a route throws without catching goes to Sentry too.
+Sentry.setupExpressErrorHandler(app);
 
 // Render provides PORT; 4242 is the local-dev default.
 const port = process.env.PORT || 4242;
