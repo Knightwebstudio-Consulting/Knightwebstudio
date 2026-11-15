@@ -823,6 +823,15 @@ var SITE_CONFIG = {
 
 `/privacy/` names both Calendly and Plausible. If you switch either off, edit
 its section there too; the wording to go back to sits in a comment beside it.
+
+**Error monitoring (Sentry).** `assets/js/sentry.js` is loaded `async` in the
+`<head>` of every page except the 404 (one line, directly after the first-paint
+snippet). It reports JavaScript errors to the Sentry project `knightwebstudio-com`
+(knightwebstudio.sentry.io), on the live domain only. Errors only: no tracing, no
+session replay, no cookies, no IP addresses. The Loader Script stays at about
+1 KB until an error happens. Loader options, the rate limit (300 errors an hour)
+and alerts live in Sentry under the project's Settings > Client Keys. If you
+remove it, also remove the "Error reports" section of `/privacy/`.
 Tag every link you post elsewhere with `?utm_source=facebook` (or `linkedin`,
 `email`, …) so Plausible shows which channel each enquiry came from.
 
