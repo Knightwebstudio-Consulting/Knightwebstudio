@@ -23,4 +23,16 @@
     d.classList.add('kws-js', 'kws-hold');
     addEventListener('load', function () { if (!(window.KWS && KWS.folders)) d.classList.remove('kws-js'); });
     setTimeout(function () { if (!(window.KWS && KWS.folders)) d.classList.remove('kws-js'); d.classList.remove('kws-hold'); }, 4000);
+    // Error monitoring (Sentry): the loader tag right after this snippet stays at about 1 KB and fetches
+    // the full SDK only when an error happens. Live site only; errors only; no IP addresses, no cookies.
+    window.sentryOnLoad = function () {
+      Sentry.init({
+        enabled: /(^|\.)knightwebstudio\.com$/.test(location.hostname),
+        environment: 'production',
+        sendDefaultPii: false,
+        allowUrls: [/^https:\/\/(www\.)?knightwebstudio\.com\//],
+        ignoreErrors: ['Script error.', 'ResizeObserver loop limit exceeded',
+          'ResizeObserver loop completed with undelivered notifications', 'Non-Error promise rejection captured']
+      });
+    };
   })();

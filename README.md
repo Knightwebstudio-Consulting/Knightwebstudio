@@ -824,14 +824,30 @@ var SITE_CONFIG = {
 `/privacy/` names both Calendly and Plausible. If you switch either off, edit
 its section there too; the wording to go back to sits in a comment beside it.
 
-**Error monitoring (Sentry).** `assets/js/sentry.js` is loaded `async` in the
-`<head>` of every page except the 404 (one line, directly after the first-paint
-snippet). It reports JavaScript errors to the Sentry project `knightwebstudio-com`
-(knightwebstudio.sentry.io), on the live domain only. Errors only: no tracing, no
-session replay, no cookies, no IP addresses. The Loader Script stays at about
-1 KB until an error happens. Loader options, the rate limit (300 errors an hour)
-and alerts live in Sentry under the project's Settings > Client Keys. If you
-remove it, also remove the "Error reports" section of `/privacy/`.
+**Error monitoring (Sentry, knightwebstudio.sentry.io).** Three parts:
+
+- *Every page except the 404* loads Sentry's Loader Script, `async`, directly after
+  the first-paint snippet:
+  `<script src="https://js.sentry-cdn.com/b08a9aa8b3df252aac8a08def83e7fa8.min.js" crossorigin="anonymous" async></script>`.
+  Its settings (`window.sentryOnLoad`) live in the first-paint snippet,
+  `tools/chrome/head-script.inc`, so there is no extra file to fetch. It reports to the
+  project `knightwebstudio-com`, on the live domain only. Errors only: no tracing, no
+  session replay, no cookies, no IP addresses. The loader stays at about 1 KB until an
+  error happens. Loader options, the rate limit (300 errors an hour) and alerts live in
+  Sentry under the project's Settings > Client Keys.
+- *Checkout* (`/checkout/` and `/checkout/success/`) also loads
+  `assets/js/checkout-monitor.js` in the `<head>`. The payment scripts catch their own
+  failures and show a message, so this file reports what they log with `console.error`,
+  and the status line turning into an error, tagged `area: checkout`. The payment code
+  itself is untouched. Card declines are not reported.
+- *The payment server* (`server/`) loads `server/instrument.js` first. It reports to
+  the project `knightwebstudio-payments`, only on Render, and never sends request
+  bodies, headers or cookies. Failed webhooks, failed checkout starts, failed status
+  checks and failed client emails are reported with an `area` tag.
+
+Sentry also runs uptime checks on the home page and on the payment server's `/healthz`,
+and emails when either stops answering. If you remove Sentry, also remove the "Error
+reports" section of `/privacy/`.
 Tag every link you post elsewhere with `?utm_source=facebook` (or `linkedin`,
 `email`, …) so Plausible shows which channel each enquiry came from.
 
