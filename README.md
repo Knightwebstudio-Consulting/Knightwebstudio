@@ -177,7 +177,8 @@ pattern, or Lighthouse will flag skipped heading levels.
   version number, now `?v=6`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (home, /start/, /consulting/,
-  /pricing/), and the kit's stylesheet `motion.css` (those four and /process/).
+  /pricing/), the kit's stylesheet `motion.css` (those four and /process/),
+  and `checkout-monitor.js` (both checkout pages).
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
