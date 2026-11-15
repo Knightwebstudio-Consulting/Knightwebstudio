@@ -100,6 +100,7 @@ robots.txt              Search engine directives
 sitemap.xml             Sitemap for search engines
 CNAME                   The custom domain, read by GitHub Pages
 .nojekyll               Tells GitHub Pages to serve the files as-is
+.impeccable/config.json Settings for the design review tool (see Design review)
 ```
 
 GitHub Pages publishes the whole folder, `tools/` and this README included.
@@ -1034,6 +1035,65 @@ change it materially; Google ignores `changefreq` and `priority` but does
 read `lastmod`.
 
 Validate changes with the [Rich Results Test](https://search.google.com/test/rich-results).
+
+## Design review (Impeccable)
+
+[Impeccable](https://github.com/pbakaus/impeccable) (Apache 2.0, pinned at
+4.9.1) is a design review skill for Claude Code. Use it to check a change
+before publishing, not to restyle the site: the brief in
+[The design in two sentences](#the-design-in-two-sentences) and
+[The rules that protect the business](#the-rules-that-protect-the-business)
+win over anything it suggests.
+
+- `/impeccable critique the pricing table`: a scored review of how a page or
+  part of one works for a visitor, worst problems first.
+- `/impeccable audit /contact/`: accessibility, speed, theming and phone
+  layout, ranked from P0 (blocking) to P3 (polish).
+- `/impeccable polish …`, `clarify …`, `harden …`: a finishing pass, clearer
+  wording, errors and edge cases. Narrow targets give better results.
+
+**It is not installed in this repo, on purpose.** GitHub Pages publishes every
+file here, and the skill's own files are full of the words rule 5 keeps off
+the site. `.gitignore` keeps a project install out. Install it per person
+instead: cloud sessions get it from the environment's setup script, and on a
+computer `npx impeccable install` (choose global, and say no to the hook).
+
+**The detector** checks pages for overused design patterns and quality
+problems, with no account or key. Serve the folder, then scan the served
+pages at phone and desktop width:
+
+```bash
+python3 -m http.server 8000
+```
+
+```bash
+~/.claude/skills/impeccable/scripts/impeccable detect --viewport 390x844 http://localhost:8000/ http://localhost:8000/pricing/
+```
+
+```bash
+~/.claude/skills/impeccable/scripts/impeccable detect --viewport 1280x800 http://localhost:8000/ http://localhost:8000/pricing/
+```
+
+Scan pages, not files. Reading the files, it cannot follow the light/dark
+switch in `styles.css` (`var(--L, …) var(--D, …)`) or tell the print styles
+apart, so it reports contrast failures that are not there.
+
+**`.impeccable/config.json`** holds the shared settings. Change them with
+`impeccable hooks …` and `impeccable ignores …`, not by hand.
+
+- The automatic check after every edit is off: on this site it mostly repeats
+  those false contrast warnings. Run the detector before publishing instead.
+- Anonymous usage pings are off (`"telemetry": false`).
+- Two brand decisions are not reported: the Fraunces display face and the
+  warm paper background (`cream-palette`).
+
+Findings when it was added (November 2026), left as designed for now and
+worth deciding on deliberately: the small labels above section headings
+("What we do", "Pricing"), the gradient on the footer's skyline name, the glow
+behind the motion kit's live lists, and a handful of single words left alone
+on a line. Two are false alarms: the receipt's top stripe (read as a side
+stripe) and the `/consulting/` carousel cards past the screen edge (the track
+clips them on purpose).
 
 ## Before you launch — checklist
 
