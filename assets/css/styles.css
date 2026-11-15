@@ -867,6 +867,8 @@ fieldset.field { display: block; }
 .kws-foot :is(li,.kws-foot-links)>:where(a,span){display:inline-flex;align-items:center;min-width:44px;min-height:var(--_r,44px);line-height:1.3}
 .kws-foot li>span{color:var(--ink-3)}
 .kws-foot-places{display:flex;flex-wrap:wrap;gap:0 20px}
+.kws-foot-region{max-width:34em;margin-top:8px;color:var(--ink-3)}
+.kws-foot-region strong{color:var(--_i);font-weight:600}
 .kws-foot .kws-foot-tel{min-height:56px;font-size:var(--_p,min(10vw,3.25rem));line-height:1.1}
 .kws-foot-mail{font-size:var(--fs-body);font-weight:600}
 .kws-foot .kws-btn{min-height:48px;margin-top:12px;padding:0 20px}
