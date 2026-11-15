@@ -52,6 +52,7 @@
     setTimeout(function () { if (!(window.KWS && KWS.folders)) d.classList.remove('kws-js'); d.classList.remove('kws-hold'); }, 4000);
   })();
 </script>
+<script src="/assets/js/sentry.js?v=1" async></script>
 <link rel="preload" href="/assets/fonts/fraunces-soft.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/assets/css/styles.css?v=5">
@@ -451,6 +452,7 @@
           <li><a href="#spam-protection"><span class="toc-name">Spam protection</span></a></li>
           <li><a href="#your-device"><span class="toc-name">Stored on your device</span></a></li>
           <li><a href="#analytics"><span class="toc-name">Analytics and cookies</span></a></li>
+          <li><a href="#errors"><span class="toc-name">Error reports</span></a></li>
           <li><a href="#booking"><span class="toc-name">Booking a call</span></a></li>
           <li><a href="#payments"><span class="toc-name">Payments</span></a></li>
           <li><a href="#hosting"><span class="toc-name">Hosting</span></a></li>
@@ -460,7 +462,7 @@
       </nav>
 
       <div class="prose">
-        <p class="label">Last updated 11 November 2026</p>
+        <p class="label">Last updated 15 November 2026</p>
 
         <h2 id="enquiry-form">The enquiry form</h2>
         <p>When you send the form on the <a href="/contact/">contact page</a>, we receive what you entered: your name, email address, business name, the package you're interested in, the services you ticked and your message. It is delivered to our inbox by <a href="https://web3forms.com" target="_blank" rel="noopener">Web3Forms</a>, a form-relay service that passes the submission on and does not keep a copy for us to read later.</p>
@@ -481,6 +483,9 @@
         <!-- Matches SITE_CONFIG.analyticsScript in main.js. If analytics is switched off, go back to:
              "There is no analytics script, no advertising pixel and no tracking cookie on this site." -->
         <p>We use <a href="https://plausible.io/data-policy" target="_blank" rel="noopener">Plausible Analytics</a> to count visits, see which pages people read, and know when an enquiry is sent or a call is booked. It sets no cookies, stores no personal data and does not follow you across other sites. There is no advertising pixel and no tracking cookie on this site.</p>
+
+        <h2 id="errors">Error reports</h2>
+        <p>If something on this site breaks in your browser, an error report goes to <a href="https://sentry.io/privacy/" target="_blank" rel="noopener">Sentry</a>, the service we use to find and fix bugs. A report holds the page address, the error itself, and your browser and device type. It never includes anything you type into a form, it does not record your IP address, and it sets no cookies.</p>
 
         <!-- Matches SITE_CONFIG.bookingUrl in main.js. Remove if booking is switched off. -->
         <h2 id="booking">Booking a call</h2>
