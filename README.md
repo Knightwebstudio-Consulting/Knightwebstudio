@@ -167,21 +167,22 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=5" defer></script>
-  <script src="/assets/js/shader.js?v=5" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=5" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=6" defer></script>
+  <script src="/assets/js/shader.js?v=6" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=6" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=5`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=6`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (home, /start/, /consulting/,
-  /pricing/), and the kit's stylesheet `motion.css` (those four and /process/).
+  /pricing/), the kit's stylesheet `motion.css` (those four and /process/),
+  and `checkout-monitor.js` (both checkout pages).
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=5' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=6' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -293,14 +294,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=5` directly after
-`styles.css?v=5`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=6` directly after
+`styles.css?v=6`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=5" defer></script>
-<script src="/assets/js/shader.js?v=5" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=5" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=6" defer></script>
+<script src="/assets/js/shader.js?v=6" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=6" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -857,6 +858,19 @@ The site says **Based in Baton Rouge, Louisiana**, which lets it appear in
 local search and matches the address in the JSON-LD. It appears in every
 page's footer, the contact page's contact list, and every page's JSON-LD
 `address`. If that ever changes, search for `Baton Rouge` across the project.
+
+**Areas served** (November 2026): Greater Baton Rouge, all of South Louisiana
+and North Alabama above Montgomery. The footer's "Areas we serve" column
+(`tools/chrome/footer.inc`) lists the seven Greater Baton Rouge towns, four of
+them linked to their city pages, then one line each for South Louisiana (New
+Orleans, Metairie, Kenner, Hammond, Slidell, Covington, Lafayette, Lake
+Charles, Houma, Thibodaux) and North Alabama (Birmingham, Hoover, Tuscaloosa,
+Huntsville, Madison, Decatur, Florence, Gadsden, Anniston). The organisation's
+JSON-LD `areaServed` on every page lists the same places; change both
+together. The site promises in-person meetings only in Greater Baton Rouge
+(the top strip, `/start/` and the city pages say so). The Google Business Profile's service area stays within
+Greater Baton Rouge: Google asks service areas to stay within about two
+hours' drive of the business.
 
 ### 6d. Testimonials
 

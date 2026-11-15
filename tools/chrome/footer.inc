@@ -54,6 +54,8 @@
           <li><span>Central</span></li>
           <li><span>Baker</span></li>
         </ul>
+        <p class="kws-foot-region"><strong>South Louisiana:</strong> New Orleans, Metairie, Kenner, Hammond, Slidell, Covington, Lafayette, Lake Charles, Houma and Thibodaux</p>
+        <p class="kws-foot-region"><strong>North Alabama:</strong> Birmingham, Hoover, Tuscaloosa, Huntsville, Madison, Decatur, Florence, Gadsden and Anniston</p>
       </nav>
     </div>
 
