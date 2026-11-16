@@ -29,10 +29,10 @@ page are reached by link only.
 
 | URL | Contents |
 | --- | --- |
-| `/` | Home: the hero (shop front, an example text-back, the four prices), three services with their prices and one line each, one missed call and the automations that follow it (short), three projects, the four steps in brief (job ticket), the price board, who you work with |
+| `/` | Home: the hero (shop front, an example text-back, the four prices), three services with their prices and one line each, one missed call and the automations that follow it (short), four projects, the four steps in brief (job ticket), the price board, who you work with |
 | `/services/` | All nine services, each with its price: a service menu, then the six website services plus growth consulting, Google profile & reviews, and automation. Three are set out in full and six are rows that open |
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
-| `/work/` | Three live projects as full case rows, the local one first |
+| `/work/` | Four live projects as full case rows, the local one first |
 | `/process/` | Four-step "no surprises" explainer |
 | `/pricing/` | Four website packages as one comparison table, how you pay (the payment plan drawn to scale), add-ons, consulting and automation prices with the Launch bundle, four care plans |
 | `/faq/` | Fourteen answers, with FAQPage schema |
@@ -147,7 +147,7 @@ same markup works from any directory depth. That relies on the site living at
 the domain root, which it does.
 
 The home page repeats, in short form, three services with their prices, the
-three projects, the four process steps and the four package prices (the price
+four projects, the four process steps and the four package prices (the price
 board). `/start/` and the four city pages repeat prices and projects too.
 Update the full page and its copies together.
 
@@ -629,7 +629,7 @@ italic is loaded, so emphasis is `<strong>`, never `<em>`.
 
 ### 5. Your work
 
-The Work page holds three live projects, the local one first, each with an
+The Work page holds four live projects, the local one first, each with an
 image taken from the site itself and a link out. GamersPulseHQ, an
 in-progress prototype, was removed from the site in October 2026:
 
@@ -638,6 +638,7 @@ in-progress prototype, was removed from the site in October 2026:
 | Risen Health | Online store for a family-owned peptide supplier (added September 2026) | its own Open Graph card |
 | Corbel Books | Bookkeeping software: product site and app screens | its own Open Graph card |
 | Smilys Softwash | Local exterior-cleaning business (quotes live; card payments being set up) | its own before/after roof photo |
+| Nabors Radiator & Electric | Five-page site for a Birmingham, AL radiator, diesel and auto electric shop with two locations (added November 2026) | its own Open Graph card |
 
 Images live in `assets/img/work-*.jpg`, all 1200px wide and under 90 KB. To add
 a project, copy one `<section>` holding an `<article class="case">` in
@@ -646,9 +647,9 @@ paper and `section-sand`), drop a matching image in `assets/img/`, and update
 the text. The first row is the one on screen at load, so nothing in it has a
 `reveal` class and its image uses `fetchpriority="high"`; in every other row
 the write-up fades in and the image lazy-loads. The project also belongs in
-the home page's projects row and on `/start/` (three `.print` links in a
-`.grid.grid-3`, which is three across from 760px) and in the About page's
-list; with a fourth project, give those rows `.grid-4` instead. In those
+the home page's projects row and on `/start/` (four `.print` links in a
+`.grid.grid-4`, two across from 760px and four from 1100px) and in the About page's
+list. In those
 rows the caption under a name is written in two halves, the kind and what was
 built, around `<span class="sep"> · </span>`: where the print is too narrow for
 the longest caption on one line, the halves stand on two lines.
@@ -934,8 +935,8 @@ before every commit.
    "as low as" or "ballpark". Every price on the site is in the table under
    [Pricing](#5b-pricing); change one there and everywhere it is repeated.
 2. **No invented proof.** No made-up testimonials, reviews, star ratings,
-   client logos, client counts, awards or results. The work shown is the three
-   real projects (Smilys Softwash, Risen Health, Corbel Books), described by
+   client logos, client counts, awards or results. The work shown is the four
+   real projects (Smilys Softwash, Risen Health, Corbel Books, Nabors Radiator & Electric), described by
    what was built, with no result claimed. The testimonials block on the home
    page stays commented out until there are real quotes.
 3. **Illustrations read as illustrations.** A mock of a phone, a calendar or an
