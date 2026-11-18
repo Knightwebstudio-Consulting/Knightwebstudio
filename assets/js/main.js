@@ -316,6 +316,26 @@
     setTimeout(loadCaptcha, 4000);
   }
 
+  /* ---------- Copy each enquiry to the KnightWebStudio automations ----------
+     Sends the visitor an instant thank-you and gives Christian a heads-up.
+     Harmless while the automation is switched off: the handler accepts the
+     copy and does nothing. Web3Forms still delivers the enquiry as before. */
+  function mirrorInquiry(f) {
+    try {
+      if (f.elements['botcheck'] && f.elements['botcheck'].checked) return;
+      var p = new URLSearchParams();
+      ['name', 'email', 'company', 'message', 'package'].forEach(function (k) {
+        if (f.elements[k]) p.append(k, f.elements[k].value || '');
+      });
+      var svc = [].slice.call(f.querySelectorAll('input[name="services"]:checked'))
+        .map(function (c) { return c.value; }).join(', ');
+      if (svc) p.set('message', (p.get('message') || '') + '\n\nServices: ' + svc);
+      fetch('https://uhmyfoibrwdkdhrnnaah.supabase.co/functions/v1/kws-inquiry', {
+        method: 'POST', body: p, keepalive: true
+      }).catch(function () {});
+    } catch (_) { /* never block the enquiry */ }
+  }
+
   /* ---------- Contact form: validation + async submit ---------- */
   var form = document.getElementById('contact-form');
 
@@ -488,6 +508,7 @@
               if (!response.ok || data.success === false) {
                 throw new Error(data.message || 'Request failed with status ' + response.status);
               }
+              mirrorInquiry(form);
               form.reset();
               clearDraft();
               track('Enquiry');
