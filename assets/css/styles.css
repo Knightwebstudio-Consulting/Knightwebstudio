@@ -314,6 +314,7 @@ a.price-strip .price-strip-note { color: var(--blue); text-decoration: underline
 }
 /* A phone's top strip: the city, the round pause button where a page moves, the number. One line at every width */
 @media (max-width: 599.98px) { .topbar-place svg, .topbar-state, .site-header .header-book { display: none; } }
+@media (max-width: 379.98px) { .topbar-tel .ico { display: none; } }
 /* The pause control (17), wherever shader.js shows it: in the top strip, a pill from 1100px and a round button below
    it, and in the phone menu. Nobody has to scroll to the footer, or open the menu, to stop a page head's background */
 /* The page heads no longer move, so the strip stays quiet: the pause control lives in the menu and the footer */
@@ -322,7 +323,7 @@ a.price-strip .price-strip-note { color: var(--blue); text-decoration: underline
 .nav-foot .kws-motion { place-self: center; }
 @media (max-width: 1099.98px) { .topbar .kws-motion-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } }
 @media (min-width: 600px) { .topbar-more { display: inline; } .nav-foot { margin-top: var(--s-5); } }
-@media (min-width: 980px) { .topbar-long { display: inline; } }
+@media (min-width: 980px) { .topbar-long { display: inline; } .topbar-remote { display: none; } }
 @media (min-width: 1280px) { .header-tel { display: inline-flex; } .header-actions { gap: var(--s-4); } }
 @media (hover: hover) {
   a:hover { color: var(--blue-deep); }

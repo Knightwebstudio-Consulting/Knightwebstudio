@@ -52,6 +52,16 @@ cards on `/consulting/` and the pricing page. A fact on a service page (price,
 timeline, support period, payment terms) is one more copy to keep in step with
 the rest of the site.
 
+**One fact, one place (November 2026).** On any one page a price, a timeline or
+a description appears once. Page heads carry no price strip; contents lists name
+sections without prices; a button that the closing band already has is not
+repeated in the head; a bundle lists its parts by name where their prices are on
+the same page; a package or tier that matches another says "Same as One-page"
+rather than repeating it (in both the `/pricing/` table and its phone folders:
+`check_pricing.py` compares them). The About page links to the pricing page
+instead of listing prices. The FAQ is the exception: its answers mirror the
+structured data and stand alone.
+
 **Keep the copy short.** The pages were trimmed on purpose (November 2026): each
 page says what you get and what it costs, and leaves the how-exactly for the
 free call or the Growth Audit. Every price stays on its page. Before adding a
@@ -171,20 +181,20 @@ pattern, or Lighthouse will flag skipped heading levels.
 <body data-page="pricing">
   … top strip and header (from tools/chrome/) …
   <main id="main">
-    <section class="page-head">  <div class="container"> eyebrow, h1, lede, buttons, price strip </div> </section>
+    <section class="page-head">  <div class="container"> eyebrow, h1, lede </div> </section>
     <section class="section section-first" id="…"> <div class="container"> … </div> </section>
     <section class="section section-sand" id="…">  <div class="container"> … </div> </section>
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=9" defer></script>
-  <script src="/assets/js/shader.js?v=9" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=9" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=10" defer></script>
+  <script src="/assets/js/shader.js?v=10" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=10" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=9`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=10`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -192,7 +202,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=9' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=10' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -212,8 +222,8 @@ pattern, or Lighthouse will flag skipped heading levels.
   `.section-first` the one under the page head. A page ends in the blue closing
   band (`.kws-close`, in one of three layouts: see [Motion kit](#motion-kit)),
   or on plain paper (legal, checkout, contact, 404).
-- **Page head.** Three forms: commercial (eyebrow, `h1`, lede, one button row,
-  the price strip), reading (eyebrow, `h1`, lede: FAQ, legal, checkout) and
+- **Page head.** Three forms: commercial (eyebrow, `h1`, lede, and a button row
+  only where the button isn't the one the closing band already has), reading (eyebrow, `h1`, lede: FAQ, legal, checkout) and
   split (`.page-head-split` with one object beside the head from 980px:
   pricing, contact, about, `/start/`). The home hero is its own.
 - **Shared parts** are written once in sections 01 to 18 of `styles.css` and
@@ -311,14 +321,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=9` directly after
-`styles.css?v=9`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=10` directly after
+`styles.css?v=10`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=9" defer></script>
-<script src="/assets/js/shader.js?v=9" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=9" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=10" defer></script>
+<script src="/assets/js/shader.js?v=10" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=10" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -777,7 +787,7 @@ basics.
 
 Consulting and automation prices appear on `/consulting/`, the pricing page's
 "Consulting & automation" section, the services page, the home page, `/start/`, the four
-city pages, the FAQ, the About page, the terms and every page's JSON-LD
+city pages, the FAQ, the terms and every page's JSON-LD
 `OfferCatalog`. Search for the old figure before changing one. None of them
 has a Stripe price yet, so their buttons go to `/contact/?package=…` with
 `check`, `audit`, `strategy`, `gbp`, `textback`, `booking`, `followup`,
