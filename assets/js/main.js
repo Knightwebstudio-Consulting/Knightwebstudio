@@ -244,7 +244,10 @@
     var clipMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
     var onScreen = new WeakMap();
     var syncClips = function () {
-      var still = clipMotion.matches || document.documentElement.getAttribute('data-motion') === 'off';
+      // Data saver or a slow connection keeps the poster too: the clip is decoration
+      var conn = navigator.connection || {};
+      var still = clipMotion.matches || document.documentElement.getAttribute('data-motion') === 'off' ||
+        conn.saveData || /(^|-)2g$|^3g$/.test(conn.effectiveType || '');
       clips.forEach(function (v) {
         if (still) { v.pause(); v.currentTime = 0; }
         else if (onScreen.get(v) === false || document.hidden) { v.pause(); }   // off screen: no decoding while you scroll
@@ -312,10 +315,12 @@
      fallback. */
   var captchaSlot = document.getElementById('hcaptcha-slot');
   var captchaRequested = false;
+  var captchaAskedAt = 0;
 
   function loadCaptcha() {
     if (captchaRequested || !captchaSlot) return;
     captchaRequested = true;
+    captchaAskedAt = Date.now();
     // The widget is drawn for the theme in use when it loads
     captchaSlot.setAttribute('data-theme', root.getAttribute('data-theme') === 'dark' ? 'dark' : 'light');
     var sc = document.createElement('script');
@@ -325,24 +330,18 @@
   }
 
   if (captchaSlot) {
-    if ('IntersectionObserver' in window) {
-      // No margin: the script is asked for when the slot itself comes into
-      // view, so a tall window does not fetch it with the page.
-      var capObs = new IntersectionObserver(function (entries) {
-        if (entries.some(function (e) { return e.isIntersecting; })) {
-          loadCaptcha();
-          capObs.disconnect();
-        }
-      }, { rootMargin: '0px' });
-      capObs.observe(captchaSlot);
+    // Asked for only when someone starts on the form (a tap, a click or a
+    // field in focus): its script and frame weigh about a megabyte and made
+    // scrolling past the form stutter. It loads while the first fields are
+    // filled in, long before the form can be sent.
+    var cf0 = document.getElementById('contact-form');
+    if (cf0) {
+      ['focusin', 'pointerdown', 'touchstart'].forEach(function (ev) {
+        cf0.addEventListener(ev, loadCaptcha, { once: true, passive: true });
+      });
     } else {
       loadCaptcha();
     }
-    var cf0 = document.getElementById('contact-form');
-    if (cf0) cf0.addEventListener('focusin', loadCaptcha, { once: true });
-    // Backstop: whatever the visitor does, the widget is ready long before
-    // they can fill the form. Late enough to stay out of first paint.
-    setTimeout(loadCaptcha, 4000);
   }
 
   /* ---------- Copy each enquiry to the KnightWebStudio automations ----------
@@ -509,6 +508,17 @@
       var captchaEl = document.getElementById('captcha-error');
       var captchaField = form.elements['h-captcha-response'];
       var widgetPresent = !!(captchaSlot && captchaSlot.querySelector('iframe, textarea'));
+
+      // Sent the moment the form was first touched (autofill, then Send): the box is still on its way. Wait for it
+      // briefly; if it never comes (blocked), the form goes on as it always has.
+      if (!widgetPresent && captchaSlot) {
+        loadCaptcha();
+        if (Date.now() - captchaAskedAt < 8000) {
+          if (captchaEl) captchaEl.textContent = 'One moment: the verification box is loading. Tick it, then send.';
+          setStatus('');
+          return;
+        }
+      }
 
       if (widgetPresent && (!captchaField || !captchaField.value)) {
         if (captchaEl) captchaEl.textContent = 'Please tick the verification box above.';
