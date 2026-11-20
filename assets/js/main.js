@@ -242,15 +242,24 @@
   var clips = document.querySelectorAll('video[data-loop]');
   if (clips.length) {
     var clipMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var onScreen = new WeakMap();
     var syncClips = function () {
       var still = clipMotion.matches || document.documentElement.getAttribute('data-motion') === 'off';
       clips.forEach(function (v) {
         if (still) { v.pause(); v.currentTime = 0; }
+        else if (onScreen.get(v) === false || document.hidden) { v.pause(); }   // off screen: no decoding while you scroll
         else { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
       });
     };
-    syncClips();
+    if ('IntersectionObserver' in window) {
+      var clipObs = new IntersectionObserver(function (es) {
+        es.forEach(function (e) { onScreen.set(e.target, e.isIntersecting); });
+        syncClips();
+      }, { threshold: 0.15 });
+      clips.forEach(function (v) { clipObs.observe(v); });
+    } else { syncClips(); }
     document.addEventListener('kws:motion', syncClips);
+    document.addEventListener('visibilitychange', syncClips);
     if (clipMotion.addEventListener) clipMotion.addEventListener('change', syncClips);
   }
 
