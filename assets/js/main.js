@@ -101,7 +101,7 @@
     }
     // Browser chrome matches the paper (day) or the street after dark (night)
     var meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', theme === 'dark' ? '#131722' : '#F6F0E4');
+    if (meta) meta.setAttribute('content', theme === 'dark' ? '#000000' : '#FFFFFF');
   }
 
   // The site is light first. A saved choice wins; otherwise a device set to

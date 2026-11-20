@@ -7,12 +7,12 @@ folder and it works (see [Run it locally](#run-it-locally)).
 
 ## The design in two sentences
 
-**The well-run shop.** Every page is built from things you would find in a good
-local business — the painted sign, the price board, the job ticket, the receipt,
-the appointment card, the business card — drawn on warm paper in ink,
-sign-painter's blue and Red Stick brick, so that a roofer on a phone reads it as
-local, plain-spoken and carefully made. Light is "open for business"; the dark
-theme is the same street after closing.
+**The quiet showroom.** Inspired by Apple.com: white and light-grey tiles, black
+feature tiles, big short headlines in the system typeface, one blue for
+everything you can press, and real work shown like a product on a laptop, so a
+roofer on a phone reads the studio as calm, careful and premium. The home page
+is a short landing page (one headline, three doors, two signposts); each menu
+tab is its own page, and the detail lives there.
 
 Most visitors are owners of local service businesses on a phone, so the phone
 view is the design and the desktop view is the same thing with more room.
@@ -29,7 +29,7 @@ page are reached by link only.
 
 | URL | Contents |
 | --- | --- |
-| `/` | Home: the hero (shop front, an example text-back, the four prices), three services with their prices and one line each, one missed call and the automations that follow it (short), four projects, the four steps in brief (job ticket), the price board, who you work with |
+| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Websites, Automation with an example text-back, Consulting) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
 | `/services/` | All nine services, each with its price: a service menu, then the six website services plus growth consulting, Google profile & reviews, and automation. Three are set out in full and six are rows that open |
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
 | `/work/` | Four live projects as full case rows, the local one first |
@@ -51,16 +51,17 @@ free call or the Growth Audit. Every price stays on its page. Before adding a
 paragraph, check whether it gives a visitor less reason to get in touch.
 
 Every page also carries the top strip (city and tap-to-call number), a
-header, a footer (ending in the town at night) and (except `/contact/`, `/privacy/`, `/terms/`, the
+header, a light-grey footer and (except `/contact/`, `/privacy/`, `/terms/`, the
 checkout pages and `404.html`) the sticky phone bar with a Call button and the
 booking button. Below 1100px the menu is a full-screen sheet and the standard
 header's "Book a free call" button is hidden; `/start/`, which has no menu,
 keeps that button in its header from 600px, and the not-found page's header
 is the brand alone. The phone number is always in the top strip; from 1280px
-the standard header shows it too, once that strip has scrolled away. Where
-something moves by itself, a "Pause motion" control sits in the top strip
-(a pill from 1100px, a round button below it), in the phone menu and in the
-footer (see [Motion kit](#motion-kit)).
+the standard header shows it too, once that strip has scrolled away. The header
+is a translucent bar that blurs the page beneath it. Where something moves by
+itself, a "Pause motion" control sits in the phone menu and in the footer (the
+page heads no longer have moving backgrounds, so the top strip stays quiet; see
+[Motion kit](#motion-kit)).
 
 Also built in: light/dark theme toggle (light is the default; a saved choice
 wins, otherwise a device set to dark gets the night theme; an inline script
@@ -85,7 +86,7 @@ assets/css/styles.css   The main stylesheet: the shared design system (tokens at
 assets/css/motion.css   The motion kit's cards and carousels; linked only on the pages that place one
 assets/js/shader.js     The motion kit's animated backgrounds and the pause control (every page with motion)
 assets/js/motion.js     The motion kit's carousels and folder stack (only the pages that place one)
-assets/fonts/           Fraunces (soft) and Figtree, self-hosted variable WOFF2
+assets/fonts/           Figtree (the fallback text face) and Fraunces (used only by tools/art/render.js), self-hosted WOFF2
 assets/js/main.js       Settings, theme, menu, scroll reveals, phone bar, booking buttons, the contact form, analytics
 assets/js/calculator.js The consulting page's calculator (loaded on that page only)
 assets/img/             Project images (work-*.jpg), logo.svg, PNG app icons, the link-preview image
@@ -133,7 +134,7 @@ page's title, description, Open Graph tags, JSON-LD or `<main>`.
 | `header-start.inc` | `/start/`: no menu on purpose, one booking button |
 | `header-bare.inc` | `404.html`: the brand only (that page loads no script) |
 | `footer.inc`, `footer-start.inc`, `footer-bare.inc` | The motion kit's footer, and the slim one on `/start/` and the 404 page (the 404 one has no year and no pause control: that page loads no script) |
-| `skyline.inc` | The Baton Rouge skyline that ends every footer: the town at night, with the name rising behind it |
+| `skyline.inc` | The Baton Rouge skyline that used to end every footer. No partial includes it since the November 2026 redesign; kept because `sync_chrome.py` still reads it |
 | `phone-bar.inc` | The sticky "Call" and "Free 30-min call" bar for phones and tablets |
 | `head-script.inc` | The first-paint snippet: sets the theme before anything is drawn, marks the page as script-enabled, and holds the motion kit's carousels in place |
 
@@ -146,10 +147,9 @@ Asset and link paths are **root-absolute** (`/assets/…`, `/pricing/`) so the
 same markup works from any directory depth. That relies on the site living at
 the domain root, which it does.
 
-The home page repeats, in short form, three services with their prices, the
-four projects, the four process steps and the four package prices (the price
-board). `/start/` and the four city pages repeat prices and projects too.
-Update the full page and its copies together.
+The home page is a landing page and repeats no prices: it names the three
+services and links to the pages. `/start/` and the four city pages repeat prices
+and projects. Update the full page and its copies together.
 
 **Heading levels.** One `<h1>` a page. On the home page, section titles are
 `h2` and the titles inside them `h3`. Where a small title sits directly under
@@ -169,22 +169,22 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=6" defer></script>
-  <script src="/assets/js/shader.js?v=6" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=6" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=8" defer></script>
+  <script src="/assets/js/shader.js?v=8" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=8" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=6`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=8`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
-  (the 14 pages with motion), `motion.js` (home, /start/, /consulting/,
-  /pricing/), the kit's stylesheet `motion.css` (those four and /process/),
+  (the 14 pages with motion), `motion.js` (/start/, /consulting/,
+  /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
   and `checkout-monitor.js` (both checkout pages).
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=6' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=8' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -296,14 +296,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=6` directly after
-`styles.css?v=6`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=8` directly after
+`styles.css?v=8`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=6" defer></script>
-<script src="/assets/js/shader.js?v=6" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=6" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=8" defer></script>
+<script src="/assets/js/shader.js?v=8" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=8" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -314,13 +314,13 @@ nothing jumps, and gives the plain lists back if the script never comes.
 
 | Component | Script | Where |
 | --- | --- | --- |
-| Wash: slow light behind a page head | `shader.js` | Home, `/start/`, `/about/`, the four city pages |
-| Band: slow folds and gold glints in a closing band | `shader.js` | Every closing band |
-| Ribbon: silk art inside a card | `shader.js` | Bookmark cards (home), one folder (`/process/`) |
+| Wash: slow light behind a page head | `shader.js` | Switched off in the stylesheet since the redesign (the markup stays on `/start/`, `/about/` and the city pages) |
+| Band: slow folds in a closing band | `shader.js` | Switched off in the stylesheet since the redesign; the band is a plain black tile |
+| Ribbon: silk art inside a card | `shader.js` | One folder (`/process/`) |
 | Closing band, three layouts: statement, strip, card | none | The end of every page that had one |
-| Footer, slim footer, the town at night | none | Every page (slim on `/start/` and 404) |
-| Pause control | `shader.js` | Top strip (a pill from 1100px, a round button below it), phone menu, footer |
-| Bookmark cards, spotlight carousel | `motion.js` for the spotlight | Home |
+| Footer, slim footer | none | Every page (slim on `/start/` and 404) |
+| Pause control | `shader.js` | Phone menu and footer (the top strip's copy is hidden by the stylesheet) |
+| Bookmark cards, spotlight carousel | `motion.js` for the spotlight | Not placed since the home page became a landing page |
 | Arc carousel | `motion.js` | `/start/` |
 | Cylinder slider | `motion.js` | `/consulting/` |
 | Folder cards, folder stack | `motion.js` for the stack | `/process/`, `/pricing/` (phones) |
@@ -409,9 +409,8 @@ testimonials block in `index.html`.
 
 ### 1. Business name, crest and artwork
 
-The wordmark reads **KnightWebstudio** in full: in the header (`brand-name`),
-across the footer's skyline (`kws-skyline-name`; `--kws-fit` in its rule is
-the name's measured width in em) and in the slim footers (`kws-foot-bye`).
+The wordmark reads **KnightWebstudio** in full: in the header (`brand-name`)
+and in the slim footers (`kws-foot-bye`).
 Edit every partial in `tools/chrome/` that has it, and run
 `python3 tools/sync_chrome.py`.
 
@@ -423,10 +422,8 @@ field and a gold-leaf inner line.
 | --- | --- |
 | Header, every page | Charger shield; builds itself on a visit's first page, then again on hover |
 | Footer, business card (home, About) | Charger shield |
-| Home hero | The street scene: a brick shop front signed YOUR BUSINESS, on a Baton Rouge street. It turns to night with the dark theme |
 | `/start/` head, 404 page | The same street scene, small; on the 404 page its sign reads PAGE NOT FOUND |
 | Pricing head | The round "Fixed prices" seal |
-| Every footer | The town at night: the Baton Rouge skyline (inline SVG in `tools/chrome/skyline.inc`) with its windows and bridge lamps lit, stars, and the name rising behind it as the page ends |
 | `assets/img/logo.svg` | The standalone mark: the SVG favicon, the JSON-LD logo and the app-icon source |
 | `favicon.ico`, `apple-touch-icon.png`, `icon-192/512.png`, `og-image.png` | Rendered from the same artwork |
 
@@ -580,41 +577,42 @@ rest of the stylesheet uses those and nothing else. Each colour is one line
 holding both themes, day first and night second:
 
 ```css
---paper: var(--L, #F6F0E4) var(--D, #131722);   /* the page */
---ink:   var(--L, #1A2238) var(--D, #F3ECDD);   /* headings */
---blue:  var(--L, #2C46C4) var(--D, #9DB0FF);   /* pressable: buttons, links */
---brick: var(--L, #A83C26) var(--D, #F0907A);   /* notice this */
---gold:  #F0C369;                               /* only on blue or on the footer */
+--paper: var(--L, #FFFFFF) var(--D, #000000);   /* the page */
+--ink:   var(--L, #1D1D1F) var(--D, #F5F5F7);   /* headings */
+--blue:  var(--L, #2C46C4) var(--D, #8FA5FF);   /* pressable: buttons, links */
+--brick: var(--L, #B64400) var(--D, #FF9F5A);   /* notice this: used sparingly */
+--board: var(--L, #000000) var(--D, #1D1D1F);   /* the black feature tiles */
 ```
 
 | Tokens | What they are |
 | --- | --- |
-| `--paper`, `--paper-2`, `--paper-3`, `--card` | The page, sand bands, wells and raised paper (cards, tickets, fields) |
+| `--paper`, `--paper-2`, `--paper-3`, `--card` | The page (white), light-grey tiles (`.section-sand`), wells and raised cards |
 | `--ink`, `--ink-2`, `--ink-3` | Headings, body copy, captions |
 | `--line`, `--line-2`, `--ctl` | Hairlines, stronger rules and dashes, form-field outlines |
 | `--blue`, `--blue-deep`, `--blue-tint`, `--on-blue` | Pressable things, their hover, the tick's circle, text on a blue button |
-| `--brick`, `--brick-tint` | "Notice this": eyebrows, numerals, bars, the stamp, errors |
-| `--board`, `--footer`, `--gold`, `--cream` | The painted-sign blue, the footer's ink, gold leaf and cream text on both |
+| `--brick`, `--brick-tint` | "Notice this": the stamp, the seal, errors. Eyebrows and numerals are grey (`--ink-3`) |
+| `--board`, `--footer`, `--gold`, `--cream` | The black feature tiles and closing band, the light-grey footer; gold and cream remain only in the crest artwork |
 | `--fs-h1` … `--fs-cap`, `--measure` | The type scale (17px body, nothing under 12px) and the reading width, about 65 characters |
 | `--s-0` … `--s-9`, `--gutter`, `--gap`, `--pad`, `--stack`, `--sec` | The 4px spacing scale and the fluid layout spaces |
 | `--r-xs` … `--r-pill`, `--shadow-1` … `--shadow-3` | Corner radii and shadows |
 | `--t-fast`, `--t`, `--t-slow`, `--ease` | Durations and the one easing curve |
 
-The colour rule: **blue means pressable**, **brick means "notice this"**, and
-**gold only ever sits on blue or on the dark footer**. Nothing inside an
+The colour rule: **blue means pressable** and **brick means "notice this"**;
+everything else is black, white and greys. Nothing inside an
 illustration is blue, so that nothing blue is ever unpressable. Light is the
 default theme; night is the same street after closing, and each is a finished
 design. `site.webmanifest` and each page's `theme-color` carry the day paper,
-`#F6F0E4`; `tools/art/render.js` repeats four day colours for the icons.
+`#FFFFFF`; `tools/art/render.js` repeats four day colours for the icons.
 
 If you change a colour, re-check contrast in both themes: text needs 4.5:1,
 large text and control outlines 3:1.
 
-**Two typefaces, two files.** Headings, every price and numerals are set in
-**Fraunces** (soft, weight 600; `assets/fonts/fraunces-soft.woff2`); text and
-labels in **Figtree** (`assets/fonts/figtree.woff2`). Both are open-licensed
-(SIL OFL), self-hosted variable fonts, preloaded in each page's `<head>`. No
-italic is loaded, so emphasis is `<strong>`, never `<em>`.
+**One typeface family.** Headings, prices and text are set in the device's
+system face (San Francisco on Apple devices: `-apple-system`), weight 600 for
+headings with slightly tight letter-spacing, 17px body text. Everywhere else the
+self-hosted **Figtree** (`assets/fonts/figtree.woff2`, SIL OFL, preloaded in each
+page's `<head>`) stands in. No italic is loaded, so emphasis is `<strong>`,
+never `<em>`.
 
 **Six breakpoints**, and only six, written phone first:
 
