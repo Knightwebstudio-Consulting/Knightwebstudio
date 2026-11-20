@@ -224,9 +224,9 @@
     var revealObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry, i) {
         if (!entry.isIntersecting) return;
-        // A short stagger so a row of cards cascades, capped at 120ms so the
+        // A short stagger so a row of cards cascades, capped at 270ms so the
         // last card is never still faded when the reader reaches it.
-        setTimeout(function () { entry.target.classList.add('visible'); }, Math.min(i, 3) * 40);
+        setTimeout(function () { entry.target.classList.add('visible'); }, Math.min(i, 3) * 90);
         revealObserver.unobserve(entry.target);
       });
     }, { threshold: 0, rootMargin: '0px 0px -' + revealFoot + '% 0px' });

@@ -236,6 +236,13 @@ pattern, or Lighthouse will flag skipped heading levels.
   and `.on-ink` (top strip, footer) re-point the colour tokens for everything
   inside them, so the same classes work there. A paper object that sits on blue
   (a receipt, the appointment card) carries `.on-paper` and stays cream.
+- **Scroll motion.** Pictures of work (`.print-img`, `.case .browser`, the
+  spotlight frames) settle from a slight zoom as they come into view, the home
+  laptop grows a little as the page moves, and the home doors' pictures rise
+  into their tiles. These are CSS scroll timelines (styles.css section 17): no
+  script, and browsers without them, reduced motion and the pause control all
+  get the still page. Every closing band and the home doors and signposts are
+  `reveal` blocks.
 - **Motion.** Add `reveal` to a block that should rise in as it scrolls into
   view (never to anything on the first screen, and never to a wrapper that
   holds a whole section). It only applies when scripts run; without them, and
