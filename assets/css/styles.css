@@ -291,7 +291,7 @@ a.price-strip .price-strip-note { color: var(--blue); text-decoration: underline
   .nav-links li { border-bottom: 0; }
   .nav-links a { display: flex; align-items: center; justify-content: space-between; min-height: var(--btn-h); padding: var(--s-1) var(--s-0); font: 600 var(--fs-title)/1.2 var(--font-display); letter-spacing: -.015em; }
   .nav-links a::after { content: ""; width: var(--s-2); height: var(--s-2); margin-right: var(--s-2); border: solid; border-width: var(--bold) var(--bold) 0 0; opacity: .45; transform: rotate(45deg); }
-  .nav-links [aria-current="page"] { color: var(--blue); text-decoration: underline; text-decoration-thickness: var(--hair); text-underline-offset: .25em; }   /* not by colour alone */
+  .nav-links [aria-current] { color: var(--blue); text-decoration: underline; text-decoration-thickness: var(--hair); text-underline-offset: .25em; }   /* not by colour alone */
   .nav-foot { display: grid; gap: var(--s-3); margin-top: auto; padding-top: var(--s-5); }
   .nav-mail { display: flex; align-items: center; justify-content: center; min-height: var(--tap); font-weight: 600; color: var(--ink-2); }
 }
@@ -304,7 +304,7 @@ a.price-strip .price-strip-note { color: var(--blue); text-decoration: underline
   .nav-links { gap: var(--s-1); }
   .nav-links a { position: relative; display: inline-flex; align-items: center; min-height: var(--tap); padding: 0 var(--s-3); font-size: var(--fs-label); font-weight: 400; letter-spacing: -.01em; color: var(--ink-2); transition: color var(--t-fast); }
   .nav-links a::after { content: none; }
-  .nav-links [aria-current="page"] { color: var(--ink); font-weight: 600; }
+  .nav-links [aria-current] { color: var(--ink); font-weight: 600; }
 }
 @media (max-width: 379.98px) {
   .brand-name { font-size: var(--fs-md); } .brand, .header-inner, .header-actions { gap: var(--s-2); }
@@ -1097,39 +1097,83 @@ html:not(.js) :is(#theme-toggle, .nav-toggle, .nav-foot) { display: none; }
 @media (max-width: 599.98px) { [data-page="services"] .menu .dots { display: none; } }
 @media (min-width: 1280px) { [data-page="services"] .menu-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* A lead service: its paragraphs keep the reading measure (the 50px title needs the column); closer set on a phone */
-[data-page="services"] .svc-lead > p { max-width: var(--measure); }
-@media (max-width: 759.98px) { [data-page="services"] .svc-lead { --stack-gap: var(--s-3); } }
-@media (max-width: 599.98px) { [data-page="services"] .svc-lead > .btn { width: 100%; } }
-[data-page="services"] #care .grid { row-gap: var(--s-4); margin-top: var(--s-5); }
-[data-page="services"] #care p { max-width: var(--measure); margin: 0; }
-[data-page="services"] #care .more-link { justify-self: start; }
-@media (min-width: 760px) {
-  [data-page="services"] #care .grid { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); }
-  [data-page="services"] #care .ticks { grid-row: span 2; align-self: start; }
+/* The hub: one tile per service, by family; every tile opens that service's own page (20b) */
+[data-page="services"] .svc-tiles { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+[data-page="services"] .svc-tile { display: flex; flex-direction: column; align-items: center; gap: var(--s-2); min-height: 16rem; padding: var(--s-7) var(--pad) var(--s-6); border-radius: var(--r-lg); background: var(--paper-2); text-align: center; }
+[data-page="services"] .section-sand .svc-tile { background: var(--card); }
+[data-page="services"] .svc-tile h3 { font-size: var(--fs-title); }
+[data-page="services"] .svc-tile-line { max-width: 24em; margin: 0; color: var(--ink-3); }
+[data-page="services"] .svc-tile-price { margin: auto 0 0; padding-top: var(--s-3); color: var(--ink); font: 600 var(--fs-h4)/1.2 var(--font-display); }
+[data-page="services"] .svc-tile .more-link { padding-block: var(--s-2) 0; }
+@media (min-width: 760px) { [data-page="services"] .svc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) {
+  [data-page="services"] .svc-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  [data-page="services"] .svc-tile-wide { grid-column: span 2; }
+  [data-page="services"] #keep .svc-tile-wide { grid-column: 1 / -1; }
+  [data-page="services"] #grow .svc-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+@media (min-width: 760px) and (max-width: 1099.98px) { [data-page="services"] .svc-tile-wide { grid-column: 1 / -1; } }
 
-/* A price-list row that opens (.faq.pricelist, each summary an h3.pl-row). Its id is on its .faq-body, so a link
-   opens the row (main.js does it where the browser does not) */
-[data-page="services"] summary { gap: var(--s-3); }
-[data-page="services"] summary h3 { flex: 1; min-width: 0; color: inherit; }
-[data-page="services"] .faq-body { padding-bottom: var(--s-3); scroll-margin-top: var(--s-9); }
+/* == 20b Service detail pages: [data-page="service"], /services/<service>/ == */
+/* One page per service: the head with its price, why it matters, what's included, the tiers where there are some,
+   how it works, the details, related services, the closing band. Shared parts throughout */
+[data-page="service"] .svc-crumbs { margin-bottom: var(--s-5); color: var(--ink-3); font-size: var(--fs-label); }
+[data-page="service"] .svc-crumbs a { text-decoration: none; }
+[data-page="service"] .svc-price { display: grid; justify-items: center; gap: var(--s-1); margin: var(--s-5) 0 0; }
+[data-page="service"] .svc-price b { color: var(--ink); font: 600 var(--fs-title)/1.1 var(--font-display); letter-spacing: -.015em; }
+[data-page="service"] .svc-price span { color: var(--ink-3); font-size: var(--fs-sm); }
+[data-page="service"] .page-head { padding-bottom: var(--s-6); }
 
-/* The one illustration, the phone above its caption: after the Automation lead on a phone, beside it from 760px */
-[data-page="services"] #win .split { --phone-w: 17rem; row-gap: var(--stack); }
-[data-page="services"] .fig { gap: var(--s-4); }
-[data-page="services"] .fig-credit { margin: 0; text-align: center; text-wrap: balance; }
-@media (max-width: 759.98px) { [data-page="services"] .thread li:nth-child(n+4) { display: none; } }
-@media (min-width: 760px) { [data-page="services"] .fig { grid-area: 1 / 1; } }
-@media (min-width: 760px) and (max-width: 979.98px) {
-  [data-page="services"] #win .split { grid-template-columns: min(var(--phone-w), 40%) minmax(0, 1fr); }
-  [data-page="services"] #win .faq { grid-column: 1 / -1; }
-}
+[data-page="service"] .svc-why { max-width: 46rem; margin-inline: auto; text-align: center; }
+[data-page="service"] .svc-why h2 { margin-inline: auto; }
+[data-page="service"] .svc-why-text { margin: var(--s-5) auto 0; color: var(--ink-2); font-size: var(--fs-lede); line-height: 1.45; text-wrap: pretty; }
+[data-page="service"] .svc-why-fig { display: grid; gap: var(--stack) var(--gap-lg); align-items: center; max-width: none; }
+[data-page="service"] .svc-fig { display: grid; justify-items: center; gap: var(--s-3); margin: 0; --phone-w: 17rem; }
+[data-page="service"] .svc-fig figcaption { max-width: 18rem; text-align: center; }
 @media (min-width: 980px) {
-  [data-page="services"] .fig { grid-row: 1 / span 2; position: sticky; top: calc(var(--header-h) + var(--s-6)); }
-  [data-page="services"] .fig-art { justify-items: start; }
-  [data-page="services"] .fig-credit { text-align: left; }
+  [data-page="service"] .svc-why-fig { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); text-align: left; }
+  [data-page="service"] .svc-why-fig :is(h2, .svc-why-text) { margin-inline: 0; }
 }
+
+[data-page="service"] .svc-grid { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+[data-page="service"] .svc-inc { display: grid; align-content: start; gap: var(--s-2); }
+[data-page="service"] .svc-inc h3 { font-size: var(--fs-h4); }
+[data-page="service"] .svc-inc p { margin: 0; color: var(--ink-3); font-size: var(--fs-sm); line-height: 1.5; }
+[data-page="service"] .svc-tick { width: 1.75rem; height: 1.75rem; margin-bottom: var(--s-1); fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+@media (min-width: 760px) { [data-page="service"] .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { [data-page="service"] .svc-grid { grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr)); } }
+
+[data-page="service"] .svc-tiers { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+[data-page="service"] .svc-tier { display: flex; flex-direction: column; gap: var(--s-2); }
+[data-page="service"] .svc-tier p { margin: 0; }
+[data-page="service"] .svc-tier-pop { border-color: var(--ink); }
+[data-page="service"] .svc-tier-name { color: var(--ink); font-weight: 600; }
+[data-page="service"] .svc-tier-price { color: var(--ink); font: 600 var(--fs-price)/1 var(--font-display); letter-spacing: -.025em; }
+[data-page="service"] .svc-tier-plan { color: var(--ink-3); font-size: var(--fs-label); }
+[data-page="service"] .svc-tier-what { color: var(--ink-2); font-size: var(--fs-sm); }
+[data-page="service"] .svc-tier-spec { display: grid; gap: var(--s-3); margin: var(--s-2) 0 var(--s-4); padding-top: var(--s-4); border-top: var(--seam); }
+[data-page="service"] .svc-tier-spec dt { color: var(--ink-3); font-size: var(--fs-label); }
+[data-page="service"] .svc-tier-spec dd { margin: 0; color: var(--ink); font-size: var(--fs-sm); line-height: 1.45; }
+[data-page="service"] .svc-tier .btn { align-self: flex-start; margin-top: auto; }
+[data-page="service"] .svc-receipt { margin-inline: auto; }
+@media (min-width: 760px) { [data-page="service"] .svc-tiers { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1100px) { [data-page="service"] .svc-tiers { grid-template-columns: repeat(var(--cols, 2), minmax(0, 1fr)); } }
+
+[data-page="service"] .svc-facts { margin: 0; border-bottom: var(--seam); }
+[data-page="service"] .svc-facts > div { display: grid; gap: var(--s-1) var(--gap); padding-block: var(--s-4); border-top: var(--seam); }
+[data-page="service"] .svc-facts dt { color: var(--ink); font-weight: 600; }
+[data-page="service"] .svc-facts dd { margin: 0; color: var(--ink-2); }
+@media (min-width: 600px) { [data-page="service"] .svc-facts > div { grid-template-columns: 11rem minmax(0, 1fr); } }
+
+[data-page="service"] .svc-related { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
+[data-page="service"] .svc-rel { display: flex; flex-direction: column; gap: var(--s-2); height: 100%; color: var(--ink-2); text-decoration: none; transition: translate var(--t) var(--ease), box-shadow var(--t) var(--ease); }
+[data-page="service"] .svc-rel h3 { font-size: var(--fs-h4); }
+[data-page="service"] .svc-rel p { margin: 0; color: var(--ink-3); font-size: var(--fs-sm); }
+[data-page="service"] .svc-rel-fam { color: var(--ink-3); font-size: var(--fs-label); }
+[data-page="service"] .svc-rel-go { display: inline-flex; align-items: center; gap: var(--s-2); margin-top: auto; padding-top: var(--s-3); color: var(--blue); }
+[data-page="service"] .svc-rel-go svg { width: 1em; height: 1em; fill: none; stroke: currentColor; stroke-width: 2; }
+@media (min-width: 760px) { [data-page="service"] .svc-related { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (hover: hover) { [data-page="service"] .svc-rel:hover { color: var(--ink-2); translate: 0 calc(-1 * var(--s-1)); box-shadow: var(--shadow-3); } [data-page="service"] .svc-rel:hover .svc-rel-go { text-decoration: underline; } }
 
 /* == 21 Consulting: [data-page="consulting"], /consulting/ == */
 /* Consulting. The calculator is the canonical one from DESIGN.md ("Calculator"): keep its markup and ids */

@@ -30,7 +30,8 @@ page are reached by link only.
 | URL | Contents |
 | --- | --- |
 | `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Websites, Automation with an example text-back, Consulting) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
-| `/services/` | All nine services, each with its price: a service menu, then the six website services plus growth consulting, Google profile & reviews, and automation. Three are set out in full and six are rows that open |
+| `/services/` | The hub: the service menu (each row opens that service's page), then one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price, one line and "Learn more" |
+| `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
 | `/work/` | Four live projects as full case rows, the local one first |
 | `/process/` | Four-step "no surprises" explainer |
@@ -44,6 +45,12 @@ page are reached by link only.
 | `/start/` | Landing page for ads, emails and posts: every service with its price, pricing tiers, selected work, the four steps, one call to action. No menu. See [Landing page](#8-landing-page-start) |
 | `/about/` | First-person About page for Christian Knight: background, how he works, selected work and contact details. The founder photo is intentionally left out for now — add one later beside the business card in the page head if wanted |
 | `/web-design-baton-rouge/`, `/web-design-gonzales/`, `/web-design-prairieville/`, `/web-design-denham-springs/` | Local service-area pages: unique copy per city, Smilys Softwash as local work, published prices, a short city FAQ, contact + booking CTAs. Linked from the footer's "Areas we serve" column |
+
+**Detail lives behind "Learn more".** Every service has its own page under
+`/services/`, linked from its tile on `/services/`, the menu on that page, the
+cards on `/consulting/` and the pricing page. A fact on a service page (price,
+timeline, support period, payment terms) is one more copy to keep in step with
+the rest of the site.
 
 **Keep the copy short.** The pages were trimmed on purpose (November 2026): each
 page says what you get and what it costs, and leaves the how-exactly for the
@@ -76,6 +83,7 @@ Google.
 ```
 index.html              Home
 services/index.html     One directory per page, so URLs are /services/ etc.
+services/<service>/     The fourteen service detail pages
 consulting/  work/  process/  pricing/  faq/  contact/  about/  start/
 privacy/  terms/  checkout/  checkout/success/
 web-design-baton-rouge/  web-design-gonzales/  web-design-prairieville/  web-design-denham-springs/
@@ -197,7 +205,7 @@ pattern, or Lighthouse will flag skipped heading levels.
 
 - **`data-page`** names the page for the stylesheet: `home`, `services`,
   `consulting`, `work`, `process`, `pricing`, `faq`, `contact`, `about`,
-  `start`, `city` (all four city pages), `privacy`, `terms`, `checkout`,
+  `start`, `service` (the fourteen service pages), `city` (all four city pages), `privacy`, `terms`, `checkout`,
   `checkout-success`, `notfound`.
 - **Bands.** Every band is a `.section` holding one `.container`. Plain paper
   and `.section-sand` alternate; `.section-tight` is a shorter band and
@@ -226,7 +234,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   parts in one place; its block (section 24) adds the head's contents card,
   the price groups and the bundle.
 - **Page blocks.** Rules that only one page needs live in that page's block of
-  `styles.css` (sections 19 to 34, in the order of `PAGES`). Every selector
+  `styles.css` (sections 19 to 34, in the order of `PAGES`; the service pages are 20b). Every selector
   there is scoped with `[data-page="<name>"]`, so a page rule cannot reach
   another page: the selector starts with it, or with `.js ` or
   `html:not(.js) ` in front of it where the rule depends on scripts running.

@@ -25,7 +25,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).parent))
 import emblems as e  # noqa: E402
 
 PAGES = ['index.html', '404.html'] + [f'{d}/index.html' for d in
-                                      ('services', 'consulting', 'work', 'process', 'pricing', 'faq', 'contact', 'privacy', 'terms', 'start', 'about',
+                                      ('services', 'services/website-design', 'services/redesigns', 'services/ecommerce', 'services/brand-identity', 'services/seo-performance', 'services/care-plans', 'services/missed-call-text-back', 'services/online-booking', 'services/lead-follow-up', 'services/custom-automation', 'services/google-profile-reviews', 'services/launch-bundle', 'services/growth-audit', 'services/monthly-plans', 'consulting', 'work', 'process', 'pricing', 'faq', 'contact', 'privacy', 'terms', 'start', 'about',
                                        'checkout', 'checkout/success',
                                        'web-design-baton-rouge', 'web-design-gonzales',
                                        'web-design-prairieville', 'web-design-denham-springs')]

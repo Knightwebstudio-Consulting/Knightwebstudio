@@ -41,6 +41,21 @@ STANDARD, NO_BAR = ('header', 'footer', True), ('header', 'footer', False)
 PAGES = {
     'index.html':                           ('home',) + STANDARD,
     'services/index.html':                  ('services',) + STANDARD,
+    # One detail page per service, behind each "Learn more" on /services/
+    'services/website-design/index.html':   ('service',) + STANDARD,
+    'services/redesigns/index.html':        ('service',) + STANDARD,
+    'services/ecommerce/index.html':        ('service',) + STANDARD,
+    'services/brand-identity/index.html':   ('service',) + STANDARD,
+    'services/seo-performance/index.html':  ('service',) + STANDARD,
+    'services/care-plans/index.html':       ('service',) + STANDARD,
+    'services/missed-call-text-back/index.html':('service',) + STANDARD,
+    'services/online-booking/index.html':   ('service',) + STANDARD,
+    'services/lead-follow-up/index.html':   ('service',) + STANDARD,
+    'services/custom-automation/index.html':('service',) + STANDARD,
+    'services/google-profile-reviews/index.html':('service',) + STANDARD,
+    'services/launch-bundle/index.html':    ('service',) + STANDARD,
+    'services/growth-audit/index.html':     ('service',) + STANDARD,
+    'services/monthly-plans/index.html':    ('service',) + STANDARD,
     'consulting/index.html':                ('consulting',) + STANDARD,
     'work/index.html':                      ('work',) + STANDARD,
     'process/index.html':                   ('process',) + STANDARD,
@@ -89,6 +104,9 @@ def header(page):
     link = f'<li><a href="{url}">'
     if url != '/' and link in text:
         text = text.replace(link, f'<li><a href="{url}" aria-current="page">', 1)
+    elif url.startswith('/services/') and url != '/services/':
+        # A service detail page: its section, Services, is marked as the current place (not the current page)
+        text = text.replace('<li><a href="/services/">', '<li><a href="/services/" aria-current="true">', 1)
     return text
 
 
