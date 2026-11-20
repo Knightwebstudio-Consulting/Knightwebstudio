@@ -30,7 +30,7 @@ page are reached by link only.
 | URL | Contents |
 | --- | --- |
 | `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Websites, Automation with an example text-back, Consulting) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
-| `/services/` | The hub: the service menu (each row opens that service's page), then one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price, one line and "Learn more" |
+| `/services/` | The hub: one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
 | `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
 | `/work/` | Four live projects as full case rows, the local one first |
@@ -177,14 +177,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=8" defer></script>
-  <script src="/assets/js/shader.js?v=8" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=8" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=9" defer></script>
+  <script src="/assets/js/shader.js?v=9" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=9" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=8`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=9`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -192,7 +192,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=8' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=9' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -311,14 +311,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=8` directly after
-`styles.css?v=8`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=9` directly after
+`styles.css?v=9`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=8" defer></script>
-<script src="/assets/js/shader.js?v=8" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=8" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=9" defer></script>
+<script src="/assets/js/shader.js?v=9" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=9" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -768,8 +768,8 @@ one of the two is ever shown). A change to a package's price, payment line,
 size, design, inclusions, support or buttons goes in both.
 `python3 tools/check_pricing.py` compares them and says what differs.
 
-The services page puts a price beside each service, in its menu and again on the
-service itself, taken from the same tiers: design
+The services page shows each service's price once, on its tile (and again on that
+service's own page), taken from the same tiers: design
 and build "$1,000, $2,000 or $4,000", e-commerce $8,000, care "$125, $300, $600 or $1,000/mo",
 brand identity $1,500, redesigns "priced as a new site" (a redesign is one of
 the same packages), and SEO "in every build", because every tier includes SEO

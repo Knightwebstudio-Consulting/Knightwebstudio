@@ -1077,25 +1077,7 @@ html:not(.js) :is(#theme-toggle, .nav-toggle, .nav-foot) { display: none; }
 [data-page="home"] .signposts p { margin: 0; color: var(--ink-3); }
 
 /* == 20 Services: [data-page="services"], /services/ == */
-/* Services: shared parts plus one thing of its own, the service menu. */
-
-/* The menu: the page's one blue panel. Nine rows, each a link to its entry below. */
-[data-page="services"] .section-first { padding-top: var(--s-6); }
-[data-page="services"] .menu { padding-block: max(var(--s-5), var(--pad)); }
-[data-page="services"] .menu .board-head { margin-bottom: var(--s-4); }
-[data-page="services"] .menu-cols { display: grid; gap: var(--s-5) var(--s-7); }
-[data-page="services"] .menu ul { list-style: none; border-top: var(--rule) solid var(--line-2); }
-[data-page="services"] .menu .eyebrow { margin-bottom: var(--s-2); }
-[data-page="services"] .menu ul + .eyebrow { margin-top: var(--s-5); }
-[data-page="services"] .menu li { border-bottom: var(--seam); }
-[data-page="services"] .menu a { display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; justify-content: space-between; gap: 0 var(--s-3); min-height: var(--tap); padding: var(--s-2) var(--s-1); border-radius: var(--r-sm); color: var(--ink); line-height: 1.25; text-decoration: none; }
-[data-page="services"] .menu-name { font-weight: 700; text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: .25em; }
-[data-page="services"] .menu-price { color: var(--brick); font-size: var(--fs-h4); }
-[data-page="services"] .menu a:active { background: var(--card); }
-@media (hover: hover) { [data-page="services"] .menu a:hover { background: var(--card); color: var(--ink); } }
-@media (max-width: 759.98px) { [data-page="services"] .menu-price { font-size: var(--fs-body); } }
-@media (max-width: 599.98px) { [data-page="services"] .menu .dots { display: none; } }
-@media (min-width: 1280px) { [data-page="services"] .menu-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Services: the hub. Each price appears once, on its tile; the detail is on each service's page (20b). */
 
 /* The hub: one tile per service, by family; every tile opens that service's own page (20b) */
 [data-page="services"] .svc-tiles { list-style: none; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
