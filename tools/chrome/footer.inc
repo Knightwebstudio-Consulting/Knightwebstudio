@@ -1,5 +1,5 @@
 <!-- ===================== FOOTER ===================== -->
-<footer class="site-footer on-ink kws-foot">
+<footer class="site-footer kws-foot">
   <!-- The motion kit's footer (styles.css section 16). It keeps class site-footer: main.js looks for it (the phone bar steps aside over the footer). -->
   <div class="kws-foot-in">
     <div class="kws-foot-grid">
@@ -64,12 +64,5 @@
       <!-- Last in the row, the motion pause control: shader.js shows it and writes its words; without that script (and with script off) it stays hidden -->
       <p class="kws-foot-links"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="#top">Back to top ↑</a><button class="kws-motion" data-kws="motion" type="button" hidden><svg class="kws-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="kws-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="kws-motion-label"></span></button></p>
     </div>
-  </div>
-
-  <!-- The town at night, with the name rising behind its skyline. Decorative: everything it says is in the text above. -->
-  <div class="kws-skyline" aria-hidden="true">
-    <div class="kws-skyline-sky"></div>
-    <p class="kws-skyline-name">KnightWebstudio</p>
-{{skyline}}
   </div>
 </footer>

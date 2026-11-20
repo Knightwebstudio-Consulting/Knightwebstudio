@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Brand Identity Design | KnightWebstudio</title>
+<meta name="description" content="A brand identity for $1,500: logo and mark, colours and fonts, a brand guidelines document, and social and print assets, so everything you publish looks like one business.">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="canonical" href="https://knightwebstudio.com/services/brand-identity/">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Brand Identity Design | KnightWebstudio">
+<meta property="og:description" content="A brand identity for $1,500: logo and mark, colours and fonts, a brand guidelines document, and social and print assets, so everything you publish looks like one business.">
+<meta property="og:url" content="https://knightwebstudio.com/services/brand-identity/">
+<meta property="og:image" content="https://knightwebstudio.com/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="KnightWebstudio — websites that win you customers">
+<meta property="og:site_name" content="KnightWebstudio">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/assets/img/logo.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<script>
+  // Set the theme before first paint, so nobody sees a flash of the wrong
+  // one. Light is the default: a saved choice wins, otherwise a device set
+  // to dark gets the night theme. main.js still owns the toggle itself.
+  (function () {
+    var d = document.documentElement; d.classList.add('js');
+    // The header crest builds itself on the first page of a visit only
+    try { if (!sessionStorage.getItem('kws-crest')) { d.classList.add('crest-intro'); sessionStorage.setItem('kws-crest', '1'); } } catch (e) {}
+    try {
+      var t = localStorage.getItem('theme');
+      if (t !== 'dark' && t !== 'light') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      d.setAttribute('data-theme', t);
+    } catch (e) { /* private mode: the stylesheet follows the device instead */ }
+    // A visitor who paused the motion gets a still page from the first frame, also where shader.js is not loaded
+    try { if (localStorage.getItem('kws-motion') === 'off') d.setAttribute('data-motion', 'off'); } catch (e) {}
+    // Scroll reveals hide blocks until main.js shows them. A deferred script has
+    // run, or failed, by DOMContentLoaded: if main.js has not started by then
+    // (or the page has none), the page is a no-script page. If it is still on
+    // its way after four seconds, show every block and leave the header alone.
+    document.addEventListener('DOMContentLoaded', function () { if (!window.kwsReady) d.classList.remove('js'); });
+    setTimeout(function () { if (!window.kwsReady) d.classList.add('show-all'); }, 4000);
+    // The motion kit: hold each carousel's place until motion.js upgrades it, and give the plain lists back if it
+    // never comes (a page without motion.js drops the classes at load and after four seconds)
+    d.classList.add('kws-js', 'kws-hold');
+    addEventListener('load', function () { if (!(window.KWS && KWS.folders)) d.classList.remove('kws-js'); });
+    setTimeout(function () { if (!(window.KWS && KWS.folders)) d.classList.remove('kws-js'); d.classList.remove('kws-hold'); }, 4000);
+    // Error monitoring (Sentry): the loader tag right after this snippet stays at about 1 KB and fetches
+    // the full SDK only when an error happens. Live site only; errors only; no IP addresses, no cookies.
+    window.sentryOnLoad = function () {
+      Sentry.init({
+        enabled: /(^|\.)knightwebstudio\.com$/.test(location.hostname),
+        environment: 'production',
+        sendDefaultPii: false,
+        allowUrls: [/^https:\/\/(www\.)?knightwebstudio\.com\//],
+        ignoreErrors: ['Script error.', 'ResizeObserver loop limit exceeded',
+          'ResizeObserver loop completed with undelivered notifications', 'Non-Error promise rejection captured']
+      });
+    };
+  })();
+</script>
+<script src="https://js.sentry-cdn.com/b08a9aa8b3df252aac8a08def83e7fa8.min.js" crossorigin="anonymous" async></script>
+<link rel="preload" href="/assets/fonts/figtree.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/assets/css/styles.css?v=8">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": [
+        "ProfessionalService",
+        "Organization"
+      ],
+      "@id": "https://knightwebstudio.com/#org",
+      "name": "KnightWebstudio",
+      "description": "Baton Rouge, LA web design, automation and small-business consulting studio. Websites, Google reviews, missed-call text-back, online booking and lead follow-up for local businesses in Greater Baton Rouge and beyond.",
+      "url": "https://knightwebstudio.com/",
+      "email": "knightwebstudio1@gmail.com",
+      "telephone": "+1-225-255-0837",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://knightwebstudio.com/assets/img/logo.svg"
+      },
+      "image": "https://knightwebstudio.com/assets/img/og-image.png",
+      "priceRange": "$$",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Baton Rouge",
+        "addressRegion": "LA",
+        "addressCountry": "US"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "Baton Rouge",
+          "sameAs": "https://en.wikipedia.org/wiki/Baton_Rouge,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Gonzales",
+          "sameAs": "https://en.wikipedia.org/wiki/Gonzales,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Prairieville",
+          "sameAs": "https://en.wikipedia.org/wiki/Prairieville,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Denham Springs",
+          "sameAs": "https://en.wikipedia.org/wiki/Denham_Springs,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Zachary",
+          "sameAs": "https://en.wikipedia.org/wiki/Zachary,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Central",
+          "sameAs": "https://en.wikipedia.org/wiki/Central,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Baker",
+          "sameAs": "https://en.wikipedia.org/wiki/Baker,_Louisiana"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "East Baton Rouge Parish",
+          "sameAs": "https://en.wikipedia.org/wiki/East_Baton_Rouge_Parish,_Louisiana"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Ascension Parish",
+          "sameAs": "https://en.wikipedia.org/wiki/Ascension_Parish,_Louisiana"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "Livingston Parish",
+          "sameAs": "https://en.wikipedia.org/wiki/Livingston_Parish,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "New Orleans",
+          "sameAs": "https://en.wikipedia.org/wiki/New_Orleans"
+        },
+        {
+          "@type": "City",
+          "name": "Metairie",
+          "sameAs": "https://en.wikipedia.org/wiki/Metairie,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Kenner",
+          "sameAs": "https://en.wikipedia.org/wiki/Kenner,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Hammond",
+          "sameAs": "https://en.wikipedia.org/wiki/Hammond,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Slidell",
+          "sameAs": "https://en.wikipedia.org/wiki/Slidell,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Covington",
+          "sameAs": "https://en.wikipedia.org/wiki/Covington,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Lafayette",
+          "sameAs": "https://en.wikipedia.org/wiki/Lafayette,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Lake Charles",
+          "sameAs": "https://en.wikipedia.org/wiki/Lake_Charles,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Houma",
+          "sameAs": "https://en.wikipedia.org/wiki/Houma,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Thibodaux",
+          "sameAs": "https://en.wikipedia.org/wiki/Thibodaux,_Louisiana"
+        },
+        {
+          "@type": "City",
+          "name": "Birmingham",
+          "sameAs": "https://en.wikipedia.org/wiki/Birmingham,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Hoover",
+          "sameAs": "https://en.wikipedia.org/wiki/Hoover,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Tuscaloosa",
+          "sameAs": "https://en.wikipedia.org/wiki/Tuscaloosa,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Huntsville",
+          "sameAs": "https://en.wikipedia.org/wiki/Huntsville,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Madison",
+          "sameAs": "https://en.wikipedia.org/wiki/Madison,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Decatur",
+          "sameAs": "https://en.wikipedia.org/wiki/Decatur,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Florence",
+          "sameAs": "https://en.wikipedia.org/wiki/Florence,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Gadsden",
+          "sameAs": "https://en.wikipedia.org/wiki/Gadsden,_Alabama"
+        },
+        {
+          "@type": "City",
+          "name": "Anniston",
+          "sameAs": "https://en.wikipedia.org/wiki/Anniston,_Alabama"
+        }
+      ],
+      "knowsAbout": [
+        "Web design",
+        "Web development",
+        "E-commerce",
+        "SEO",
+        "Website maintenance",
+        "Small business consulting",
+        "Business automation",
+        "Google Business Profile",
+        "Online reviews",
+        "Online booking"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "name": "One-page website",
+            "priceCurrency": "USD",
+            "price": "1000",
+            "description": "A single page: who you are, what you offer and how to reach you, with a contact form."
+          },
+          {
+            "@type": "Offer",
+            "name": "Starter website",
+            "priceCurrency": "USD",
+            "price": "2000",
+            "description": "Information website: who you are, what you offer and how to reach you, up to 5 pages."
+          },
+          {
+            "@type": "Offer",
+            "name": "Business website",
+            "priceCurrency": "USD",
+            "price": "4000",
+            "description": "Full marketing site, up to 10 pages, blog and analytics."
+          },
+          {
+            "@type": "Offer",
+            "name": "Commerce website",
+            "priceCurrency": "USD",
+            "price": "8000",
+            "description": "Online store with payments, shipping and tax configured."
+          },
+          {
+            "@type": "Offer",
+            "name": "Brand identity",
+            "priceCurrency": "USD",
+            "price": "1500",
+            "description": "Logo and mark, colour palette, typography, brand guidelines and social templates."
+          },
+          {
+            "@type": "Offer",
+            "name": "Basic care plan",
+            "priceCurrency": "USD",
+            "price": "125",
+            "description": "One small change a month, made within 5 business days.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "125",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Essential care plan",
+            "priceCurrency": "USD",
+            "price": "300",
+            "description": "Changes made within 4 business days, up to 2 requests a month.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "300",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Growth care plan",
+            "priceCurrency": "USD",
+            "price": "600",
+            "description": "Changes made within 2 business days, up to 5 requests a month.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "600",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Commerce care plan",
+            "priceCurrency": "USD",
+            "price": "1000",
+            "description": "Same-day response for urgent issues, unlimited small requests and a direct text line.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "1000",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Growth Audit & action plan",
+            "priceCurrency": "USD",
+            "price": "350",
+            "description": "A 60-minute session and a written action plan ranked by impact; the $350 comes off any project booked within 30 days."
+          },
+          {
+            "@type": "Offer",
+            "name": "Strategy session",
+            "priceCurrency": "USD",
+            "price": "150",
+            "description": "60 minutes on one business question, with written notes afterwards."
+          },
+          {
+            "@type": "Offer",
+            "name": "Google Business Profile & reviews setup",
+            "priceCurrency": "USD",
+            "price": "500",
+            "description": "Profile completed and optimised, listings made consistent, and a review request link, QR code and reply templates."
+          },
+          {
+            "@type": "Offer",
+            "name": "Missed-call text-back setup",
+            "priceCurrency": "USD",
+            "price": "750",
+            "description": "Every missed call gets a text back from your business number within a minute."
+          },
+          {
+            "@type": "Offer",
+            "name": "Online booking & reminders setup",
+            "priceCurrency": "USD",
+            "price": "750",
+            "description": "Online booking from your website and Google profile, synced to your calendar, with text and email reminders."
+          },
+          {
+            "@type": "Offer",
+            "name": "Lead follow-up system",
+            "priceCurrency": "USD",
+            "price": "1500",
+            "description": "Every enquiry in one list, automatic follow-ups on quiet quotes and a review request after each job."
+          },
+          {
+            "@type": "Offer",
+            "name": "Custom automation workflow",
+            "priceCurrency": "USD",
+            "price": "1500",
+            "description": "One process automated end to end on your accounts, with a recorded walkthrough and 30 days of fixes."
+          },
+          {
+            "@type": "Offer",
+            "name": "Launch bundle",
+            "priceCurrency": "USD",
+            "price": "3000",
+            "description": "Starter website, Google profile and reviews setup, and missed-call text-back."
+          },
+          {
+            "@type": "Offer",
+            "name": "Advisor plan",
+            "priceCurrency": "USD",
+            "price": "500",
+            "description": "A monthly strategy call, Google Business Profile managed, review replies and a monthly report.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "500",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          },
+          {
+            "@type": "Offer",
+            "name": "Partner plan",
+            "priceCurrency": "USD",
+            "price": "1000",
+            "description": "Everything in Advisor, two strategy calls a month and up to 5 hours of hands-on work a month.",
+            "priceSpecification": {
+              "@type": "UnitPriceSpecification",
+              "price": "1000",
+              "priceCurrency": "USD",
+              "unitCode": "MON"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://knightwebstudio.com/#website",
+      "url": "https://knightwebstudio.com/",
+      "name": "KnightWebstudio",
+      "publisher": {
+        "@id": "https://knightwebstudio.com/#org"
+      },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://knightwebstudio.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Services",
+          "item": "https://knightwebstudio.com/services/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Brand & identity",
+          "item": "https://knightwebstudio.com/services/brand-identity/"
+        }
+      ]
+    },
+    {
+      "@type": "Service",
+      "name": "Brand & identity",
+      "description": "A brand identity for $1,500: logo and mark, colours and fonts, a brand guidelines document, and social and print assets, so everything you publish looks like one business.",
+      "url": "https://knightwebstudio.com/services/brand-identity/",
+      "provider": {
+        "@id": "https://knightwebstudio.com/#org"
+      },
+      "areaServed": {
+        "@type": "City",
+        "name": "Baton Rouge"
+      },
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "Brand identity",
+          "price": "1500",
+          "priceCurrency": "USD"
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+
+<body data-page="service">
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===================== TOP STRIP ===================== -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <p class="topbar-place">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+      <span><span class="topbar-more">Based in </span>Baton Rouge<span class="topbar-state">, Louisiana</span><span class="topbar-long"> · We meet in person anywhere in Greater Baton Rouge</span></span>
+    </p>
+    <!-- The motion pause control: shader.js shows it (a pill from 1100px, a round button below it) -->
+    <button class="kws-motion" data-kws="motion" type="button" hidden><svg class="kws-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="kws-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="kws-motion-label"></span></button>
+    <a class="topbar-tel" href="tel:+12252550837">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+      <span class="sr-only">Call </span>(225) 255-0837
+    </a>
+  </div>
+</div>
+<!-- ===================== HEADER ===================== -->
+<header class="site-header" id="site-header">
+  <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="KnightWebstudio home">
+      <!-- art:crest-header --><svg class="crest" viewBox="0 0 120 120" aria-hidden="true" style="--t1:#DCE3FF;--t2:#B9C7FF;--t3:#8FA5FF;--t4:#5C77EC;--t5:#2C46C4;--ink:#161B2C;--accent:#F0C369;--rim:#2C46C4;--rim2:#B9C7FF;--glow:#8FA5FF;--field1:#24306A;--field2:#161B2C;--ribbon:#1B2C84;--ribbon2:#14205E;--steel1:#FBF5E6;--steel2:#CFC7B4;--steel3:#8E8A80;--letter:#FFFBF2"><defs><linearGradient id="ch-fld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--field1)"/><stop offset="1" stop-color="var(--field2)"/></linearGradient><radialGradient id="ch-glow" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="var(--glow)" stop-opacity=".35"/><stop offset="1" stop-color="var(--glow)" stop-opacity="0"/></radialGradient><linearGradient id="ch-gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="ch-in"><path d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z"/></clipPath><clipPath id="ch-out"><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z"/></clipPath></defs><g class="a-rim"><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z" fill="var(--rim)"/><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z" fill="none" stroke="var(--rim2)" stroke-opacity=".55" stroke-width="1.2"/><path class="a-field" d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z" fill="url(#ch-fld)"/></g><g clip-path="url(#ch-in)"><circle class="a-field" cx="60" cy="50" r="42" fill="url(#ch-glow)"/><g transform="translate(22 22) scale(.86)" stroke-linejoin="round"><polygon class="facet" style="--i:0;--dx:-8.0px;--dy:-6.4px" fill="var(--t2)" points="54,4 61,15 46,12"/><polygon class="facet" style="--i:1;--dx:-1.6px;--dy:6.4px" fill="var(--t1)" points="54,4 46,12 50,9"/><polygon class="facet" style="--i:2;--dx:4.8px;--dy:4.8px" fill="var(--t3)" points="37,15 46,12 61,15 63,24 35,29"/><polygon class="facet" style="--i:3;--dx:-6.4px;--dy:3.2px" fill="var(--t1)" points="37,15 24,27 35,29"/><polygon class="facet" style="--i:4;--dx:0.0px;--dy:1.6px" fill="var(--t2)" points="24,27 13,41 24,46 35,29"/><polygon class="facet" style="--i:5;--dx:6.4px;--dy:0.0px" fill="var(--t1)" points="13,41 8,49 12,56 23,58 24,46"/><polygon class="facet" style="--i:6;--dx:-4.8px;--dy:-1.6px" fill="var(--t3)" points="35,29 24,46 50,37"/><polygon class="facet" style="--i:7;--dx:1.6px;--dy:-3.2px" fill="var(--t4)" points="35,29 50,37 63,24"/><polygon class="facet" style="--i:8;--dx:8.0px;--dy:-4.8px" fill="var(--t4)" points="24,46 23,58 42,54 50,37"/><polygon class="facet" style="--i:9;--dx:-3.2px;--dy:-6.4px" fill="var(--t3)" points="50,37 42,54 38,63 63,63 65,43"/><polygon class="facet" style="--i:10;--dx:3.2px;--dy:6.4px" fill="var(--t4)" points="50,37 65,43 63,24"/><polygon class="facet" style="--i:11;--dx:-8.0px;--dy:4.8px" fill="var(--t3)" points="38,63 31,80 26,112 53,112 63,63"/><polygon class="facet" style="--i:12;--dx:-1.6px;--dy:3.2px" fill="var(--t4)" points="63,63 53,112 78,112 72,80"/><polygon class="facet" style="--i:13;--dx:4.8px;--dy:1.6px" fill="var(--t5)" points="61,15 67,16 72,22 69,26 77,32 73,36 79,44 74,48 79,57 73,61 76,70 72,80 63,63 65,43 63,24"/><path class="eye" d="M30 27Q35 24 40 27Q35 30 30 27Z" fill="var(--ink)"/><path d="M12 46L16 45" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/></g></g><path class="a-line" pathLength="1" d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z" fill="none" stroke="var(--accent)" stroke-opacity=".9" stroke-width="1"/><circle class="rivet" style="--i:0" cx="24" cy="20" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:1" cx="42" cy="15.5" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:2" cx="60" cy="11" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:3" cx="78" cy="15.5" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:4" cx="96" cy="20" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:5" cx="100" cy="44" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:6" cx="20" cy="44" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:7" cx="94" cy="76" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:8" cx="26" cy="76" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:9" cx="79" cy="97" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:10" cx="41" cy="97" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><g clip-path="url(#ch-out)"><g transform="rotate(20 60 60)"><rect class="a-glint" x="-60" y="-30" width="16" height="180" fill="url(#ch-gl)"/></g></g></svg><!-- /art:crest-header -->
+      <span class="brand-name">KnightWebstudio</span>
+    </a>
+
+    <nav class="nav" id="nav" aria-label="Main">
+      <div class="nav-inner">
+        <ul class="nav-links" role="list">
+          <li><a href="/services/" aria-current="true">Services</a></li>
+          <li><a href="/consulting/">Consulting</a></li>
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+
+        <!-- Phone menu only: hidden on desktop -->
+        <div class="nav-foot">
+          <a class="btn btn-primary btn-block" href="/contact/">Start your project</a>
+          <a class="btn btn-block" href="tel:+12252550837">
+            <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+            Call (225) 255-0837
+          </a>
+          <a class="nav-mail" href="mailto:knightwebstudio1@gmail.com">knightwebstudio1@gmail.com</a>
+          <button class="kws-motion" data-kws="motion" type="button" hidden><svg class="kws-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="kws-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="kws-motion-label"></span></button>
+        </div>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <!-- From 1280px, and only once the top strip (which has the number) has scrolled away -->
+      <a class="header-tel" href="tel:+12252550837">
+        <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+        <span class="sr-only">Call </span>(225) 255-0837
+      </a>
+      <button class="icon-btn" id="theme-toggle" type="button"
+              aria-label="Switch to dark theme" title="Toggle theme">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"/></svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+      </button>
+      <a class="btn btn-primary btn-sm header-cta" href="/contact/" data-booking>Book a free call</a>
+      <button class="icon-btn nav-toggle" id="nav-toggle" type="button"
+              aria-expanded="false" aria-controls="nav" aria-label="Open menu">
+        <span class="burger" aria-hidden="true"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ===================== PAGE HEAD ===================== -->
+  <section class="page-head svc-head">
+    <div class="container">
+      <nav class="svc-crumbs" aria-label="Breadcrumb"><a href="/services/">Services</a><span aria-hidden="true"> › </span><span aria-current="page">Brand identity</span></nav>
+      <p class="eyebrow">Build your website</p>
+      <h1>Brand &amp; identity</h1>
+      <p class="lede">One look for everything you publish, from the van to the invoice to the website.</p>
+      <p class="svc-price"><b>$1,500</b><span>Add it to any project, or on its own</span></p>
+      <div class="btn-row">
+        <a class="btn btn-primary btn-lg" href="/contact/?package=brand#contact-form">Ask about a brand identity</a>
+        <a class="btn btn-lg" href="/contact/" data-booking>Book a free call</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-first">
+    <div class="container">
+      <div class="svc-why">
+        <div class="svc-why-copy reveal">
+          <p class="eyebrow">Why it matters</p>
+          <h2>Look established from day one.</h2>
+          <p class="svc-why-text">Customers decide in seconds whether a business looks trustworthy. A consistent logo, colours and type on everything you publish makes a small business look established and easy to remember, and makes every future flyer, post and sign quicker and cheaper to produce.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-sand ">
+    <div class="container">
+      <header class="section-head reveal"><p class="eyebrow">What's included</p><h2>A complete identity, ready to use.</h2></header>
+      <ul class="svc-grid" style="--cols:4" role="list">
+        <li class="card svc-inc reveal"><svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-6.5"/></svg><h3>Logo and mark</h3><p>A logo and a compact mark for small spaces like social profiles and app icons.</p></li>
+        <li class="card svc-inc reveal"><svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-6.5"/></svg><h3>Colours and fonts</h3><p>A palette and type choices that work on screen and in print.</p></li>
+        <li class="card svc-inc reveal"><svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-6.5"/></svg><h3>Brand guidelines</h3><p>A document that shows how to use it all, so anyone you hire gets it right.</p></li>
+        <li class="card svc-inc reveal"><svg class="svc-tick" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m7.5 12.5 3 3 6-6.5"/></svg><h3>Social &amp; print assets</h3><p>Templates and files ready for social posts and printed material.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ">
+    <div class="container">
+      <div class="split">
+        <header class="section-head reveal"><p class="eyebrow">How it works</p><h2>How a brand comes together.</h2></header>
+        <ol class="steps reveal" role="list">
+          <li><span class="steps-no" aria-hidden="true">01</span><div><h3>Discovery call</h3><p>Free, 30 minutes on your business, your customers and how you want to come across.</p></div></li>
+          <li><span class="steps-no" aria-hidden="true">02</span><div><h3>Fixed quote</h3><p>$1,500, agreed in writing before work starts.</p></div></li>
+          <li><span class="steps-no" aria-hidden="true">03</span><div><h3>Design &amp; sign-off</h3><p>Your logo, colours and fonts, refined with you until you sign off.</p></div></li>
+          <li><span class="steps-no" aria-hidden="true">04</span><div><h3>Handover</h3><p>The guidelines document and every file, ready for print, social and your website.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-sand ">
+    <div class="container">
+      <div class="split">
+        <header class="section-head reveal"><p class="eyebrow">The details</p><h2>Good to know.</h2></header>
+        <dl class="svc-facts reveal">
+          <div><dt>Price</dt><dd>$1,500, fixed.</dd></div>
+          <div><dt>Payment</dt><dd>Card only (credit or debit, through Stripe); invoices are due within 7 days.</dd></div>
+          <div><dt>Ownership</dt><dd>The finished identity and its files are yours.</dd></div>
+          <div><dt>Goes with</dt><dd>Any website package, so the site launches with the new look.</dd></div>
+        </dl>
+      </div>
+    </div>
+  </section>
+
+  <section class="section ">
+    <div class="container">
+      <header class="section-head reveal"><p class="eyebrow">Goes well with</p><h2>Related services.</h2></header>
+      <ul class="svc-related" role="list">
+        <li class="reveal"><a class="card svc-rel" href="/services/website-design/"><span class="svc-rel-fam">Build your website</span><h3>Website design &amp; build</h3><p>A custom site, built from scratch to win you work.</p><span class="svc-rel-go">Learn more<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span></a></li>
+        <li class="reveal"><a class="card svc-rel" href="/services/google-profile-reviews/"><span class="svc-rel-fam">Win customers, save time</span><h3>Google profile &amp; reviews</h3><p>Your Google profile done properly, and reviews made easy.</p><span class="svc-rel-go">Learn more<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span></a></li>
+        <li class="reveal"><a class="card svc-rel" href="/services/ecommerce/"><span class="svc-rel-fam">Build your website</span><h3>E-commerce stores</h3><p>A checkout people trust: Shopify, or a custom store on Stripe.</p><span class="svc-rel-go">Learn more<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></span></a></li>
+      </ul>
+      <p class="section-more"><a class="more-link" href="/services/">All services<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></a></p>
+    </div>
+  </section>
+
+  <!-- ===================== CLOSING CALL TO ACTION ===================== -->
+  <section class="kws-close kws-close--strip on-blue" aria-labelledby="close-title">
+    <div class="kws-close-in reveal">
+      <div class="kws-close-copy">
+        <h2 class="kws-close-title" id="close-title">Questions? Book the free call.</h2>
+        <p class="kws-close-text">Thirty minutes, no pitch. You'll know whether it fits your business, and exactly what it would cost.</p>
+      </div>
+      <div class="kws-close-acts">
+        <a class="kws-btn kws-btn--main" href="/contact/" data-booking>Book a free 30-minute call</a>
+        <a class="kws-btn" href="/contact/?package=brand#contact-form">Ask about a brand identity</a>
+      </div>
+      <p class="kws-close-tel">Or call <a href="tel:+12252550837">(225) 255-0837</a></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Phones and tablets: the header button is hidden there, so this bar keeps
+     a call and a booking one thumb-tap away. main.js shows it after the first
+     screen and hides it over the footer. -->
+<div class="mobile-cta" id="mobile-cta" hidden>
+  <div class="mobile-cta-inner">
+    <a class="btn" href="tel:+12252550837" aria-label="Call (225) 255-0837">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
+      Call
+    </a>
+    <a class="btn btn-primary" href="/contact/" data-booking>Free 30-min call<span> · no pitch</span></a>
+  </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer kws-foot">
+  <!-- The motion kit's footer (styles.css section 16). It keeps class site-footer: main.js looks for it (the phone bar steps aside over the footer). -->
+  <div class="kws-foot-in">
+    <div class="kws-foot-grid">
+      <div class="kws-foot-who">
+        <a class="kws-foot-logo" href="/" aria-label="KnightWebstudio home">
+          <!-- art:crest-footer --><svg class="crest" viewBox="0 0 120 120" aria-hidden="true" style="--t1:#DCE3FF;--t2:#B9C7FF;--t3:#8FA5FF;--t4:#5C77EC;--t5:#2C46C4;--ink:#161B2C;--accent:#F0C369;--rim:#2C46C4;--rim2:#B9C7FF;--glow:#8FA5FF;--field1:#24306A;--field2:#161B2C;--ribbon:#1B2C84;--ribbon2:#14205E;--steel1:#FBF5E6;--steel2:#CFC7B4;--steel3:#8E8A80;--letter:#FFFBF2"><defs><linearGradient id="cf-fld" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--field1)"/><stop offset="1" stop-color="var(--field2)"/></linearGradient><radialGradient id="cf-glow" cx=".5" cy=".42" r=".5"><stop offset="0" stop-color="var(--glow)" stop-opacity=".35"/><stop offset="1" stop-color="var(--glow)" stop-opacity="0"/></radialGradient><linearGradient id="cf-gl" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient><clipPath id="cf-in"><path d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z"/></clipPath><clipPath id="cf-out"><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z"/></clipPath></defs><g class="a-rim"><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z" fill="var(--rim)"/><path d="M60 6C75 12 92 15 104 16V56C104 86 84 104 60 114C36 104 16 86 16 56V16C28 15 45 12 60 6Z" fill="none" stroke="var(--rim2)" stroke-opacity=".55" stroke-width="1.2"/><path class="a-field" d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z" fill="url(#cf-fld)"/></g><g clip-path="url(#cf-in)"><circle class="a-field" cx="60" cy="50" r="42" fill="url(#cf-glow)"/><g transform="translate(22 22) scale(.86)" stroke-linejoin="round"><polygon class="facet" style="--i:0;--dx:-8.0px;--dy:-6.4px" fill="var(--t2)" points="54,4 61,15 46,12"/><polygon class="facet" style="--i:1;--dx:-1.6px;--dy:6.4px" fill="var(--t1)" points="54,4 46,12 50,9"/><polygon class="facet" style="--i:2;--dx:4.8px;--dy:4.8px" fill="var(--t3)" points="37,15 46,12 61,15 63,24 35,29"/><polygon class="facet" style="--i:3;--dx:-6.4px;--dy:3.2px" fill="var(--t1)" points="37,15 24,27 35,29"/><polygon class="facet" style="--i:4;--dx:0.0px;--dy:1.6px" fill="var(--t2)" points="24,27 13,41 24,46 35,29"/><polygon class="facet" style="--i:5;--dx:6.4px;--dy:0.0px" fill="var(--t1)" points="13,41 8,49 12,56 23,58 24,46"/><polygon class="facet" style="--i:6;--dx:-4.8px;--dy:-1.6px" fill="var(--t3)" points="35,29 24,46 50,37"/><polygon class="facet" style="--i:7;--dx:1.6px;--dy:-3.2px" fill="var(--t4)" points="35,29 50,37 63,24"/><polygon class="facet" style="--i:8;--dx:8.0px;--dy:-4.8px" fill="var(--t4)" points="24,46 23,58 42,54 50,37"/><polygon class="facet" style="--i:9;--dx:-3.2px;--dy:-6.4px" fill="var(--t3)" points="50,37 42,54 38,63 63,63 65,43"/><polygon class="facet" style="--i:10;--dx:3.2px;--dy:6.4px" fill="var(--t4)" points="50,37 65,43 63,24"/><polygon class="facet" style="--i:11;--dx:-8.0px;--dy:4.8px" fill="var(--t3)" points="38,63 31,80 26,112 53,112 63,63"/><polygon class="facet" style="--i:12;--dx:-1.6px;--dy:3.2px" fill="var(--t4)" points="63,63 53,112 78,112 72,80"/><polygon class="facet" style="--i:13;--dx:4.8px;--dy:1.6px" fill="var(--t5)" points="61,15 67,16 72,22 69,26 77,32 73,36 79,44 74,48 79,57 73,61 76,70 72,80 63,63 65,43 63,24"/><path class="eye" d="M30 27Q35 24 40 27Q35 30 30 27Z" fill="var(--ink)"/><path d="M12 46L16 45" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/></g></g><path class="a-line" pathLength="1" d="M60 14C73 19 88 22 97 23V56C97 81 80 97 60 106C40 97 23 81 23 56V23C32 22 47 19 60 14Z" fill="none" stroke="var(--accent)" stroke-opacity=".9" stroke-width="1"/><circle class="rivet" style="--i:0" cx="24" cy="20" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:1" cx="42" cy="15.5" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:2" cx="60" cy="11" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:3" cx="78" cy="15.5" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:4" cx="96" cy="20" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:5" cx="100" cy="44" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:6" cx="20" cy="44" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:7" cx="94" cy="76" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:8" cx="26" cy="76" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:9" cx="79" cy="97" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><circle class="rivet" style="--i:10" cx="41" cy="97" r="1.6" fill="var(--rim2)" fill-opacity=".85"/><g clip-path="url(#cf-out)"><g transform="rotate(20 60 60)"><rect class="a-glint" x="-60" y="-30" width="16" height="180" fill="url(#cf-gl)"/></g></g></svg><!-- /art:crest-footer -->
+        </a>
+        <p class="kws-foot-bye">Based in Baton Rouge, Louisiana. Working with clients anywhere.</p>
+        <p class="kws-foot-what">Websites, automation and consulting for local businesses that need to be found, trusted and chosen.</p>
+      </div>
+
+      <nav class="kws-foot-call" aria-label="Contact">
+        <p class="kws-foot-title">Contact</p>
+        <ul>
+          <li><a class="kws-foot-tel" href="tel:+12252550837">(225) 255-0837</a></li>
+          <li><a class="kws-foot-mail" href="mailto:knightwebstudio1@gmail.com"><span>knightwebstudio1@<wbr>gmail.com</span></a></li>
+          <li><a class="kws-btn" href="/contact/">Start a project <span aria-hidden="true">→</span></a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Services">
+        <p class="kws-foot-title">Services</p>
+        <ul>
+          <li><a href="/services/">Website design</a></li>
+          <li><a href="/consulting/">Consulting &amp; automation</a></li>
+          <li><a href="/services/">E-commerce</a></li>
+          <li><a href="/services/">SEO</a></li>
+          <li><a href="/services/">Care plans</a></li>
+        </ul>
+      </nav>
+
+      <nav aria-label="Company">
+        <p class="kws-foot-title">Company</p>
+        <ul>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/work/">Our work</a></li>
+          <li><a href="/process/">Process</a></li>
+          <li><a href="/pricing/">Pricing</a></li>
+          <li><a href="/faq/">FAQ</a></li>
+          <li><a href="/pay/">Pay online</a></li>
+        </ul>
+      </nav>
+
+      <nav class="kws-foot-wide" aria-label="Areas we serve">
+        <p class="kws-foot-title">Areas we serve</p>
+        <ul class="kws-foot-places">
+          <li><a href="/web-design-baton-rouge/">Baton Rouge</a></li>
+          <li><a href="/web-design-gonzales/">Gonzales</a></li>
+          <li><a href="/web-design-prairieville/">Prairieville</a></li>
+          <li><a href="/web-design-denham-springs/">Denham Springs</a></li>
+          <li><span>Zachary</span></li>
+          <li><span>Central</span></li>
+          <li><span>Baker</span></li>
+        </ul>
+        <p class="kws-foot-region"><strong>South Louisiana:</strong> New Orleans, Metairie, Kenner, Hammond, Slidell, Covington, Lafayette, Lake Charles, Houma and Thibodaux</p>
+        <p class="kws-foot-region"><strong>North Alabama:</strong> Birmingham, Hoover, Tuscaloosa, Huntsville, Madison, Decatur, Florence, Gadsden and Anniston</p>
+      </nav>
+    </div>
+
+    <div class="kws-foot-end">
+      <p>&copy; <span id="year">2026</span> KnightWebstudio. All rights reserved.</p>
+      <!-- Last in the row, the motion pause control: shader.js shows it and writes its words; without that script (and with script off) it stays hidden -->
+      <p class="kws-foot-links"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="#top">Back to top ↑</a><button class="kws-motion" data-kws="motion" type="button" hidden><svg class="kws-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="kws-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="kws-motion-label"></span></button></p>
+    </div>
+  </div>
+</footer>
+<script src="/assets/js/main.js?v=8" defer></script>
+<script src="/assets/js/shader.js?v=8" defer></script>
+</body>
+</html>
