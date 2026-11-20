@@ -188,14 +188,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=12" defer></script>
-  <script src="/assets/js/shader.js?v=12" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=12" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=13" defer></script>
+  <script src="/assets/js/shader.js?v=13" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=13" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=12`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=13`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -203,7 +203,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=12' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=13' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -265,6 +265,13 @@ pattern, or Lighthouse will flag skipped heading levels.
   (`--fam`/`--fam-tint` on its `<main>`, by family) are tinted. None of this is
   blue, so blue still means pressable. Reduced motion and the pause control
   stop the drift and keep the colour.
+  **Keep it cheap to scroll:** the glows are wide radial gradients that are soft
+  on their own and move by `transform` only. Never put `filter: blur()` or
+  `will-change` on them, and never loop an animation of `background-position`
+  (the headline gradient sweeps once as the page opens): either one makes the
+  browser repaint every frame. The home clip pauses whenever it is off screen.
+  Measured with a 4× slower CPU while scrolling: about 17ms a frame and no frame
+  over 34ms on the home page, `/services/` and a service page.
 - **Imagery.** A real project is shown as a laptop with its phone view beside it
   (`.devices`, styles.css section 13): on the home page (the laptop plays the
   Nabors scroll clip), every case on `/work/`, and the website, redesign,
@@ -345,14 +352,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=12` directly after
-`styles.css?v=12`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=13` directly after
+`styles.css?v=13`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=12" defer></script>
-<script src="/assets/js/shader.js?v=12" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=12" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=13" defer></script>
+<script src="/assets/js/shader.js?v=13" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=13" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
