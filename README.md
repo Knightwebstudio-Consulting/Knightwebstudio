@@ -30,7 +30,7 @@ page are reached by link only.
 | URL | Contents |
 | --- | --- |
 | `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Websites, Automation with an example text-back, Consulting) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
-| `/services/` | The hub: the service menu (each row opens that service's page), then one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price, one line and "Learn more" |
+| `/services/` | The hub: one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
 | `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
 | `/work/` | Four live projects as full case rows, the local one first |
@@ -768,8 +768,8 @@ one of the two is ever shown). A change to a package's price, payment line,
 size, design, inclusions, support or buttons goes in both.
 `python3 tools/check_pricing.py` compares them and says what differs.
 
-The services page puts a price beside each service, in its menu and again on the
-service itself, taken from the same tiers: design
+The services page shows each service's price once, on its tile (and again on that
+service's own page), taken from the same tiers: design
 and build "$1,000, $2,000 or $4,000", e-commerce $8,000, care "$125, $300, $600 or $1,000/mo",
 brand identity $1,500, redesigns "priced as a new site" (a redesign is one of
 the same packages), and SEO "in every build", because every tier includes SEO
