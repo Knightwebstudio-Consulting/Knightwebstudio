@@ -108,7 +108,7 @@ assets/fonts/           Figtree (the fallback text face) and Fraunces (used only
 assets/js/main.js       Settings, theme, menu, scroll reveals, phone bar, booking buttons, the contact form, analytics
 assets/js/calculator.js The consulting page's calculator (loaded on that page only)
 assets/img/             Project images (work-*.jpg, and work-*-phone.jpg: each site's phone view), logo.svg, PNG app icons, the link-preview image
-assets/video/           work-naborsdiesel-scroll.mp4 and .webm: the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg)
+assets/video/           work-naborsdiesel-scroll-800.mp4 and .webm (336 KB): the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg; not downloaded until it plays, and never with reduced motion, the pause control, data saver or a 2G/3G connection)
 tools/chrome/           The one true copy of the header, footer, phone bar and first-paint snippet (*.inc)
 tools/sync_chrome.py    Copies that chrome into every page; --check reports drift
 tools/check_pricing.py  Checks that /pricing/'s package table and its phone folders say the same
@@ -188,14 +188,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=13" defer></script>
-  <script src="/assets/js/shader.js?v=13" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=13" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=14" defer></script>
+  <script src="/assets/js/shader.js?v=14" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=14" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=13`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=14`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -203,7 +203,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=13' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=14' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -352,14 +352,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=13` directly after
-`styles.css?v=13`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=14` directly after
+`styles.css?v=14`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=13" defer></script>
-<script src="/assets/js/shader.js?v=13" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=13" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=14" defer></script>
+<script src="/assets/js/shader.js?v=14" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=14" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -574,9 +574,11 @@ how a static site receives mail without a server. It is not a credential.
 2. Web3Forms' own server-side spam checks, on by default.
 3. **hCaptcha**, using Web3Forms' shared zero-config sitekey
    (`50b2fe65-b00b-4b9e-ad62-3ba471098be2`) — no account or keys needed.
-   It is loaded **after the page**, not with it: when the captcha's place in
-   the form comes into view, on first focus in the form, or four seconds after
-   `main.js` starts, whichever comes first. A captcha iframe present at
+   It is loaded **only when someone starts on the form** (a tap, a click or a
+   field in focus), not with the page: its script and frame weigh about a
+   megabyte and made scrolling past the form stutter. If Send is pressed while
+   it is still loading, the form waits up to eight seconds for the box; if the
+   box never comes (blocked), the form is sent as before. A captcha iframe present at
    load can take focus and drag the scroll position down the page, and it also
    put a third-party request on the critical path for every visitor.
    The script URL **must** keep `?recaptchacompat=off`. Without it hCaptcha
