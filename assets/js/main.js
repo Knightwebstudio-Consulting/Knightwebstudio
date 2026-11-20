@@ -234,6 +234,26 @@
     revealables.forEach(function (el) { revealObserver.observe(el); });
   }
 
+  /* ---------- Looping screen recordings (video[data-loop]) ----------
+     Muted, with a poster. They play only while motion is allowed: reduced
+     motion keeps the poster, and the pause control (shader.js, the
+     "kws:motion" event) stops and rewinds them. Without this script the
+     poster is all anyone sees. */
+  var clips = document.querySelectorAll('video[data-loop]');
+  if (clips.length) {
+    var clipMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var syncClips = function () {
+      var still = clipMotion.matches || document.documentElement.getAttribute('data-motion') === 'off';
+      clips.forEach(function (v) {
+        if (still) { v.pause(); v.currentTime = 0; }
+        else { var p = v.play(); if (p && p.catch) p.catch(function () {}); }
+      });
+    };
+    syncClips();
+    document.addEventListener('kws:motion', syncClips);
+    if (clipMotion.addEventListener) clipMotion.addEventListener('change', syncClips);
+  }
+
   /* ---------- Mobile sticky CTA ----------
      Appears once the hero is behind you, and gets out of the way over the
      contact section, the closing band (.kws-close, or .cta-band on an older

@@ -107,7 +107,8 @@ assets/js/motion.js     The motion kit's carousels and folder stack (only the pa
 assets/fonts/           Figtree (the fallback text face) and Fraunces (used only by tools/art/render.js), self-hosted WOFF2
 assets/js/main.js       Settings, theme, menu, scroll reveals, phone bar, booking buttons, the contact form, analytics
 assets/js/calculator.js The consulting page's calculator (loaded on that page only)
-assets/img/             Project images (work-*.jpg), logo.svg, PNG app icons, the link-preview image
+assets/img/             Project images (work-*.jpg, and work-*-phone.jpg: each site's phone view), logo.svg, PNG app icons, the link-preview image
+assets/video/           work-naborsdiesel-scroll.mp4 and .webm: the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg)
 tools/chrome/           The one true copy of the header, footer, phone bar and first-paint snippet (*.inc)
 tools/sync_chrome.py    Copies that chrome into every page; --check reports drift
 tools/check_pricing.py  Checks that /pricing/'s package table and its phone folders say the same
@@ -187,14 +188,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=10" defer></script>
-  <script src="/assets/js/shader.js?v=10" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=10" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=11" defer></script>
+  <script src="/assets/js/shader.js?v=11" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=11" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=10`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=11`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -202,7 +203,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=10' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=11' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -254,6 +255,19 @@ pattern, or Lighthouse will flag skipped heading levels.
   and `.on-ink` (top strip, footer) re-point the colour tokens for everything
   inside them, so the same classes work there. A paper object that sits on blue
   (a receipt, the appointment card) carries `.on-paper` and stays cream.
+- **Imagery.** A real project is shown as a laptop with its phone view beside it
+  (`.devices`, styles.css section 13): on the home page (the laptop plays the
+  Nabors scroll clip), every case on `/work/`, and the website, redesign,
+  e-commerce and Launch bundle service pages. Every other service page has one
+  illustration beside "Why it matters": the text thread, the calendar, the
+  enquiry list, the quote notices, or a `.mock` card (brand kit, local search,
+  care log, Google profile, action plan, monthly report). Each says
+  "[your business]" or "Your Business", carries an Example flag and a caption,
+  has no blue and no numbers (rule 3). The tiles on `/services/` carry one line
+  icon each. To refresh a site's pictures, retake its 1200×630 desktop shot and a
+  400px-wide phone shot (an iPhone-sized window, top of the page) under new file
+  names. The clip is played by `main.js` only while motion is allowed: reduced
+  motion and the pause control keep its poster.
 - **Scroll motion.** Pictures of work (`.print-img`, `.case .browser`, the
   spotlight frames) settle from a slight zoom as they come into view, the home
   laptop grows a little as the page moves, and the home doors' pictures rise
@@ -321,14 +335,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=10` directly after
-`styles.css?v=10`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=11` directly after
+`styles.css?v=11`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=10" defer></script>
-<script src="/assets/js/shader.js?v=10" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=10" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=11" defer></script>
+<script src="/assets/js/shader.js?v=11" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=11" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
