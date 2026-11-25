@@ -1,8 +1,8 @@
 # KnightWebStudio Consulting — business website
 
 The marketing website of KnightWebStudio Consulting, a one-person consultancy in
-Baton Rouge, Louisiana that partners with local trades and small businesses in
-Louisiana and Alabama to grow, run steadier and win back time through
+Baton Rouge, Louisiana that partners with local trades and small businesses,
+wherever they are, to grow, run steadier and win back time through
 automation. Every partnership includes a website. Plain HTML, CSS
 and JavaScript — **no build step, no dependencies, no npm install**. Serve the
 folder and it works (see [Run it locally](#run-it-locally)).
@@ -946,13 +946,15 @@ local search and matches the address in the JSON-LD. It appears in every
 page's footer, the contact page's contact list, and every page's JSON-LD
 `address`. If that ever changes, search for `Baton Rouge` across the project.
 
-**Areas served** (November 2026): Greater Baton Rouge, all of South Louisiana
-and North Alabama above Montgomery. The footer's "Areas we serve" column
+**Areas served** (November 2026): everywhere. The copy says "Working with
+clients everywhere": in person across Greater Baton Rouge, by phone and video
+anywhere else. The footer's "Areas we serve" column
 (`tools/chrome/footer.inc`) lists the seven Greater Baton Rouge towns, four of
 them linked to their city pages, then one line each for South Louisiana (New
 Orleans, Metairie, Kenner, Hammond, Slidell, Covington, Lafayette, Lake
 Charles, Houma, Thibodaux) and North Alabama (Birmingham, Hoover, Tuscaloosa,
-Huntsville, Madison, Decatur, Florence, Gadsden, Anniston). The organisation's
+Huntsville, Madison, Decatur, Florence, Gadsden, Anniston), then "Everywhere
+else: by phone and video". The named places stay for local search. The organisation's
 JSON-LD `areaServed` on every page lists the same places; change both
 together. The site promises in-person meetings only in Greater Baton Rouge
 (the top strip, `/start/` and the city pages say so). The Google Business Profile's service area stays within
