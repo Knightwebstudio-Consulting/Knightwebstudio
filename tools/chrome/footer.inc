@@ -27,7 +27,7 @@
           <li><a href="/consulting/">Consulting &amp; automation</a></li>
           <li><a href="/services/ecommerce/">E-commerce</a></li>
           <li><a href="/services/seo-performance/">SEO</a></li>
-          <li><a href="/services/care-plans/">Care plans</a></li>
+          <li><a href="/services/care-plans/">Monthly plans</a></li>
         </ul>
       </nav>
 

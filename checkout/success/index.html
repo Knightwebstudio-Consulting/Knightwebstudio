@@ -242,7 +242,7 @@
           <li><a href="/consulting/">Consulting &amp; automation</a></li>
           <li><a href="/services/ecommerce/">E-commerce</a></li>
           <li><a href="/services/seo-performance/">SEO</a></li>
-          <li><a href="/services/care-plans/">Care plans</a></li>
+          <li><a href="/services/care-plans/">Monthly plans</a></li>
         </ul>
       </nav>
 
@@ -301,10 +301,9 @@
     'commerce-full':    { name: 'Commerce website — paid in full', price: '$8,000' },
     'commerce-deposit': { name: 'Commerce website — 50% deposit',  price: '$4,000' },
     'commerce-final':   { name: 'Commerce website — final 50%',    price: '$4,000' },
-    'basic-care':       { name: 'Basic care plan',                 price: '$125/month' },
-    'essential-care':   { name: 'Essential care plan',             price: '$300/month' },
-    'growth-care':      { name: 'Growth care plan',                price: '$600/month' },
-    'commerce-care':    { name: 'Commerce care plan',              price: '$1,000/month' }
+    'basic-care':       { name: 'Keep it running plan',            price: '$125/month' },
+    'grow-plan':        { name: 'Grow plan',                       price: '$500/month' },
+    'partner-plan':     { name: 'Partner plan',                    price: '$1,000/month' }
   };
 
   // /checkout/ sends ?plan=…&session_id=…. The session ID is checked with the
@@ -325,7 +324,7 @@
       el('success-title').textContent = title;
       el('success-sub').textContent = sub;
     }
-    // Care plans are subscriptions — the next steps read differently.
+    // Monthly plans are subscriptions — the next steps read differently.
     function useCareSteps() {
       el('success-steps-project').hidden = true;
       el('success-steps-care').hidden = false;
@@ -376,7 +375,7 @@
 
         if (s.status === 'complete' && (s.payment_status === 'paid' || s.payment_status === 'no_payment_required')) {
           setCopy('Payment confirmed — thank you',
-            (care ? 'Your care plan is active. ' : 'We\u2019ve received your payment. ') +
+            (care ? 'Your monthly plan is active. ' : 'We\u2019ve received your payment. ') +
             'Your Stripe receipt and a confirmation email from us are on their way to your inbox.');
         } else if (s.status === 'complete') {
           setCopy('Thank you — your payment is processing',

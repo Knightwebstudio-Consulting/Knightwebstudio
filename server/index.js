@@ -260,7 +260,7 @@ app.get("/api/session-status", async (req, res) => {
 //                                          here "unpaid" and settle days later.
 // checkout.session.async_payment_succeeded ACH payment cleared: emails as above.
 // checkout.session.async_payment_failed    ACH payment failed: business notice.
-// invoice.paid                             care plan monthly renewals only (the
+// invoice.paid                             monthly plan renewals only (the
 //                                          first payment is the session above):
 //                                          business notice.
 async function handleEvent(event) {
@@ -339,7 +339,7 @@ function invoiceSummary(invoice, event) {
     idLabel: "Stripe invoice ID",
     livemode: event.livemode,
     planKey,
-    label: planKey ? PLANS[planKey].label : line.description || "Care plan",
+    label: planKey ? PLANS[planKey].label : line.description || "Monthly plan",
     subscription: true,
     amount: formatAmount(invoice.amount_paid, invoice.currency),
     name: invoice.customer_name || "",
@@ -447,7 +447,7 @@ const NOTICE_HEADINGS = {
   paid: "New payment",
   pending: "Bank payment processing (not cleared yet)",
   failed: "Bank payment FAILED",
-  renewal: "Care plan renewal paid",
+  renewal: "Monthly plan renewal paid",
 };
 
 async function sendOwnerNotice(s, kind, paidNote) {
@@ -467,7 +467,7 @@ async function sendOwnerNotice(s, kind, paidNote) {
     paid: paidNote,
     pending: "The client paid by ACH bank transfer. It usually clears within a few business days; you'll get a \"New payment\" notice, and the client a confirmation, when it does.",
     failed: "The client's bank payment did not go through. Nothing was emailed to the client; follow up with them directly.",
-    renewal: "Stripe collected this month's care plan payment. The client gets Stripe's own receipt; nothing else was sent.",
+    renewal: "Stripe collected this month's monthly plan payment. The client gets Stripe's own receipt; nothing else was sent.",
   }[kind];
 
   const text = [heading, "", ...rows.map(([k, v]) => `${k}: ${v}`), "", note].join("\n");
