@@ -87,7 +87,7 @@ function page(body, w, h, transparent) {
     <div style="position:absolute;right:64px;top:74px;width:470px">${STREET.replace('<svg ', '<svg width="470" height="501" ')}</div>
     <div style="position:absolute;left:72px;top:78px;width:560px">
       <div style="display:flex;align-items:center;gap:16px">${sized(LOGO, 64)}
-        <span style="font:700 34px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.015em;color:${INK}">KnightWebstudio</span></div>
+        <span style="font:700 34px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.015em;color:${INK}">KnightWebStudio</span></div>
       <div style="margin-top:44px;font:600 72px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.022em;color:${INK}">
         Websites that win you customers</div>
       <div style="margin-top:28px;font:500 27px/1.42 Figtree">Websites, automation and consulting for local businesses. Fixed, published prices.</div>

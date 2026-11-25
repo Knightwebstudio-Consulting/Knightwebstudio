@@ -1,5 +1,5 @@
 /* ==========================================================================
-   KnightWebstudio — site behaviour
+   KnightWebStudio — site behaviour
    No dependencies. Every block is independent, so removing one is safe.
    ========================================================================== */
 (function () {
@@ -26,7 +26,7 @@
                      Plausible dashboard. Keep the analytics paragraph on
                      /privacy/ in step with this setting. */
   var SITE_CONFIG = {
-    bookingUrl: 'https://calendly.com/knightwebstudio1/30min',
+    bookingUrl: 'https://calendly.com/knightwebstudio1',
     analyticsScript: 'https://plausible.io/js/pa-M8H39gIN2J-TgmR4OOcVA.js'
   };
 

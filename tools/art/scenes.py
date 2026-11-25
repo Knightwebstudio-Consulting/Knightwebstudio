@@ -1,4 +1,4 @@
-"""KnightWebstudio drawings: the street scene.
+"""KnightWebStudio drawings: the street scene.
 
 Kept apart from emblems.py because it is long. It is one SVG body with
 {uid} where an id is needed, so two copies on a page never share an id.

@@ -1,6 +1,6 @@
-# KnightWebstudio — business website
+# KnightWebStudio — business website
 
-The marketing website of KnightWebstudio, a one-person web design, automation
+The marketing website of KnightWebStudio, a one-person web design, automation
 and small-business consulting studio in Baton Rouge, Louisiana. Plain HTML, CSS
 and JavaScript — **no build step, no dependencies, no npm install**. Serve the
 folder and it works (see [Run it locally](#run-it-locally)).
@@ -188,14 +188,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=14" defer></script>
-  <script src="/assets/js/shader.js?v=14" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=14" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=15" defer></script>
+  <script src="/assets/js/shader.js?v=15" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=15" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=14`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=15`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -203,7 +203,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=14' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=15' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -352,14 +352,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=14` directly after
-`styles.css?v=14`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=15` directly after
+`styles.css?v=15`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=14" defer></script>
-<script src="/assets/js/shader.js?v=14" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=14" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=15" defer></script>
+<script src="/assets/js/shader.js?v=15" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=15" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's
@@ -465,7 +465,7 @@ testimonials block in `index.html`.
 
 ### 1. Business name, crest and artwork
 
-The wordmark reads **KnightWebstudio** in full: in the header (`brand-name`)
+The wordmark reads **KnightWebStudio** in full: in the header (`brand-name`)
 and in the slim footers (`kws-foot-bye`).
 Edit every partial in `tools/chrome/` that has it, and run
 `python3 tools/sync_chrome.py`.
@@ -552,7 +552,7 @@ configure it:
 ```html
 <input type="hidden" name="access_key" value="…">
 <input type="hidden" name="subject"    value="New enquiry from knightwebstudio.com">
-<input type="hidden" name="from_name"  value="KnightWebstudio website">
+<input type="hidden" name="from_name"  value="KnightWebStudio website">
 ```
 
 The access key is **public by design** — it sits in the page source, which is
@@ -873,7 +873,7 @@ are on; an empty string switches either off:
 
 ```js
 var SITE_CONFIG = {
-  bookingUrl: 'https://calendly.com/knightwebstudio1/30min',
+  bookingUrl: 'https://calendly.com/knightwebstudio1',
   analyticsScript: 'https://plausible.io/js/pa-M8H39gIN2J-TgmR4OOcVA.js'
 };
 ```

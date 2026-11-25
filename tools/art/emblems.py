@@ -1,4 +1,4 @@
-"""KnightWebstudio artwork: the crest, the round seal and the street scene.
+"""KnightWebStudio artwork: the crest, the round seal and the street scene.
 
 Everything is hand-placed vector geometry, returned as SVG strings. The site
 has no build step, so tools/art/build.py writes these into the HTML between
