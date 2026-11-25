@@ -45,7 +45,7 @@ static (GitHub Pages), so every Stripe call goes through a small server in
   build (`/endive/stripe.js`, no preview flag), and a failed confirmation now
   shows a message beside the form instead of nothing.
 - **Every payment option (11 November 2026).** Pay in full, 50% deposit
-  and final 50% for all four packages, plus Basic care, are sold through
+  and final 50% for all four packages, plus the Keep it running, Grow and Partner plans, are sold through
   checkout. The new keys live in `server/plans.live-extra.json`, so Render's
   `STRIPE_PLANS_JSON` did not need changing. Payment plan monthly payments
   are not on the site: email the client a Stripe invoice or payment link for
@@ -82,7 +82,7 @@ static (GitHub Pages), so every Stripe call goes through a small server in
    | `checkout.session.completed` (unpaid: ACH still processing) | Emails the business a "Bank payment processing" notice |
    | `checkout.session.async_payment_succeeded` | ACH cleared. Same emails as a paid session |
    | `checkout.session.async_payment_failed` | Emails the business a "Bank payment FAILED" notice, so you can follow up |
-   | `invoice.paid` (monthly renewals only, `billing_reason: subscription_cycle`) | Emails the business a "Care plan renewal paid" notice. The client gets Stripe's own receipt |
+   | `invoice.paid` (monthly renewals only, `billing_reason: subscription_cycle`) | Emails the business a "Monthly plan renewal paid" notice. The client gets Stripe's own receipt |
 
    **The client's confirmation includes:**
    - what they paid for and the amount;
@@ -233,9 +233,11 @@ Link to `/checkout/?plan=<key>`. Unknown keys get a 400.
 | `starter-deposit` | Starter Website 50% Deposit | `price_1UKp1qLOmAZAVClwHMmJaqEG` | $1,000 | payment |
 | `business-deposit` | Business Website 50% Deposit | `price_1UKp1qLOmAZAVClwmYndCEOp` | $2,000 | payment |
 | `commerce-deposit` | Commerce Website 50% Deposit | `price_1UKp1uLOmAZAVClwWLaBxjnq` | $4,000 | payment |
-| `essential-care` | Essential Care Plan | `price_1UKp1pLOmAZAVClwygi70Z4T` | $300/mo | subscription |
-| `growth-care` | Growth Care Plan | `price_1UKp1pLOmAZAVClwt7Q7FRRm` | $600/mo | subscription |
-| `commerce-care` | Commerce Care Plan | `price_1UKp1pLOmAZAVClwfflhnSP5` | $1,000/mo | subscription |
+
+The Essential ($300), Growth ($600) and Commerce ($1,000) care plans that were
+also in this list were archived in Stripe on 25 November 2026 (no one was
+subscribed), along with their products. Their keys can be removed from
+`STRIPE_PLANS_JSON`; the site no longer links them.
 
 ### Live mode (in `server/plans.live-extra.json`, added on top)
 
@@ -250,14 +252,21 @@ Link to `/checkout/?plan=<key>`. Unknown keys get a 400.
 | `business-final` | Business Website final 50% | `price_1UKp1pLOmAZAVClwc8YbQb0O` | $2,000 | payment |
 | `commerce-full` | Commerce Website, paid in full | `price_1UKp1uLOmAZAVClwYDwM8fNX` | $8,000 | payment |
 | `commerce-final` | Commerce Website final 50% | `price_1UKp1uLOmAZAVClwkVRjc917` | $4,000 | payment |
-| `basic-care` | Basic Care Plan | `price_1UaeJCLOmAZAVClwczUJAD95` | $125/mo | subscription |
+| `basic-care` | Keep it running plan | `price_1UaeJCLOmAZAVClwczUJAD95` | $125/mo | subscription |
+| `grow-plan` | Grow plan | `price_1UfV6VLOmAZAVClwKUrbgLCO` | $500/mo | subscription |
+| `partner-plan` | Partner plan | `price_1UfV6XLOmAZAVClwHLoefZa2` | $1,000/mo | subscription |
 | `test-payment` | Test payment | `price_1UaYxsLOmAZAVClwqvuBLKul` | $1 | payment |
 
-Stripe products: One-page Website `prod_Vbs2nxxMSlRuF9`, Basic Care Plan
-`prod_Vbs3WMQPmatVrl` (both created 11 November 2026). The test-mode sandbox
+Stripe products: One-page Website `prod_Vbs2nxxMSlRuF9`, Keep it running plan
+`prod_Vbs3WMQPmatVrl` (both created 11 November 2026; the second was named Basic
+Care Plan until 25 November 2026, same price, so existing subscribers carry on),
+Grow plan `prod_VgssLUnOpgq7Gh` and Partner plan `prod_VgssUu4QJkqTZa` (created
+25 November 2026, lookup keys `grow_500_monthly` and `partner_1000_monthly`). The test-mode sandbox
 has none of these keys, so locally they return 400 "Unknown plan".
 
-Live customer portal configuration: `bpc_1UKpY2LOmAZAVClwJdiPQXoi`.
+Live customer portal configuration: `bpc_1UKpY2LOmAZAVClwJdiPQXoi` ("KnightWebstudio
+monthly plans"). Clients can switch between the three monthly plans there; a move
+up is prorated straight away, a move down waits for the end of the period.
 
 ### Test mode (sandbox, `server/plans.json`)
 
@@ -266,9 +275,6 @@ Live customer portal configuration: `bpc_1UKpY2LOmAZAVClwJdiPQXoi`.
 | `starter-deposit` | `price_1UKor8Q9sEpFpWZByAOqu1u0` |
 | `business-deposit` | `price_1UKorBQ9sEpFpWZBexjRQEGQ` |
 | `commerce-deposit` | `price_1UKorDQ9sEpFpWZBDfyRRZUm` |
-| `essential-care` | `price_1UKorGQ9sEpFpWZBnni7q737` |
-| `growth-care` | `price_1UKorIQ9sEpFpWZBIPvo4IFN` |
-| `commerce-care` | `price_1UKorJQ9sEpFpWZBqDSZ65q2` |
 
 ## Testing (test mode only)
 

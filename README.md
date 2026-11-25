@@ -35,13 +35,13 @@ page are reached by link only.
 | `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
 | `/work/` | Four live projects as full case rows, the local one first |
 | `/process/` | Four-step "no surprises" explainer |
-| `/pricing/` | Four website packages as one comparison table, how you pay (the payment plan drawn to scale), add-ons, consulting and automation prices with the Launch bundle, four care plans |
+| `/pricing/` | Four website packages as one comparison table, how you pay (the payment plan drawn to scale), add-ons, consulting and automation prices with the Launch bundle, the three monthly plans |
 | `/faq/` | Fourteen answers, with FAQPage schema |
 | `/contact/` | Enquiry form, spam honeypot, saved drafts, "what happens next" |
 | `/privacy/` | Plain-English privacy notice — see [Privacy page](#7-privacy-page) |
 | `/terms/` | Plain-English terms: the three payment options (in full, 50/50, or the payment plan), 7-day invoices, card only via Stripe, late interest, revision rounds per package, who writes the copy, care plan cancellation. The signed project agreement controls the details (cancellation fees are deliberately not listed here) |
-| `/pay/` | Pay online, for clients who have agreed a project: the three deposits and four care plans, each with its checkout (or request) button. Not in the menu or the sitemap (noindex, like checkout); linked from the footer and the contact page |
-| `/checkout/`, `/checkout/success/` | Stripe embedded checkout for deposits and care plans, and the confirmation page it returns to. See `STRIPE_INTEGRATION_TODO.md` |
+| `/pay/` | Pay online, for clients who have agreed a project: the three deposits and the three monthly plans, each with its checkout (or request) button. Not in the menu or the sitemap (noindex, like checkout); linked from the footer and the contact page |
+| `/checkout/`, `/checkout/success/` | Stripe embedded checkout for deposits and monthly plans, and the confirmation page it returns to. See `STRIPE_INTEGRATION_TODO.md` |
 | `/start/` | Landing page for ads, emails and posts: every service with its price, pricing tiers, selected work, the four steps, one call to action. No menu. See [Landing page](#8-landing-page-start) |
 | `/about/` | First-person About page for Christian Knight: background, how he works, selected work and contact details. The founder photo is intentionally left out for now — add one later beside the business card in the page head if wanted |
 | `/web-design-baton-rouge/`, `/web-design-gonzales/`, `/web-design-prairieville/`, `/web-design-denham-springs/` | Local service-area pages: unique copy per city, Smilys Softwash as local work, published prices, a short city FAQ, contact + booking CTAs. Linked from the footer's "Areas we serve" column |
@@ -741,7 +741,7 @@ table lists; anything beyond that is agreed in writing before work starts.
 **One way to write a price.** Always with the dollar sign and a comma
 (`$1,000`, never `$1000`). In a price list, a table or any other compact price
 line a monthly amount is `/mo` (`$500 or $1,000/mo`); in a sentence it is
-"a month" ("Care plans are $125, $300, $600 or $1,000 a month"). FAQ answers
+"a month" ("Monthly plans are $125, $500 or $1,000 a month"). FAQ answers
 keep their own wording, because they must match the structured data.
 
 Current published prices:
@@ -754,10 +754,9 @@ Current published prices:
 | Commerce | $8,000 |
 | Automation add-ons | $750 each |
 | Brand identity | $1,500 |
-| Care — Basic | $125/month |
-| Care — Essential | $300/month |
-| Care — Growth | $600/month |
-| Care — Commerce | $1,000/month |
+| Keep it running plan | $125/month |
+| Grow plan | $500/month |
+| Partner plan | $1,000/month |
 | Growth Audit & action plan | $350 (comes off a project booked within 30 days) |
 | Strategy session | $150 |
 | Google profile & reviews setup | $500 |
@@ -765,8 +764,6 @@ Current published prices:
 | Online booking & reminders setup | $750 (same as the booking add-on) |
 | Lead follow-up system | $1,500 |
 | Custom automation workflow | $1,500 each |
-| Advisor plan | $500/month |
-| Partner plan | $1,000/month |
 | Launch bundle (Starter + Google profile & reviews + text-back) | $3,000 ($1,500 down, then $500/mo for 3 months) |
 
 This README is served on GitHub Pages (the site uses `.nojekyll`, so files
@@ -776,10 +773,26 @@ out of it.
 **One-page** ($1,000, added October 2026) is a single page with a contact
 form, 1 revision round, client-supplied text, 14 days of support, live in as
 little as 7 days. It exists so price-sensitive prospects have a yes.
-**Basic care** ($125/month, added October 2026) suits one-page and Starter
-sites: 1 small change a month within 5 business days, client keeps domain and
-hosting renewals current. Since 11 November 2026 both sell through checkout
-(`onepage-deposit`, `onepage-full`, `onepage-final`, `basic-care`, from
+**Three monthly plans** (25 November 2026) replace the four care plans and the
+Advisor and Partner plans:
+- **Keep it running** ($125/month): backups, monitoring, security updates, fixes
+  and 1 small change a month within 5 business days; the client renews their own
+  domain and hosting. It sells through checkout as `basic-care` (the old Basic
+  care price, so existing Basic subscribers carry on unchanged).
+- **Grow** ($500/month): everything in Keep it running, up to 3 change requests a
+  month within 2 business days, a 60-minute strategy call, the Google profile and
+  review replies looked after, a monthly report, and domain and hosting renewals
+  handled at cost. Shown as the default plan.
+- **Partner** ($1,000/month): everything in Grow, a second call, up to 5 hours of
+  hands-on work, automations looked after, unlimited small site requests within
+  1 business day, urgent issues the same day and a direct text line. It also
+  covers stores, which used to take Commerce care.
+Grow and Partner have no Stripe price yet, so their buttons go to
+`/contact/?package=grow` and `?package=partner`. Clients already on Essential,
+Growth or Commerce care keep those subscriptions on their existing terms.
+`/services/care-plans/` shows all three; `/services/monthly-plans/` covers Grow
+and Partner. Since 11 November 2026 One-page sells through checkout
+(`onepage-deposit`, `onepage-full`, `onepage-final`, from
 `server/plans.live-extra.json`).
 
 **Three ways to pay** (11 November 2026): every package can be paid in full
@@ -798,11 +811,10 @@ down, then about $333/mo). The pricing page draws it to scale.
 Starter is an **information website** (up to 5 pages: who the business is,
 what it offers, how to reach it). It was raised from
 $1,500. Each price appears in `pricing/index.html`, the four project prices
-again on the home page's price board, the project prices plus three care tiers
-(Essential, Growth, Commerce) in every page's JSON-LD `OfferCatalog`, and
-the Basic $125/month, Essential $300/month, Growth $600/month and Commerce
-$1,000/month care figures in the FAQ answer about care plans and the services
-page. The project tiers are also on `/start/` and the four city pages. Search
+again on the home page's price board, the project prices plus the three
+monthly plans in every page's JSON-LD `OfferCatalog`, and the Keep it running
+$125/month, Grow $500/month and Partner $1,000/month figures in the FAQ answer
+about monthly plans and the services page. The project tiers are also on `/start/` and the four city pages. Search
 for the old figure before changing one.
 
 `pricing/index.html` holds the four packages twice: the package table, and
@@ -813,7 +825,7 @@ size, design, inclusions, support or buttons goes in both.
 
 The services page shows each service's price once, on its tile (and again on that
 service's own page), taken from the same tiers: design
-and build "$1,000, $2,000 or $4,000", e-commerce $8,000, care "$125, $300, $600 or $1,000/mo",
+and build "$1,000, $2,000 or $4,000", e-commerce $8,000, monthly plans "$125, $500 or $1,000/mo",
 brand identity $1,500, redesigns "priced as a new site" (a redesign is one of
 the same packages), and SEO "in every build", because every tier includes SEO
 basics.
@@ -824,7 +836,7 @@ city pages, the FAQ, the terms and every page's JSON-LD
 `OfferCatalog`. Search for the old figure before changing one. None of them
 has a Stripe price yet, so their buttons go to `/contact/?package=…` with
 `check`, `audit`, `strategy`, `gbp`, `textback`, `booking`, `followup`,
-`automation`, `advisor`, `partner` or `bundle`.
+`automation`, `grow`, `partner` or `bundle`.
 
 The contact form asks for a **package**, not a budget: its dropdown lists the
 fixed prices. A link to `/contact/?package=starter` (or any other option

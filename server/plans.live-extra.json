@@ -9,6 +9,8 @@
   "business-final":   { "price": "price_1UKp1pLOmAZAVClwc8YbQb0O", "mode": "payment",      "label": "Business Website final 50% at launch" },
   "commerce-full":    { "price": "price_1UKp1uLOmAZAVClwYDwM8fNX", "mode": "payment",      "label": "Commerce Website, paid in full" },
   "commerce-final":   { "price": "price_1UKp1uLOmAZAVClwkVRjc917", "mode": "payment",      "label": "Commerce Website final 50% at launch" },
-  "basic-care":       { "price": "price_1UaeJCLOmAZAVClwczUJAD95", "mode": "subscription", "label": "Basic care plan" },
+  "basic-care":       { "price": "price_1UaeJCLOmAZAVClwczUJAD95", "mode": "subscription", "label": "Keep it running plan" },
+  "grow-plan":        { "price": "price_1UfV6VLOmAZAVClwKUrbgLCO", "mode": "subscription", "label": "Grow plan" },
+  "partner-plan":     { "price": "price_1UfV6XLOmAZAVClwHLoefZa2", "mode": "subscription", "label": "Partner plan" },
   "test-payment":     { "price": "price_1UaYxsLOmAZAVClwqvuBLKul", "mode": "payment",      "label": "Test payment" }
 }
