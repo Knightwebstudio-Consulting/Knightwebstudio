@@ -476,7 +476,7 @@
     function mailtoFallback() {
       var f = form.elements;
       var needs = Array.prototype.slice.call(form.querySelectorAll('input[name="services"]:checked')).map(function (c) { return c.value; }).join(', ');
-      var subject = encodeURIComponent('Website enquiry from ' + f.name.value.trim());
+      var subject = encodeURIComponent('Website inquiry from ' + f.name.value.trim());
       var body = encodeURIComponent(
         'Name: ' + f.name.value.trim() + '\n' +
         'Email: ' + f.email.value.trim() + '\n' +
@@ -551,7 +551,7 @@
               form.reset();
               clearDraft();
               track('Enquiry');
-              setStatus('Thanks — your enquiry is in. We’ll reply within one business day.', 'ok');
+              setStatus('Thanks — your inquiry is in. We’ll reply within one business day.', 'ok');
             });
         })
         .catch(function (err) {
@@ -563,7 +563,7 @@
         .finally(function () {
           submitBtn.disabled = false;
           submitBtn.removeAttribute('aria-busy');
-          submitBtn.textContent = 'Send enquiry';
+          submitBtn.textContent = 'Send inquiry';
           // Tokens are single-use — without this a second send always fails.
           if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (e) { /* not rendered */ } }
         });

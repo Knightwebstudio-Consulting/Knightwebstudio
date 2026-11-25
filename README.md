@@ -1,9 +1,25 @@
-# KnightWebStudio — business website
+# KnightWebStudio Consulting — business website
 
-The marketing website of KnightWebStudio, a one-person web design, automation
-and small-business consulting studio in Baton Rouge, Louisiana. Plain HTML, CSS
+The marketing website of KnightWebStudio Consulting, a one-person consultancy in
+Baton Rouge, Louisiana that partners with local trades and small businesses in
+Louisiana and Alabama to grow, run steadier and win back time through
+automation. Every partnership includes a website. Plain HTML, CSS
 and JavaScript — **no build step, no dependencies, no npm install**. Serve the
 folder and it works (see [Run it locally](#run-it-locally)).
+
+## The message (November 2026)
+
+Lead with automation and the ongoing partnership; the website is part of the
+package, never the headline. Every page names things in this order: the
+automations (missed-call text-back, quotes that follow up on their own, online
+booking, inquiry auto-replies, review requests), then the monthly partnership
+(Keep it running, Grow, Partner), then the website. Inquiry auto-replies and
+automatic review requests are part of the Lead follow-up system; the Google
+profile & reviews setup gives the review link and QR code. The name is
+KnightWebStudio Consulting in full (capital W and S), KnightWebStudio for short.
+The site spells it "inquiry", the US way. The same wording is used on
+Instagram, Facebook, the Google Business Profile and LinkedIn, so change them
+together.
 
 ## The design in two sentences
 
@@ -29,15 +45,15 @@ page are reached by link only.
 
 | URL | Contents |
 | --- | --- |
-| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Websites, Automation with an example text-back, Consulting) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
-| `/services/` | The hub: one tile per service by family (Build your website, Keep it running, Win customers, Plan your growth), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
+| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Automation with an example text-back, the Partnership, Websites) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
+| `/services/` | The hub: one tile per service by family (the automations, the partnership, Plan your growth, the website in every partnership), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
 | `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
-| `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, Advisor/Partner monthly plans |
+| `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, the monthly partnership |
 | `/work/` | Four live projects as full case rows, the local one first |
 | `/process/` | Four-step "no surprises" explainer |
-| `/pricing/` | Four website packages as one comparison table, how you pay (the payment plan drawn to scale), add-ons, consulting and automation prices with the Launch bundle, the three monthly plans |
+| `/pricing/` | In this order: automation and consulting prices with the Launch bundle, the three monthly partnership plans, then the website in every partnership (four packages as one comparison table, how you pay with the payment plan drawn to scale, add-ons) |
 | `/faq/` | Fourteen answers, with FAQPage schema |
-| `/contact/` | Enquiry form, spam honeypot, saved drafts, "what happens next" |
+| `/contact/` | Inquiry form, spam honeypot, saved drafts, "what happens next" |
 | `/privacy/` | Plain-English privacy notice — see [Privacy page](#7-privacy-page) |
 | `/terms/` | Plain-English terms: the three payment options (in full, 50/50, or the payment plan), 7-day invoices, card only via Stripe, late interest, revision rounds per package, who writes the copy, care plan cancellation. The signed project agreement controls the details (cancellation fees are deliberately not listed here) |
 | `/pay/` | Pay online, for clients who have agreed a project: the three deposits and the three monthly plans, each with its checkout (or request) button. Not in the menu or the sitemap (noindex, like checkout); linked from the footer and the contact page |
@@ -188,14 +204,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=15" defer></script>
-  <script src="/assets/js/shader.js?v=15" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=15" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=16" defer></script>
+  <script src="/assets/js/shader.js?v=16" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=16" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=15`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=16`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -203,7 +219,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=15' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=16' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -352,14 +368,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=15` directly after
-`styles.css?v=15`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=16` directly after
+`styles.css?v=16`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=15" defer></script>
-<script src="/assets/js/shader.js?v=15" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=15" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=16" defer></script>
+<script src="/assets/js/shader.js?v=16" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=16" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's

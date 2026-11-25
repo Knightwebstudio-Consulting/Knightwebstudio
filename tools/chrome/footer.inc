@@ -7,7 +7,7 @@
         <a class="kws-foot-logo" href="/" aria-label="KnightWebStudio Consulting home">
           <!-- art:crest-footer --><!-- /art:crest-footer -->
         </a>
-        <p class="kws-foot-bye">Based in Baton Rouge, Louisiana. Working with clients anywhere.</p>
+        <p class="kws-foot-bye">Based in Baton Rouge, Louisiana. Serving Louisiana and Alabama.</p>
         <p class="kws-foot-what">We partner with local trades and small businesses in Louisiana and Alabama to grow, run steadier and win back time through automation. Every partnership includes a website.</p>
       </div>
 
