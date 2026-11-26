@@ -803,8 +803,11 @@ Advisor and Partner plans:
   hands-on work, automations looked after, unlimited small site requests within
   1 business day, urgent issues the same day and a direct text line. It also
   covers stores, which used to take Commerce care.
-Grow and Partner have no Stripe price yet, so their buttons go to
-`/contact/?package=grow` and `?package=partner`. Clients already on Essential,
+Grow and Partner have Stripe prices (`grow-plan`, `partner-plan`, from
+`server/plans.live-extra.json`, created 25 November 2026) and sell through checkout on
+`/pay/`. On `/pricing/`, `/services/care-plans/` and `/services/monthly-plans/` their
+buttons still go to `/contact/?package=grow` and `?package=partner`, because both
+start after a free call. Clients already on Essential,
 Growth or Commerce care keep those subscriptions on their existing terms.
 `/services/care-plans/` shows all three; `/services/monthly-plans/` covers Grow
 and Partner. Since 11 November 2026 One-page sells through checkout
@@ -1202,13 +1205,13 @@ clips them on purpose).
 ## Before you launch — checklist
 
 - [x] Add a phone number — `(225) 255-0837` is in every page's top strip, header and footer, the contact and About pages, and JSON-LD
-- [ ] Form endpoint configured and a test enquiry received
+- [ ] Form endpoint configured (Web3Forms, done) and a test enquiry received
 - [x] Domain wired through `CNAME`, `index.html`, `sitemap.xml`, `robots.txt`
-- [ ] GitHub Pages enabled and IONOS DNS records added
+- [x] GitHub Pages enabled and IONOS DNS records added (live; `www` redirects to the bare domain)
 - [x] Social preview image added
 - [ ] Checked on a real phone: an iPhone (Safari, with Reduce Motion on and off, and VoiceOver) and an Android phone, including the moving backgrounds, a swipe on each carousel against a page scroll, and the pause button
 - [ ] Google Search Console set up and sitemap submitted
-- [ ] Analytics added (Plausible or Fathom if you'd rather skip a cookie banner) — then update `/privacy/`
+- [x] Analytics added (Plausible, via `analyticsScript` in `main.js`; `/privacy/` names it). Still to confirm: the "Enquiry" and "Book call" goals exist in the Plausible dashboard
 - [ ] Read `/privacy/` once and confirm it describes what you actually do
 
 ## Browser support
