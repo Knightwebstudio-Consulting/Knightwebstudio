@@ -87,11 +87,11 @@ function page(body, w, h, transparent) {
     <div style="position:absolute;right:64px;top:74px;width:470px">${STREET.replace('<svg ', '<svg width="470" height="501" ')}</div>
     <div style="position:absolute;left:72px;top:78px;width:560px">
       <div style="display:flex;align-items:center;gap:16px">${sized(LOGO, 64)}
-        <span style="font:700 34px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.015em;color:${INK}">KnightWebstudio</span></div>
-      <div style="margin-top:44px;font:600 72px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.022em;color:${INK}">
-        Websites that win you customers</div>
-      <div style="margin-top:28px;font:500 27px/1.42 Figtree">Websites, automation and consulting for local businesses. Fixed, published prices.</div>
-      <div style="display:flex;align-items:center;gap:14px;margin-top:34px;font:800 20px/1.3 Figtree;letter-spacing:.12em;text-transform:uppercase;color:${BRICK}">
+        <span style="font:700 30px/1 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.015em;color:${INK}">KnightWebStudio Consulting</span></div>
+      <div style="margin-top:36px;font:600 62px/1.02 Fraunces;font-variation-settings:'SOFT' 100;letter-spacing:-.022em;color:${INK}">
+        More work. Fewer missed calls.</div>
+      <div style="margin-top:24px;font:500 25px/1.4 Figtree">Automation and an ongoing partnership for local trades, wherever they are. Every partnership includes a website.</div>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:26px;font:800 20px/1.3 Figtree;letter-spacing:.12em;text-transform:uppercase;color:${BRICK}">
         <span style="width:30px;height:3px;border-radius:2px;background:${BRICK}"></span>Baton Rouge, Louisiana</div>
       <div style="margin:8px 0 0 44px;font:700 24px/1.3 Figtree;color:${INK}">knightwebstudio.com</div>
     </div></div>`;

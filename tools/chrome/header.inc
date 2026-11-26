@@ -3,9 +3,9 @@
 <header class="site-header" id="site-header">
   <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="KnightWebstudio home">
+    <a class="brand" href="/" aria-label="KnightWebStudio Consulting home">
       <!-- art:crest-header --><!-- /art:crest-header -->
-      <span class="brand-name">KnightWebstudio</span>
+      <span class="brand-name">KnightWebStudio</span>
     </a>
 
     <nav class="nav" id="nav" aria-label="Main">
@@ -23,7 +23,7 @@
 
         <!-- Phone menu only: hidden on desktop -->
         <div class="nav-foot">
-          <a class="btn btn-primary btn-block" href="/contact/">Start your project</a>
+          <a class="btn btn-primary btn-block" href="/contact/">Start a partnership</a>
           <a class="btn btn-block" href="tel:+12252550837">
             <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
             Call (225) 255-0837

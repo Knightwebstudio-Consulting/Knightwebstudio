@@ -4,11 +4,11 @@
   <div class="kws-foot-in">
     <div class="kws-foot-grid">
       <div class="kws-foot-who">
-        <a class="kws-foot-logo" href="/" aria-label="KnightWebstudio home">
+        <a class="kws-foot-logo" href="/" aria-label="KnightWebStudio Consulting home">
           <!-- art:crest-footer --><!-- /art:crest-footer -->
         </a>
-        <p class="kws-foot-bye">Based in Baton Rouge, Louisiana. Working with clients anywhere.</p>
-        <p class="kws-foot-what">Websites, automation and consulting for local businesses that need to be found, trusted and chosen.</p>
+        <p class="kws-foot-bye">Based in Baton Rouge, Louisiana. Working with clients everywhere.</p>
+        <p class="kws-foot-what">We partner with local trades and small businesses, wherever they are, to grow, run steadier and win back time through automation. Every partnership includes a website.</p>
       </div>
 
       <nav class="kws-foot-call" aria-label="Contact">
@@ -56,11 +56,12 @@
         </ul>
         <p class="kws-foot-region"><strong>South Louisiana:</strong> New Orleans, Metairie, Kenner, Hammond, Slidell, Covington, Lafayette, Lake Charles, Houma and Thibodaux</p>
         <p class="kws-foot-region"><strong>North Alabama:</strong> Birmingham, Hoover, Tuscaloosa, Huntsville, Madison, Decatur, Florence, Gadsden and Anniston</p>
+        <p class="kws-foot-region"><strong>Everywhere else:</strong> by phone and video</p>
       </nav>
     </div>
 
     <div class="kws-foot-end">
-      <p>&copy; <span id="year">2026</span> KnightWebstudio. All rights reserved.</p>
+      <p>&copy; <span id="year">2026</span> KnightWebStudio Consulting. All rights reserved.</p>
       <!-- Last in the row, the motion pause control: shader.js shows it and writes its words; without that script (and with script off) it stays hidden -->
       <p class="kws-foot-links"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="#top">Back to top ↑</a><button class="kws-motion" data-kws="motion" type="button" hidden><svg class="kws-pause" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/></svg><svg class="kws-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><span class="kws-motion-label"></span></button></p>
     </div>

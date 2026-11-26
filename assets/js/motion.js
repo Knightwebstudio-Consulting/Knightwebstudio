@@ -1,4 +1,4 @@
-/* KnightWebstudio motion kit: the arc focus carousel, the spotlight carousel, the cylinder slider, the carousel ring and
+/* KnightWebStudio motion kit: the arc focus carousel, the spotlight carousel, the cylinder slider, the carousel ring and
    the folder stack. Hand-written, no dependencies. Load with defer, beside motion.css (shader.js holds the backgrounds
    and the pause control). Markup, options and behaviour: README.md.
    Each starts itself on [data-kws="arc|spotlight|cylinder|ring|folders"] when the page has loaded, and

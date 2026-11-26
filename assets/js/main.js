@@ -1,5 +1,5 @@
 /* ==========================================================================
-   KnightWebstudio — site behaviour
+   KnightWebStudio — site behaviour
    No dependencies. Every block is independent, so removing one is safe.
    ========================================================================== */
 (function () {
@@ -26,7 +26,7 @@
                      Plausible dashboard. Keep the analytics paragraph on
                      /privacy/ in step with this setting. */
   var SITE_CONFIG = {
-    bookingUrl: 'https://calendly.com/knightwebstudio1/30min',
+    bookingUrl: 'https://calendly.com/knightwebstudio1',
     analyticsScript: 'https://plausible.io/js/pa-M8H39gIN2J-TgmR4OOcVA.js'
   };
 
@@ -476,7 +476,7 @@
     function mailtoFallback() {
       var f = form.elements;
       var needs = Array.prototype.slice.call(form.querySelectorAll('input[name="services"]:checked')).map(function (c) { return c.value; }).join(', ');
-      var subject = encodeURIComponent('Website enquiry from ' + f.name.value.trim());
+      var subject = encodeURIComponent('Website inquiry from ' + f.name.value.trim());
       var body = encodeURIComponent(
         'Name: ' + f.name.value.trim() + '\n' +
         'Email: ' + f.email.value.trim() + '\n' +
@@ -551,7 +551,7 @@
               form.reset();
               clearDraft();
               track('Enquiry');
-              setStatus('Thanks — your enquiry is in. We’ll reply within one business day.', 'ok');
+              setStatus('Thanks — your inquiry is in. We’ll reply within one business day.', 'ok');
             });
         })
         .catch(function (err) {
@@ -563,7 +563,7 @@
         .finally(function () {
           submitBtn.disabled = false;
           submitBtn.removeAttribute('aria-busy');
-          submitBtn.textContent = 'Send enquiry';
+          submitBtn.textContent = 'Send inquiry';
           // Tokens are single-use — without this a second send always fails.
           if (window.hcaptcha) { try { window.hcaptcha.reset(); } catch (e) { /* not rendered */ } }
         });

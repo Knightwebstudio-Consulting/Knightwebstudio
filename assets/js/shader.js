@@ -1,4 +1,4 @@
-/* KnightWebstudio motion kit: the animated backgrounds (wash, band, ribbon) and the pause control.
+/* KnightWebStudio motion kit: the animated backgrounds (wash, band, ribbon) and the pause control.
    Hand-written WebGL, no dependencies. Load with defer, beside motion.css. Markup and API: README.md.
    KWS.shader.mount(el, {speed, contrast}) and KWS.motion.mount(button) return their removers. */
 (() => {

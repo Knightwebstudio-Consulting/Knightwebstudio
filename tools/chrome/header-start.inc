@@ -4,9 +4,9 @@
 <header class="site-header" id="site-header">
   <div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
   <div class="container header-inner">
-    <a class="brand" href="/" aria-label="KnightWebstudio home">
+    <a class="brand" href="/" aria-label="KnightWebStudio Consulting home">
       <!-- art:crest-header --><!-- /art:crest-header -->
-      <span class="brand-name">KnightWebstudio</span>
+      <span class="brand-name">KnightWebStudio</span>
     </a>
     <div class="header-actions">
       <button class="icon-btn" id="theme-toggle" type="button"
