@@ -52,7 +52,8 @@ def tracked():
 
 
 def pages():
-    return sorted(p for p in ROOT.rglob("*.html") if ".git" not in p.parts and "tools" not in p.parts and "server" not in p.parts)
+    # app/ is the installable Lead Desk app (copied from the LeadTracker repository), not a site page.
+    return sorted(p for p in ROOT.rglob("*.html") if not ({".git", "tools", "server", "app"} & set(p.parts)))
 
 
 def visible(h):
