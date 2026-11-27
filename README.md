@@ -45,10 +45,10 @@ page are reached by link only.
 
 | URL | Contents |
 | --- | --- |
-| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Automation with an example text-back, the Partnership, Websites) with one line and one link each, two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
+| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Automation with an example text-back, the Partnership, Websites) with one line and one link each, one photo tile ("Planned with you", a stock scene), two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
 | `/services/` | The hub: one tile per service by family (the automations, the partnership, Plan your growth, the website in every partnership), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
 | `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
-| `/consulting/` | Consulting & automation: where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, the monthly partnership |
+| `/consulting/` | Consulting & automation: a short stock clip under the head, where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, the monthly partnership |
 | `/work/` | Four live projects as full case rows, the local one first |
 | `/process/` | Four-step "no surprises" explainer |
 | `/pricing/` | In this order: automation and consulting prices with the Launch bundle, the three monthly partnership plans, then the website in every partnership (four packages as one comparison table, how you pay with the payment plan drawn to scale, add-ons) |
@@ -123,8 +123,10 @@ assets/js/motion.js     The motion kit's carousels and folder stack (only the pa
 assets/fonts/           Figtree (the fallback text face) and Fraunces (used only by tools/art/render.js), self-hosted WOFF2
 assets/js/main.js       Settings, theme, menu, scroll reveals, phone bar, booking buttons, the contact form, analytics
 assets/js/calculator.js The consulting page's calculator (loaded on that page only)
-assets/img/             Project images (work-*.jpg, and work-*-phone.jpg: each site's phone view), logo.svg, PNG app icons, the link-preview image
-assets/video/           work-naborsdiesel-scroll-800.mp4 and .webm (336 KB): the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg; not downloaded until it plays, and never with reduced motion, the pause control, data saver or a 2G/3G connection)
+assets/img/             Project images (work-*.jpg, and work-*-phone.jpg: each site's phone view), logo.svg, PNG app icons, the link-preview image,
+                        and the licensed stock scenes (stock-*: see "Stock photos and clips" under How a page is put together)
+assets/video/           work-naborsdiesel-scroll-800.mp4 and .webm (336 KB): the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg; not downloaded until it plays, and never with reduced motion, the pause control, data saver or a 2G/3G connection).
+                        stock-layout-review-loop-576.webm and .mp4 (359 KB and 557 KB): the clip under the /consulting/ page head, played the same way
 tools/chrome/           The one true copy of the header, footer, phone bar and first-paint snippet (*.inc)
 tools/sync_chrome.py    Copies that chrome into every page; --check reports drift
 tools/check_pricing.py  Checks that /pricing/'s package table and its phone folders say the same
@@ -206,14 +208,14 @@ pattern, or Lighthouse will flag skipped heading levels.
     <section class="kws-close on-blue kws-shader-host"> … </section>   <!-- the closing band -->
   </main>
   … phone bar and footer (from tools/chrome/) …
-  <script src="/assets/js/main.js?v=16" defer></script>
-  <script src="/assets/js/shader.js?v=16" defer></script>   <!-- pages with motion -->
-  <script src="/assets/js/motion.js?v=16" defer></script>   <!-- pages with a carousel or the folder stack -->
+  <script src="/assets/js/main.js?v=17" defer></script>
+  <script src="/assets/js/shader.js?v=17" defer></script>   <!-- pages with motion -->
+  <script src="/assets/js/motion.js?v=17" defer></script>   <!-- pages with a carousel or the folder stack -->
 </body>
 ```
 
 - **Asset versions.** Every link to a stylesheet or script carries the same
-  version number, now `?v=16`: `styles.css` (all 20 pages), `main.js` (all but
+  version number, now `?v=17`: `styles.css` (all 20 pages), `main.js` (all but
   404, which loads no script), `calculator.js` (/consulting/), `shader.js`
   (the 14 pages with motion), `motion.js` (/start/, /consulting/,
   /pricing/), the kit's stylesheet `motion.css` (those three and /process/),
@@ -221,7 +223,7 @@ pattern, or Lighthouse will flag skipped heading levels.
   GitHub Pages lets browsers keep a file for ten minutes, so a visitor who had
   the old files would otherwise get new HTML with an old stylesheet or script.
   Whenever you change any of them, raise the number by one on every link in
-  every page in the same commit (`grep -rl '?v=16' --include=*.html .` lists the
+  every page in the same commit (`grep -rl '?v=17' --include=*.html .` lists the
   pages), and keep every link on the same number. Fonts and images are not
   versioned: give a changed one a new file name instead.
 - **Scripts.** Every script is a file loaded with `defer` at the end of the
@@ -303,6 +305,27 @@ pattern, or Lighthouse will flag skipped heading levels.
   400px-wide phone shot (an iPhone-sized window, top of the page) under new file
   names. The clip is played by `main.js` only while motion is allowed: reduced
   motion and the pause control keep its poster.
+- **Stock photos and clips (November 2026).** Two licensed Adobe Stock scenes
+  set the mood, and only there. Both show the studio's own kind of work
+  (planning and designing websites), never a client's trade:
+  the home page's "Planned with you" tile under the doors (seen from above, two
+  people's hands going over printed page layouts and a site map: a square crop
+  under the words on phones, a 4:3 crop beside them from 760px) and the clip
+  under the `/consulting/` page head (a hand arranging page layouts on a tablet
+  among printed website sketches; six seconds, muted, looped, played by
+  `main.js` like the home clip). They show a scene, never a client, a client's
+  site, a result, a testimonial or a team member, carry no faces, logos or
+  readable text, and stay out of the work rows. The colour is quieted a little
+  so they sit with the grey tiles, the page names printed on the photo's site
+  map are softened, and the clip is cropped above the handwritten measurements.
+  A new one follows the same rules, at most about 150 KB a picture (AVIF and
+  WebP with a JPEG fallback, 900 to 1,600px wide) and 2 MB a clip (WebM and
+  MP4, with a poster), lazy-loaded below the fold.
+  Licences: both from Adobe Stock's free collection, licensed in November
+  2026, photographed and filmed (not generated). Photo 266692908
+  (`assets/img/stock-planning-table-*`); video 495354849
+  (`assets/video/stock-layout-review-loop-576.*`, poster
+  `assets/img/stock-layout-review-poster.jpg`).
 - **Scroll motion.** Pictures of work (`.print-img`, `.case .browser`, the
   spotlight frames) settle from a slight zoom as they come into view, the home
   laptop grows a little as the page moves, and the home doors' pictures rise
@@ -370,14 +393,14 @@ project's working files, not in this repository: `base.css`, `motion.css`,
 and `motion.js` here are byte for byte the kit's files; `styles.css` carries
 `base.css` with the kit's colour variables resolved to this site's tokens.
 
-**How a page loads it.** In the `<head>`, `motion.css?v=16` directly after
-`styles.css?v=16`, only on a page that places a card or a carousel. At the end
+**How a page loads it.** In the `<head>`, `motion.css?v=17` directly after
+`styles.css?v=17`, only on a page that places a card or a carousel. At the end
 of the `<body>`, after `main.js`, with `defer`, nothing render-blocking:
 
 ```html
-<script src="/assets/js/main.js?v=16" defer></script>
-<script src="/assets/js/shader.js?v=16" defer></script>   <!-- any page with motion -->
-<script src="/assets/js/motion.js?v=16" defer></script>   <!-- only with a carousel or the folder stack -->
+<script src="/assets/js/main.js?v=17" defer></script>
+<script src="/assets/js/shader.js?v=17" defer></script>   <!-- any page with motion -->
+<script src="/assets/js/motion.js?v=17" defer></script>   <!-- only with a carousel or the folder stack -->
 ```
 
 The first-paint snippet (`tools/chrome/head-script.inc`) carries the kit's

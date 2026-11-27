@@ -992,7 +992,7 @@ fieldset.field { display: block; }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     :root:not([data-motion="off"]) [data-page="home"] .hero-device .devices { animation: kws-grow linear both; animation-timeline: scroll(root); animation-range: 0 32rem; transform-origin: 50% 100%; }
-    :root:not([data-motion="off"]) :is(.print-img, .case .browser, .kws-spot-frame, .case .devices-lid) img { animation: kws-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
+    :root:not([data-motion="off"]) :is(.print-img, .case .browser, .kws-spot-frame, .case .devices-lid, [data-page="home"] .plan-photo) img { animation: kws-settle linear both; animation-timeline: view(); animation-range: entry 0% cover 40%; }
     :root:not([data-motion="off"]) [data-page="home"] .door-art > * { animation: kws-rise linear both; animation-timeline: view(); animation-range: entry 0% cover 45%; }
   }
 }
@@ -1119,6 +1119,25 @@ html:not(.js) :is(#theme-toggle, .nav-toggle, .nav-foot) { display: none; }
 @media (min-width: 980px) {
   [data-page="home"] .doors-list { grid-template-columns: repeat(3, minmax(0, 1fr)); padding-inline: var(--s-3); }
   [data-page="home"] .door { min-height: 32rem; }
+}
+
+/* One photo tile under the doors (a licensed stock scene, README "Stock photos and clips"): a light-grey tile like the
+   doors. On a phone the words stand above a square crop; from 760px they sit at the left and a 4:3 crop fills the right */
+[data-page="home"] .plan-tile { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: var(--s-3); overflow: hidden; background: var(--paper-2); }
+[data-page="home"] .plan-copy { display: grid; justify-items: center; align-content: center; padding: var(--s-7) var(--gutter) var(--s-6); text-align: center; }
+[data-page="home"] .plan-tile .eyebrow { margin-bottom: var(--s-2); }
+[data-page="home"] .plan-title { max-width: 13em; font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem); line-height: 1.1; }
+[data-page="home"] .plan-tile .more-link { margin-top: var(--s-2); }
+[data-page="home"] .plan-photo { display: block; overflow: hidden; }
+[data-page="home"] .plan-photo img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; }
+@media (min-width: 760px) {
+  [data-page="home"] .plan-tile { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); }
+  [data-page="home"] .plan-copy { justify-items: start; padding: var(--s-8) var(--pad-lg); text-align: left; }
+  [data-page="home"] .plan-photo img { aspect-ratio: 4 / 3; }
+}
+@media (min-width: 980px) {
+  [data-page="home"] .plan-tile { margin-inline: var(--s-3); grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  [data-page="home"] .plan-photo img { max-height: 40rem; }
 }
 
 [data-page="home"] .signposts-in { display: flex; flex-wrap: wrap; justify-content: center; gap: 0 var(--s-7); padding-block: var(--s-7) var(--s-8); text-align: center; }
@@ -1253,6 +1272,10 @@ html:not(.js) :is(#theme-toggle, .nav-toggle, .nav-foot) { display: none; }
 @media (hover: hover) { [data-page="service"] .svc-rel:hover { color: var(--ink-2); translate: 0 calc(-1 * var(--s-1)); box-shadow: var(--shadow-3); } [data-page="service"] .svc-rel:hover .svc-rel-go { text-decoration: underline; } }
 
 /* == 21 Consulting: [data-page="consulting"], /consulting/ == */
+/* The clip under the page head (a licensed stock scene, README "Stock photos and clips"): wide on a desktop, closer on a phone */
+[data-page="consulting"] .head-film { width: min(100%, 64rem); margin: var(--stack) auto 0; overflow: hidden; border-radius: var(--r-xl); background: var(--paper-3); box-shadow: var(--shadow-3); }
+[data-page="consulting"] .head-film video { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: 58% 60%; }
+@media (min-width: 760px) { [data-page="consulting"] .head-film video { aspect-ratio: 21 / 9; } }
 /* Consulting. The calculator is the canonical one from DESIGN.md ("Calculator"): keep its markup and ids */
 
 /* Calculator: number fields on the left, the estimate as a receipt on the right */
