@@ -45,7 +45,7 @@ page are reached by link only.
 
 | URL | Contents |
 | --- | --- |
-| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Automation with an example text-back, the Partnership, Websites) with one line and one link each, one photo tile ("On the job", a stock scene), two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
+| `/` | Home, a short landing page: the headline over the Nabors site on a laptop, three doors (Automation with an example text-back, the Partnership, Websites) with one line and one link each, one photo tile ("Planned with you", a stock scene), two signposts (work, pricing), the closing band. No prices or detail on purpose: they live on the pages the doors open |
 | `/services/` | The hub: one tile per service by family (the automations, the partnership, Plan your growth, the website in every partnership), each with its price shown once, one line and "Learn more". No price strip or menu panel, on purpose: each price appears once on this page |
 | `/services/<service>/` | Fourteen detail pages, one per service: website-design, redesigns, ecommerce, brand-identity, seo-performance, care-plans, missed-call-text-back, online-booking, lead-follow-up, custom-automation, google-profile-reviews, launch-bundle, growth-audit, monthly-plans. Each has the price, why it matters, what's included, the tiers where there are some, how it works, the details (payment, running costs, ownership) and related services. `data-page="service"`; the menu marks Services with `aria-current="true"` |
 | `/consulting/` | Consulting & automation: a short stock clip under the head, where the week goes (worked example table), the four automations (one line and a picture each) and the Launch bundle, the revenue & time calculator, the four steps in brief with setup prices, the monthly partnership |
@@ -126,7 +126,7 @@ assets/js/calculator.js The consulting page's calculator (loaded on that page on
 assets/img/             Project images (work-*.jpg, and work-*-phone.jpg: each site's phone view), logo.svg, PNG app icons, the link-preview image,
                         and the licensed stock scenes (stock-*: see "Stock photos and clips" under How a page is put together)
 assets/video/           work-naborsdiesel-scroll-800.mp4 and .webm (336 KB): the muted scroll clip in the home page laptop (poster: work-naborsdiesel.jpg; not downloaded until it plays, and never with reduced motion, the pause control, data saver or a 2G/3G connection).
-                        stock-workbench-loop-720.webm and .mp4 (518 KB and 833 KB): the clip under the /consulting/ page head, played the same way
+                        stock-layout-review-loop-576.webm and .mp4 (359 KB and 557 KB): the clip under the /consulting/ page head, played the same way
 tools/chrome/           The one true copy of the header, footer, phone bar and first-paint snippet (*.inc)
 tools/sync_chrome.py    Copies that chrome into every page; --check reports drift
 tools/check_pricing.py  Checks that /pricing/'s package table and its phone folders say the same
@@ -306,23 +306,26 @@ pattern, or Lighthouse will flag skipped heading levels.
   names. The clip is played by `main.js` only while motion is allowed: reduced
   motion and the pause control keep its poster.
 - **Stock photos and clips (November 2026).** Two licensed Adobe Stock scenes
-  set the mood, and only there: the home page's "On the job" tile under the
-  doors (a gloved hand taking a wrench from a tool wall: a square crop on
-  phones, a wide one from 760px with the words on the dark wall) and the clip
-  under the `/consulting/` page head (hands at a workbench, writing on a
-  clipboard while checking a phone; eight seconds, muted, looped, played by
+  set the mood, and only there. Both show the studio's own kind of work
+  (planning and designing websites), never a client's trade:
+  the home page's "Planned with you" tile under the doors (seen from above, two
+  people's hands going over printed page layouts and a site map: a square crop
+  under the words on phones, a 4:3 crop beside them from 760px) and the clip
+  under the `/consulting/` page head (a hand arranging page layouts on a tablet
+  among printed website sketches; six seconds, muted, looped, played by
   `main.js` like the home clip). They show a scene, never a client, a client's
   site, a result, a testimonial or a team member, carry no faces, logos or
   readable text, and stay out of the work rows. The colour is quieted a little
-  so they sit with the grey tiles, and the small size markings on three tools in
-  the photo are softened. A new one follows the same rules, at most about
-  150 KB a picture (AVIF and WebP with a JPEG fallback, 1,000 to 1,600px wide)
-  and 2 MB a clip (WebM and MP4, with a poster), lazy-loaded below the fold.
+  so they sit with the grey tiles, the page names printed on the photo's site
+  map are softened, and the clip is cropped above the handwritten measurements.
+  A new one follows the same rules, at most about 150 KB a picture (AVIF and
+  WebP with a JPEG fallback, 900 to 1,600px wide) and 2 MB a clip (WebM and
+  MP4, with a poster), lazy-loaded below the fold.
   Licences: both from Adobe Stock's free collection, licensed in November
-  2026, photographed and filmed (not generated). Photo 262547953
-  (`assets/img/stock-tool-wall-*`); video 248886148
-  (`assets/video/stock-workbench-loop-720.*`, poster
-  `assets/img/stock-workbench-poster.jpg`).
+  2026, photographed and filmed (not generated). Photo 266692908
+  (`assets/img/stock-planning-table-*`); video 495354849
+  (`assets/video/stock-layout-review-loop-576.*`, poster
+  `assets/img/stock-layout-review-poster.jpg`).
 - **Scroll motion.** Pictures of work (`.print-img`, `.case .browser`, the
   spotlight frames) settle from a slight zoom as they come into view, the home
   laptop grows a little as the page moves, and the home doors' pictures rise
