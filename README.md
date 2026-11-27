@@ -131,6 +131,8 @@ tools/check_pricing.py  Checks that /pricing/'s package table and its phone fold
 tools/check_rules.py    Checks the rules that protect the business (prices, banned words, facts, FAQ data); run before you publish
 tools/art/              The crest, the seal and the street scene, as code
 server/                 The small Stripe checkout server (hosted on Render, not on GitHub Pages)
+app/                    The installable Lead Desk app clients' callers use (knightwebstudio.com/app/). A copy:
+                        edit it in the private LeadTracker repository's app/ and copy it here. Kept out of search
 STRIPE_INTEGRATION_TODO.md  How payments are set up, and what is done by hand
 favicon.ico             16/32/48px icon for browsers and Google results
 robots.txt              Search engine directives
