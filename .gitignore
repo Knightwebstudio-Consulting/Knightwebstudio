@@ -29,3 +29,6 @@ node_modules/
 **/.impeccable/live/pending-manual-edits.json
 **/.impeccable/live/deferred-svelte-component-accepts.json
 **/.impeccable/live/*.png
+
+# KWS Hub installer: per-client database passwords, never committed
+server/hub/install/.*-db-password.txt
