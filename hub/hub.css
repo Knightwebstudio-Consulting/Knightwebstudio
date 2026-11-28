@@ -66,6 +66,9 @@ main { min-width: 0; padding: 26px clamp(16px, 3vw, 36px) 90px; }
   main { padding-top: 18px; }
 }
 .mobile-acct { display: none; }
+.nav a.phone-only { display: none; }
+@media (max-width: 860px) { .nav a.desk-only { display: none; } .nav a.phone-only { display: flex; } }
+.av svg { width: 18px; height: 18px; }
 
 /* ---------- controls ---------- */
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 38px; padding: 0 16px; border-radius: 99px;

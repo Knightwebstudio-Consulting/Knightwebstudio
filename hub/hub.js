@@ -50,10 +50,15 @@ const icons = {
   pipeline: '<rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="11" rx="1.5"/><rect x="17" y="4" width="4" height="7" rx="1.5"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
   automations: '<path d="M13 3 5 14h6l-1 7 8-11h-6z"/>',
+  campaigns: '<path d="M4 10v4a1 1 0 0 0 1 1h2l5 4V5L7 9H5a1 1 0 0 0-1 1z"/><path d="M16 9a3 3 0 0 1 0 6M18.5 6.5a7 7 0 0 1 0 11"/>',
+  reports: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  more: '<circle cx="5" cy="12" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="19" cy="12" r="1.6"/>',
   settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
 };
 const ic = (k) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[k]}</svg>`;
-const VIEWS = [["today", "Today"], ["inbox", "Inbox"], ["contacts", "Contacts"], ["pipeline", "Pipeline"], ["calendar", "Calendar"], ["automations", "Automations"], ["settings", "Settings"]];
+const VIEWS = [["today", "Today"], ["inbox", "Inbox"], ["contacts", "Contacts"], ["pipeline", "Pipeline"], ["calendar", "Calendar"],
+  ["automations", "Automations"], ["campaigns", "Campaigns"], ["reports", "Reports"], ["settings", "Settings"], ["more", "More"]];
+const PHONE_TABS = new Set(["today", "inbox", "contacts", "pipeline", "calendar", "more"]);
 
 // ---------- state ----------
 const state = { user: null, accounts: [], acct: null, isAgency: false, unread: 0, inboxContact: null };
@@ -121,7 +126,7 @@ function shell(view, inner) {
     <aside class="side">
       <div class="brand"><img src="/assets/img/crest.svg" alt="" width="30" height="31">KWS Hub</div>
       <div class="acct">${sel}</div>
-      <nav class="nav" aria-label="Main">${VIEWS.map(([k, l]) => `<a href="#/${k}" ${k === view ? 'aria-current="page"' : ""}>${ic(k)}<span>${l}</span>${k === "inbox" && state.unread ? `<span class="count">${state.unread}</span>` : ""}</a>`).join("")}</nav>
+      <nav class="nav" aria-label="Main">${VIEWS.map(([k, l]) => `<a href="#/${k}" class="${k === "more" ? "phone-only" : PHONE_TABS.has(k) ? "" : "desk-only"}" ${k === view || (k === "more" && !PHONE_TABS.has(view)) ? 'aria-current="page"' : ""}>${ic(k)}<span>${l}</span>${k === "inbox" && state.unread ? `<span class="count">${state.unread}</span>` : ""}</a>`).join("")}</nav>
       <div class="me">${esc(state.user.email)}<br><button class="btn small" id="signout">Sign out</button></div>
     </aside>
     <main id="main"><div class="mobile-acct">${sel}</div>${inner}</main></div>`;
@@ -139,7 +144,8 @@ async function route() {
   const v = VIEWS.find(([k]) => k === view) ? view : "today";
   await refreshUnread();
   shell(v, `<div class="empty">Loading…</div>`);
-  try { await ({ today, inbox, contacts, pipeline, calendar, automations, settings }[v])(arg); } catch (e) { fail(e); }
+  clearInterval(state.poll);
+  try { await ({ today, inbox, contacts, pipeline, calendar, automations, campaigns, reports, settings, more }[v])(arg); } catch (e) { fail(e); }
 }
 const main = () => $("#main");
 function setMain(html) { main().innerHTML = `<div class="mobile-acct">${$(".mobile-acct")?.innerHTML ?? ""}</div>` + html;
@@ -157,12 +163,12 @@ modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); 
 // ---------- Today ----------
 async function today() {
   const since = new Date(Date.now() - 7 * 86400_000).toISOString();
-  const [newC, opps, appts, recent, stages, failed] = await Promise.all([
+  const [newC, opps, appts, recent, tasks, failed] = await Promise.all([
     q(sb.from("hub_contacts").select("id", { count: "exact", head: false }).eq("account_id", A()).gte("created_at", since)),
     q(sb.from("hub_opportunities").select("value,status,stage_id").eq("account_id", A()).eq("status", "open")),
     q(sb.from("hub_appointments").select("*, hub_contacts(first_name,last_name,phone)").eq("account_id", A()).eq("status", "booked").gte("end_at", new Date().toISOString()).order("start_at").limit(8)),
     q(sb.from("hub_messages").select("*, hub_contacts(id,first_name,last_name,phone,email)").eq("account_id", A()).neq("direction", "internal").order("created_at", { ascending: false }).limit(12)),
-    q(sb.from("hub_stages").select("id,name").eq("account_id", A())),
+    q(sb.from("hub_tasks").select("*, hub_contacts(id,first_name,last_name,phone,email)").eq("account_id", A()).is("done_at", null).order("due_at", { ascending: true, nullsFirst: false }).limit(30)),
     q(sb.from("hub_outbox").select("id", { count: "exact" }).eq("account_id", A()).eq("status", "failed").gte("created_at", since)),
   ]);
   const missed = recent.filter((m) => m.kind === "missed_call").length;
@@ -191,9 +197,48 @@ async function today() {
         ${p.contact_id ? `<a class="btn small" href="#/inbox/${p.contact_id}">Message</a>` : ""}</li>`).join("")}</ul>`
         : `<div class="empty"><b>No appointments</b>Share your booking link from Calendar.</div>`}
         ${missed ? `<p class="small muted">${missed} missed call${missed > 1 ? "s" : ""} texted back recently.</p>` : ""}</section>
-    </div>`);
+    </div>
+    <section class="card"><div class="head" style="margin:0 0 6px"><h2 style="margin:0">To do</h2><button class="btn small" id="addT">Add task</button></div>${taskList(tasks)}</section>`);
   $("#addC").onclick = () => contactForm();
-  void stages;
+  $("#addT").onclick = () => taskForm(null, today);
+  wireTasks(today);
+}
+
+// ---------- Tasks ----------
+function taskList(tasks, showContact = true) {
+  if (!tasks.length) return `<div class="empty" style="padding:18px 10px"><b>Nothing to do</b>Add a call-back or a reminder and it shows up here.</div>`;
+  const now = Date.now();
+  return `<ul class="list">${tasks.map((t) => { const due = t.due_at ? Date.parse(t.due_at) : null; const late = due && due < now;
+    return `<li><label class="switch" style="padding:0;border:0;margin:0"><input type="checkbox" data-done="${t.id}" aria-label="Mark done"></label>
+      <span class="grow"><span class="t">${esc(t.title)}</span><span class="s">${showContact && t.hub_contacts ? `<a href="#/inbox/${t.contact_id}">${esc(name(t.hub_contacts))}</a> · ` : ""}${due ? `<span class="${late ? "badge red" : ""}">${late ? "Overdue · " : ""}${esc(fmtWhen(t.due_at))}</span>` : "No due date"}</span></span>
+      <button class="btn small ghost" data-deltask="${t.id}" aria-label="Delete task">Delete</button></li>`; }).join("")}</ul>`;
+}
+function wireTasks(after) {
+  $$("[data-done]").forEach((b) => b.addEventListener("change", async () => { try { await q(sb.from("hub_tasks").update({ done_at: new Date().toISOString() }).eq("id", b.dataset.done)); toast("Done"); after(); } catch (e) { fail(e); } }));
+  $$("[data-deltask]").forEach((b) => b.addEventListener("click", async () => { try { await q(sb.from("hub_tasks").delete().eq("id", b.dataset.deltask)); after(); } catch (e) { fail(e); } }));
+}
+async function taskForm(contactId, after) {
+  const people = contactId ? [] : await q(sb.from("hub_contacts").select("id,first_name,last_name,phone,email").eq("account_id", A()).order("last_activity_at", { ascending: false }).limit(300));
+  const tomorrow = new Date(Date.now() + 86400_000); tomorrow.setHours(9, 0, 0, 0);
+  const local = new Date(tomorrow.getTime() - tomorrow.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+  openModal(`<header><h2>Add task</h2><button class="btn small" data-close>Close</button></header><form id="tf">
+    <div class="field"><label for="tt">What needs doing</label><input id="tt" required placeholder="Call back about the roof quote"></div>
+    <div class="grid2"><div class="field"><label for="td">Due</label><input id="td" type="datetime-local" value="${local}"></div>
+    ${contactId ? "" : `<div class="field"><label for="tc">Contact</label><select id="tc"><option value="">—</option>${people.map((c) => `<option value="${c.id}">${esc(name(c))}</option>`).join("")}</select></div>`}</div>
+    <footer><button class="btn primary">Save</button></footer></form>`);
+  $("#tf").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try { await q(sb.from("hub_tasks").insert({ account_id: A(), title: $("#tt").value.trim(), due_at: $("#td").value ? new Date($("#td").value).toISOString() : null, contact_id: contactId || $("#tc")?.value || null }));
+      modal.close(); toast("Task added"); after(); } catch (err) { fail(err); }
+  });
+}
+
+// ---------- More (phones) ----------
+async function more() {
+  setMain(`<div class="head"><h1>More</h1></div><section class="card"><ul class="list">${VIEWS.filter(([k]) => !PHONE_TABS.has(k)).map(([k, l]) =>
+    `<li><a class="rowlink" href="#/${k}"><span class="av">${ic(k)}</span><span class="grow"><span class="t">${l}</span></span><span class="muted">›</span></a></li>`).join("")}</ul>
+    <p class="small muted" style="margin-top:14px">${esc(state.user.email)}</p><button class="btn small" id="so2">Sign out</button></section>`);
+  $("#so2").onclick = async () => { await sb.auth.signOut(); location.hash = ""; authView(); };
 }
 function label(m) {
   const k = { missed_call: "Missed call, texted back", form: "Filled in your form", booking: "Booking", review: "Review request sent", reminder: "Reminder sent", autoreply: "Instant reply sent", confirmation: "Booking confirmed", voicemail: "Left a voicemail" }[m.kind];
@@ -240,6 +285,12 @@ async function openThread(id) {
       <div class="row"><textarea id="body" placeholder="${state.acct.sms_number || defCh !== "sms" ? "Write a message" : "Texting isn't set up yet. Choose Email or a private note."}" aria-label="Message"></textarea><button class="btn primary">Send</button></div>
     </form>`;
   const box = $("#msgs"); box.scrollTop = box.scrollHeight;
+  clearInterval(state.poll);
+  state.poll = setInterval(async () => {
+    if (!$("#msgs") || document.hidden) return;
+    const { count } = await sb.from("hub_messages").select("id", { count: "exact", head: true }).eq("contact_id", id);
+    if (count != null && count !== msgs.length && !$("#body")?.value) openThread(id);
+  }, 12000);
   $("#back").onclick = () => { state.inboxContact = null; location.hash = "#/inbox"; };
   $("#openC").onclick = () => contactDrawer(id);
   $("#ch").onchange = (e) => { $("#subj").hidden = e.target.value !== "email"; };
@@ -327,6 +378,7 @@ async function contactDrawer(id) {
     q(sb.from("hub_appointments").select("*").eq("contact_id", id).order("start_at", { ascending: false })),
     q(sb.from("hub_stages").select("id,name").eq("account_id", A()).order("position")),
   ]);
+  const tasks = await q(sb.from("hub_tasks").select("*").eq("contact_id", id).is("done_at", null).order("due_at"));
   const sname = (sid) => stages.find((s) => s.id === sid)?.name ?? "";
   openModal(`<header><div class="row"><span class="av">${esc(initials(c))}</span><div><h2>${esc(name(c))}</h2><span class="small muted">Added ${ago(c.created_at)}${c.source ? ` from ${esc(c.source)}` : ""}</span></div></div>
       <div class="row"><button class="btn small" id="edit">Edit</button><a class="btn small primary" href="#/inbox/${c.id}" id="msg">Message</a><button class="btn small" data-close>Close</button></div></header>
@@ -337,8 +389,11 @@ async function contactDrawer(id) {
       ${c.notes ? `<p class="small" style="white-space:pre-wrap">${esc(c.notes)}</p>` : ""}
       <h3>Jobs</h3>${opps.map((o) => `<div class="row small"><span class="badge ${o.status === "won" ? "green" : o.status === "lost" ? "red" : "blue"}">${esc(sname(o.stage_id))}</span> ${esc(o.title)} ${o.value ? `· ${money(o.value)}` : ""}</div>`).join("") || `<p class="small muted">None</p>`}
       <h3>Appointments</h3>${appts.map((p) => `<div class="small">${esc(fmtWhen(p.start_at))} <span class="badge ${p.status === "booked" ? "blue" : ""}">${p.status}</span></div>`).join("") || `<p class="small muted">None</p>`}
+      <div class="row" style="justify-content:space-between"><h3>To do</h3><button class="btn small" id="ctask">Add task</button></div>${taskList(tasks, false)}
     </div><div><h3 style="margin-bottom:8px">History</h3><div class="timeline">${msgs.map(bubble).join("") || `<p class="muted small">Nothing yet.</p>`}</div></div></div>`, { wide: true });
   $("#edit").onclick = () => contactForm(c, () => contactDrawer(id));
+  $("#ctask").onclick = () => taskForm(id, () => contactDrawer(id));
+  wireTasks(() => contactDrawer(id));
   $("#msg").onclick = () => modal.close();
 }
 function importCsv() {
@@ -615,6 +670,117 @@ function seqForm(s, steps, stages) {
   });
 }
 
+// ---------- Campaigns ----------
+async function campaigns() {
+  const [list, stages, tagRows] = await Promise.all([
+    q(sb.from("hub_campaigns").select("*").eq("account_id", A()).order("created_at", { ascending: false })),
+    q(sb.from("hub_stages").select("id,name").eq("account_id", A()).order("position")),
+    q(sb.from("hub_contacts").select("tags").eq("account_id", A()).not("tags", "eq", "{}").limit(2000)),
+  ]);
+  const tags = [...new Set(tagRows.flatMap((r) => r.tags))].sort();
+  const sentIds = list.filter((k) => k.status === "sent").map((k) => k.id);
+  const out = sentIds.length ? await q(sb.from("hub_outbox").select("ref_id,status").in("ref_id", sentIds)) : [];
+  const tally = (id, st) => out.filter((o) => o.ref_id === id && (st ? o.status === st : true)).length;
+  const aud = (k) => k.audience?.tags ? `Tagged ${k.audience.tags.join(", ")}` : k.audience?.stage_id ? `In ${stages.find((s) => s.id === k.audience.stage_id)?.name ?? "a stage"}` : "Everyone";
+  setMain(`<div class="head"><div><h1>Campaigns</h1><p class="muted">One message to many customers: a seasonal reminder, an opening on the schedule, a thank-you.</p></div><button class="btn primary" id="newK">New campaign</button></div>
+    <div class="notice">Only text people who gave you their number for your business. "Reply STOP to opt out" is added to every campaign text, and emails get an unsubscribe link and your mailing address.</div>
+    <section class="card">${list.length ? `<ul class="list">${list.map((k) => `<li data-k="${k.id}" style="cursor:pointer"><span class="av">${ic("campaigns")}</span>
+      <span class="grow"><span class="t">${esc(k.name)}</span><span class="s">${k.channel === "sms" ? "Text" : "Email"} · ${esc(aud(k))}${k.status === "scheduled" ? ` · goes out ${esc(fmtWhen(k.send_at))}` : ""}</span></span>
+      <span class="small">${k.status === "sent" ? `<span class="badge green">sent ${tally(k.id, "sent")}/${k.recipients}</span>${tally(k.id, "failed") ? ` <span class="badge red">${tally(k.id, "failed")} failed</span>` : ""}${tally(k.id, "queued") + tally(k.id, "sending") ? ` <span class="badge blue">${tally(k.id, "queued") + tally(k.id, "sending")} going out</span>` : ""}`
+        : `<span class="badge ${k.status === "scheduled" ? "blue" : ""}">${k.status}</span>`}</span></li>`).join("")}</ul>`
+      : `<div class="empty"><b>No campaigns yet</b>Tag your customers (for example "past customer") and send them a seasonal check-in.</div>`}</section>`);
+  $("#newK").onclick = () => campaignForm(null, stages, tags);
+  $$("[data-k]").forEach((li) => li.addEventListener("click", () => { const k = list.find((x) => x.id === li.dataset.k); if (k.status === "draft" || k.status === "scheduled") campaignForm(k, stages, tags); else toast("This campaign has been sent"); }));
+}
+function campaignForm(k, stages, tags) {
+  const au = k?.audience ?? { all: true };
+  const mode = au.tags ? "tags" : au.stage_id ? "stage" : "all";
+  openModal(`<header><h2>${k ? "Edit campaign" : "New campaign"}</h2><button class="btn small" data-close>Close</button></header><form id="kf">
+    <div class="grid2"><div class="field"><label for="kn">Name (only you see this)</label><input id="kn" required value="${esc(k?.name)}" placeholder="Spring tune-up reminder"></div>
+    <div class="field"><label for="kc">Send as</label><select id="kc"><option value="sms" ${k?.channel !== "email" ? "selected" : ""}>Text</option><option value="email" ${k?.channel === "email" ? "selected" : ""}>Email</option></select></div>
+    <div class="field"><label for="ka">Who gets it</label><select id="ka"><option value="all" ${mode === "all" ? "selected" : ""}>Everyone who can receive it</option><option value="tags" ${mode === "tags" ? "selected" : ""}>Contacts with a tag</option><option value="stage" ${mode === "stage" ? "selected" : ""}>Jobs in a pipeline stage</option></select></div>
+    <div class="field" id="kaw"></div></div>
+    <div class="field" id="ksw" ${k?.channel === "email" ? "" : "hidden"}><label for="ks">Email subject</label><input id="ks" value="${esc(k?.subject)}"></div>
+    <div class="field"><label for="kb">Message</label><textarea id="kb" required placeholder="Hi {{first_name}}, it's {{business}}. Spring is here: want us to look at your AC before the heat? Grab a time: {{booking_link}}">${esc(k?.body)}</textarea>
+      <div class="hint" id="klen"></div></div>
+    <div class="grid2"><div class="field"><label for="kw">When</label><select id="kw"><option value="now">Send now</option><option value="later" ${k?.status === "scheduled" ? "selected" : ""}>Schedule</option></select></div>
+    <div class="field" id="ktw" ${k?.status === "scheduled" ? "" : "hidden"}><label for="kt">Date and time</label><input id="kt" type="datetime-local" value="${k?.send_at ? new Date(Date.parse(k.send_at) - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ""}"></div></div>
+    <p class="small" id="kcount"></p>
+    <footer>${k ? `<button type="button" class="btn danger" id="kdel">Delete</button>` : ""}<button type="button" class="btn" id="kdraft">Save draft</button><button class="btn primary" id="kgo">Send</button></footer></form>`, { wide: true });
+  const audWidget = () => {
+    const m = $("#ka").value;
+    $("#kaw").innerHTML = m === "tags" ? `<label for="kat">Tag</label>${tags.length ? `<select id="kat" multiple size="${Math.min(4, tags.length)}">${tags.map((t) => `<option ${au.tags?.includes(t) ? "selected" : ""}>${esc(t)}</option>`).join("")}</select>` : `<p class="small muted">No tags yet. Add tags on contacts first.</p>`}`
+      : m === "stage" ? `<label for="kst">Stage</label><select id="kst">${stages.map((s) => `<option value="${s.id}" ${au.stage_id === s.id ? "selected" : ""}>${esc(s.name)}</option>`).join("")}</select>` : "";
+    $("#kat")?.addEventListener("change", preview); $("#kst")?.addEventListener("change", preview);
+  };
+  const audience = () => { const m = $("#ka").value; return m === "tags" ? { tags: $$("#kat option").filter((o) => o.selected).map((o) => o.value) } : m === "stage" ? { stage_id: $("#kst")?.value } : { all: true }; };
+  const lenHint = () => { const n = $("#kb").value.length + ($("#kc").value === "sms" ? 24 : 0); $("#klen").textContent = $("#kc").value === "sms" ? `${n} characters with the opt-out line${n > 160 ? ` · sends as ${Math.ceil(n / 153)} texts each` : ""}. Use {{first_name}}, {{business}}, {{booking_link}}, {{review_link}}.` : "Use {{first_name}}, {{business}}, {{booking_link}}, {{review_link}}."; };
+  let draftId = k?.id ?? null;
+  async function save(status, sendAt) {
+    const row = { account_id: A(), name: $("#kn").value.trim() || "Campaign", channel: $("#kc").value, subject: $("#ks").value || null, body: $("#kb").value.trim(), audience: audience(), status, send_at: sendAt ?? null };
+    if (!row.body) throw new Error("Write the message first");
+    const r = draftId ? await q(sb.from("hub_campaigns").update(row).eq("id", draftId).select().single()) : await q(sb.from("hub_campaigns").insert(row).select().single());
+    draftId = r.id; return r;
+  }
+  let pt;
+  async function preview() {
+    clearTimeout(pt); pt = setTimeout(async () => {
+      try { const r = await save(k?.status === "scheduled" ? "scheduled" : "draft", k?.status === "scheduled" ? k.send_at : null); const { data: n } = await sb.rpc("hub_campaign_count", { cid: r.id }); $("#kcount").innerHTML = `<b>${n ?? 0}</b> ${n === 1 ? "person" : "people"} will get this${$("#kc").value === "sms" && !state.acct.sms_number ? " (texting isn't set up yet, so it goes by email where possible)" : ""}.`; } catch { /* keep typing */ }
+    }, 600);
+  }
+  audWidget(); lenHint();
+  $("#ka").onchange = () => { audWidget(); preview(); };
+  $("#kc").onchange = () => { $("#ksw").hidden = $("#kc").value !== "email"; lenHint(); preview(); };
+  $("#kw").onchange = () => { $("#ktw").hidden = $("#kw").value !== "later"; $("#kgo").textContent = $("#kw").value === "later" ? "Schedule" : "Send"; };
+  $("#kb").oninput = lenHint;
+  if (k) preview();
+  $("#kdel")?.addEventListener("click", async () => { if (!confirm("Delete this campaign?")) return; await q(sb.from("hub_campaigns").delete().eq("id", k.id)).catch(fail); modal.close(); campaigns(); });
+  $("#kdraft").onclick = async () => { try { await save("draft"); modal.close(); toast("Draft saved"); campaigns(); } catch (e) { fail(e); } };
+  $("#kf").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      if ($("#kw").value === "later") {
+        if (!$("#kt").value) return toast("Pick a date and time");
+        await save("scheduled", new Date($("#kt").value).toISOString()); modal.close(); toast("Scheduled"); return campaigns();
+      }
+      const r = await save("draft");
+      const { data: n } = await sb.rpc("hub_campaign_count", { cid: r.id });
+      if (!n) return toast("Nobody matches that audience yet");
+      if (!confirm(`Send "${r.name}" to ${n} ${n === 1 ? "person" : "people"} now?`)) return;
+      const { data: sent, error } = await sb.rpc("hub_launch_campaign", { cid: r.id });
+      if (error) throw error;
+      modal.close(); toast(`Sending to ${sent}`); campaigns();
+    } catch (err) { fail(err); }
+  });
+}
+
+// ---------- Reports ----------
+async function reports(days = "30") {
+  const d = Number(days) || 30;
+  const since = new Date(Date.now() - d * 86400_000).toISOString();
+  const [cs, msgs, won, appts] = await Promise.all([
+    q(sb.from("hub_contacts").select("id,source,created_at").eq("account_id", A()).gte("created_at", since).limit(5000)),
+    q(sb.from("hub_messages").select("contact_id,channel,direction,kind,status,created_at").eq("account_id", A()).gte("created_at", since).limit(10000)),
+    q(sb.from("hub_opportunities").select("value,status,stage_changed_at").eq("account_id", A()).neq("status", "open").gte("stage_changed_at", since)),
+    q(sb.from("hub_appointments").select("status,created_at").eq("account_id", A()).gte("created_at", since)),
+  ]);
+  const by = (arr, f) => arr.reduce((m, x) => { const k = f(x); m[k] = (m[k] || 0) + 1; return m; }, {});
+  const src = by(cs, (c) => (c.source || "manual").replace(/^form:.*/, "website form").replace("sms", "text").replace("call", "phone call"));
+  const missed = msgs.filter((m) => m.kind === "missed_call");
+  const missedIds = new Set(missed.map((m) => m.contact_id));
+  const replied = new Set(msgs.filter((m) => m.direction === "in" && m.channel === "sms" && missedIds.has(m.contact_id)).map((m) => m.contact_id));
+  const wonJobs = won.filter((o) => o.status === "won");
+  const stat = (n, l) => `<div class="card stat"><div class="n">${n}</div><div class="l">${l}</div></div>`;
+  const bars = (obj) => { const max = Math.max(1, ...Object.values(obj)); return Object.entries(obj).sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div style="display:grid;grid-template-columns:120px 1fr 40px;gap:10px;align-items:center;margin:8px 0"><span class="small">${esc(k)}</span><span style="height:10px;border-radius:5px;background:var(--blue);width:${Math.max(4, (v / max) * 100)}%"></span><b class="small">${v}</b></div>`).join("") || `<p class="small muted">Nothing yet.</p>`; };
+  const sentBy = by(msgs.filter((m) => m.direction === "out" && !String(m.status || "").startsWith("failed")), (m) => ({ missed_call: "Missed-call texts", autoreply: "Instant replies", confirmation: "Confirmations", reminder: "Reminders", review: "Review requests", sequence: "Follow-ups", campaign: "Campaigns", manual: "Your messages", owner_relay: "Your messages" }[m.kind] || "Other"));
+  setMain(`<div class="head"><div><h1>Reports</h1><p class="muted">What the system did for ${esc(state.acct.name)}.</p></div>
+    <select id="rd" style="width:auto" aria-label="Period">${[["7", "Last 7 days"], ["30", "Last 30 days"], ["90", "Last 90 days"]].map(([v, l]) => `<option value="${v}" ${v === String(d) ? "selected" : ""}>${l}</option>`).join("")}</select></div>
+    <div class="cards">${stat(cs.length, "New contacts")}${stat(appts.filter((a) => a.status !== "cancelled").length, "Bookings")}${stat(`${replied.size}/${missedIds.size}`, "Missed callers who texted back")}${stat(`${wonJobs.length} · ${money(wonJobs.reduce((t, o) => t + Number(o.value || 0), 0))}`, "Jobs won")}</div>
+    <div class="two"><section class="card"><h2>Where new contacts came from</h2>${bars(src)}</section>
+    <section class="card"><h2>Messages sent for you</h2>${bars(sentBy)}<p class="small muted">${msgs.filter((m) => m.direction === "in").length} messages and calls came in.</p></section></div>`);
+  $("#rd").onchange = (e) => reports(e.target.value);
+}
+
 // ---------- Settings ----------
 async function settings() {
   const a = state.acct;
@@ -628,6 +794,7 @@ async function settings() {
       <div class="field"><label for="ws">Website</label><input id="ws" type="url" value="${esc(a.website)}"></div>
       <div class="field"><label for="bu">Booking link override</label><input id="bu" type="url" value="${esc(a.booking_url)}"><div class="hint">Leave blank to use the KWS Hub booking page.</div></div>
       <div class="field"><label for="tzs">Time zone</label><select id="tzs">${["America/Chicago", "America/New_York", "America/Denver", "America/Phoenix", "America/Los_Angeles"].map((z) => `<option ${a.timezone === z ? "selected" : ""}>${z}</option>`).join("")}</select></div>
+      <div class="field"><label for="ma">Mailing address</label><input id="ma" value="${esc(a.mailing_address)}"><div class="hint">Printed at the bottom of campaign emails, as US law asks.</div></div>
       <div class="field"><label for="bc">Brand color</label><input id="bc" type="color" value="${esc(a.brand_color || "#2C46C4")}" style="padding:4px;height:40px"></div></div>
       <button class="btn primary">Save</button></form>
     <section class="card" id="texting"><h2>Texting number</h2><div class="empty">Checking…</div></section></div>
@@ -639,7 +806,7 @@ async function settings() {
   $("#bf").addEventListener("submit", async (e) => {
     e.preventDefault();
     const row = { name: $("#bn").value.trim(), business_phone: $("#bp").value.trim() || null, owner_phone: e164($("#op").value), notify_email: $("#ne").value.trim() || null,
-      website: $("#ws").value.trim() || null, booking_url: $("#bu").value.trim() || null, timezone: $("#tzs").value, brand_color: $("#bc").value };
+      website: $("#ws").value.trim() || null, mailing_address: $("#ma").value.trim() || null, booking_url: $("#bu").value.trim() || null, timezone: $("#tzs").value, brand_color: $("#bc").value };
     if ($("#op").value.trim() && !row.owner_phone) return toast("Check the cell number");
     try { const saved = await q(sb.from("hub_accounts").update(row).eq("id", A()).select().single()); Object.assign(state.acct, saved); toast("Saved"); } catch (err) { fail(err); }
   });
@@ -690,5 +857,6 @@ async function texting() {
 }
 
 // ---------- go ----------
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/hub/sw.js", { scope: "/hub/" }).catch(() => {});
 sb.auth.onAuthStateChange((ev) => { if (ev === "SIGNED_OUT") authView(); });
 start().catch(fail);

@@ -1,6 +1,7 @@
 // KWS Hub scheduler, called by pg_cron only when something is due.
-// 1. advance follow-up sequences (queue the next step)   2. send due outbox rows (reminders, reviews, follow-ups)
-import { db, deliver, json, render, secret, SITE, when } from "../_shared/hub.ts";
+// 1. advance follow-up sequences (queue the next step)   2. send due outbox rows (reminders, reviews, follow-ups, campaigns)
+// Campaigns are expanded into outbox rows by the SQL function hub_launch_campaign (pg_cron or "Send now").
+import { db, deliver, FN, json, render, secret, SITE, when } from "../_shared/hub.ts";
 
 export default async function handler(req: Request): Promise<Response> {
   const s = await secret("cron_secret");
@@ -42,7 +43,12 @@ export default async function handler(req: Request): Promise<Response> {
       const { data: en } = await db.from("hub_enrollments").select("status,stopped_reason").eq("id", o.ref_id).maybeSingle();
       if (en?.status === "stopped") { await db.from("hub_outbox").update({ status: "skipped", error: `follow-up stopped: ${en.stopped_reason}` }).eq("id", o.id); done.skipped++; continue; }
     }
-    const body = render(o.body, a, c, extra);
+    let body = render(o.body, a, c, extra);
+    // marketing messages carry their opt-out: STOP for texts, an unsubscribe link and the mailing address for email
+    if (o.kind === "campaign" && o.channel === "sms") body += "\nReply STOP to opt out.";
+    if (o.channel === "email" && c && ["campaign", "sequence", "review"].includes(o.kind ?? "")) {
+      body += `\n\n--\n${a.name}${a.mailing_address ? `, ${a.mailing_address}` : ""}\nUnsubscribe: ${FN}/hub?op=unsub&t=${c.unsub_token}`;
+    }
     const subject = o.subject ? render(o.subject, a, c, extra) : undefined;
     const r = await deliver(a, c, o.channel, body, { subject, kind: o.kind, to: o.to_addr ?? undefined });
     await db.from("hub_outbox").update(r.ok ? { status: "sent", sent_at: new Date().toISOString() } : { status: "failed", error: r.error }).eq("id", o.id);

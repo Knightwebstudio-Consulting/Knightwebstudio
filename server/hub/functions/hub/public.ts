@@ -4,6 +4,7 @@
 // POST {op:"book", a, c, start, name, phone, email, notes}
 // GET  ?op=manage&m=<token>   POST {op:"cancel"|"reschedule", m, start}
 // GET  ?op=formcfg&a=&f=                            -> fields and button text for the website form
+// GET  ?op=unsub&t=<token>                           -> email opt-out page
 // POST {op:"form", a, f, ...fields}                   -> contact, pipeline card, instant reply, owner alert
 import {
   Account, accountBySlug, addDays, cors, db, deliver, email, json, localDate, log, notifyOwner, phone,
@@ -105,6 +106,16 @@ export default async function handler(req: Request): Promise<Response> {
       await log(a, c?.id ?? null, { channel: "system", direction: "in", body: `Moved their ${cal.name} to ${when(moved.start_at, a.timezone)}`, kind: "booking" });
       await notifyOwner(a, `Rescheduled: ${c?.first_name ?? "A customer"}`, `${c?.first_name ?? "A customer"} moved their ${cal.name} to ${when(moved.start_at, a.timezone)}.`);
       return json({ ok: true, when: when(moved.start_at, a.timezone) });
+    }
+
+    if (op === "unsub") {
+      const page = (msg: string) => new Response(`<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Unsubscribed</title><body style="font:17px/1.5 -apple-system,system-ui,sans-serif;max-width:520px;margin:15vh auto;padding:0 20px;text-align:center"><p>${msg}</p></body>`, { headers: { "content-type": "text/html; charset=utf-8" } });
+      const { data: c } = await db.from("hub_contacts").select("id,account_id,email").eq("unsub_token", String(b.t ?? "")).maybeSingle();
+      if (!c) return page("That link isn't valid anymore.");
+      await db.from("hub_contacts").update({ dnd_email: true }).eq("id", c.id);
+      await db.from("hub_outbox").update({ status: "cancelled" }).eq("contact_id", c.id).eq("channel", "email").eq("status", "queued");
+      await db.from("hub_messages").insert({ account_id: c.account_id, contact_id: c.id, channel: "system", direction: "in", body: "Unsubscribed from emails", kind: "unsub" });
+      return page("You're unsubscribed. You won't get marketing emails from us again.");
     }
 
     const a = await accountBySlug(String(b.a ?? ""));

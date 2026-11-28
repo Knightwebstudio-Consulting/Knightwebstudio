@@ -2,7 +2,8 @@
 
 The studio's own CRM: contacts, a two-way inbox (texts, email, calls, form fills, bookings),
 a drag-and-drop pipeline, a booking calendar, a website form, follow-up sequences, review
-requests and missed-call text-back. One login sees the studio and every client account; each
+requests, missed-call text-back, campaigns (text or email broadcasts), tasks and reports.
+It installs to a phone's home screen (`/hub/manifest.webmanifest`, `/hub/sw.js`). One login sees the studio and every client account; each
 client can be given their own login that sees only their business.
 
 No monthly software: the app is static files on GitHub Pages, the back end is the existing
@@ -36,12 +37,20 @@ The old standalone `hub-runner` function is a retired stub and can be deleted.
 
 ## Database
 
-Applied as migrations `hub_core`, `hub_runner` and `hub_runner_claimed_at` (Supabase dashboard
+Applied as migrations `hub_core`, `hub_runner`, `hub_runner_claimed_at` and `hub_campaigns_tasks` (Supabase dashboard
 → Database → Migrations). New accounts are seeded by a trigger with a "Jobs" pipeline
 (New lead → Contacted → Appointment set → Quote sent → Won / job done → Lost), a "Free estimate"
 calendar, a contact form, a "Quote follow-up" sequence (starts when a job moves to Quote sent)
 and a "New lead nurture" sequence (starts on a form fill, stops when they book or reply).
 Moving a job to a Won stage queues the review request.
+
+## Campaigns
+
+A campaign goes to everyone, a tag, or the contacts in a pipeline stage, skipping anyone opted out.
+"Send now" calls `hub_launch_campaign`; scheduled ones start from the every-minute job. Recipients
+are queued a little apart (texts 2 seconds, emails half a second). Every campaign text ends with
+"Reply STOP to opt out." Campaign, follow-up and review emails end with the business's mailing
+address and an unsubscribe link (`hub?op=unsub&t=<token>`).
 
 ## Secrets
 
