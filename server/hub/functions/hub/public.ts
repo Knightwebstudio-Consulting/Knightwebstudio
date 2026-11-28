@@ -8,7 +8,7 @@
 // POST {op:"form", a, f, ...fields}                   -> contact, pipeline card, instant reply, owner alert
 import {
   Account, accountBySlug, addDays, cors, db, deliver, email, json, localDate, log, notifyOwner, phone,
-  render, SITE, upsertContact, weekdayKey, when, zoned,
+  manageLink, render, upsertContact, weekdayKey, when, zoned,
 } from "../_shared/hub.ts";
 
 const STEP_MIN = 30;
@@ -61,7 +61,7 @@ async function scheduleReminders(a: Account, cal: any, appt: any, c: any) {
 }
 
 async function confirm(a: Account, appt: any, c: any, verb = "booked") {
-  const vars = { when: when(appt.start_at, a.timezone), manage_link: `${SITE}/book/?m=${appt.manage_token}` };
+  const vars = { when: when(appt.start_at, a.timezone), manage_link: manageLink(appt.manage_token) };
   const body = render(a.confirm_text, a, c, vars);
   if (c.phone && a.sms_number && !c.dnd_sms) await deliver(a, c, "sms", body, { kind: "confirmation" });
   else if (c.email) await deliver(a, c, "email", body, { kind: "confirmation", subject: `You're ${verb} with ${a.name}` });
@@ -163,7 +163,7 @@ export default async function handler(req: Request): Promise<Response> {
       await notifyOwner(a, `New booking: ${b.name}, ${when(appt.start_at, a.timezone)}`,
         `${b.name} booked ${cal.name} for ${when(appt.start_at, a.timezone)}.\nPhone: ${p ?? ""}\nEmail: ${e ?? ""}\nNotes: ${appt.notes ?? ""}`,
         `New booking: ${b.name}, ${when(appt.start_at, a.timezone)}. ${p ?? e ?? ""}`);
-      return json({ ok: true, when: when(appt.start_at, a.timezone), manage: `${SITE}/book/?m=${appt.manage_token}` });
+      return json({ ok: true, when: when(appt.start_at, a.timezone), manage: manageLink(appt.manage_token) });
     }
 
     if (op === "formcfg") {

@@ -1,6 +1,6 @@
 /* KWS Hub website form. Paste on any site:
    <div data-kws-form="business-slug/contact"></div>
-   <script src="https://knightwebstudio.com/hub/form.js?v=14" async></script>
+   <script src="<your Hub address>/form.js?v=14" async></script>
    It inherits the page's font and colors, and posts to KWS Hub (new contact, pipeline card,
    instant reply, owner alert). No cookies, no tracking. */
 (function () {

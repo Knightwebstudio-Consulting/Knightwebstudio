@@ -7,6 +7,28 @@ export const db: SupabaseClient = createClient(SUPABASE_URL, Deno.env.get("SUPAB
 export const FN = `${SUPABASE_URL}/functions/v1`;
 export const SITE = "https://knightwebstudio.com";
 
+// Per-install settings live in hub_secrets (service role only), so the same code serves the
+// studio's own Hub and every client's standalone copy. Missing keys fall back to the studio's.
+//   app_url     where the app is hosted          (default https://knightwebstudio.com/hub/)
+//   book_url    the public booking page           (default https://knightwebstudio.com/book/)
+//   from_email  "Name <address>" on a verified Resend domain
+//   resend_key  Resend API key
+//   owner_email the address allowed to create the first login
+//   app_name    the app's name in emails         (default KWS Hub)
+export const CFG: Record<string, string> = {};
+let cfgAt = 0;
+export async function loadConfig() {
+  if (Date.now() - cfgAt < 60_000) return;
+  const { data } = await db.from("hub_secrets").select("key,value").in("key", ["app_url", "book_url", "from_email", "resend_key", "owner_email", "app_name"]);
+  for (const k of Object.keys(CFG)) delete CFG[k];
+  for (const r of data ?? []) CFG[r.key] = r.value;
+  cfgAt = Date.now();
+}
+export const appName = () => CFG.app_name || "KWS Hub";
+export const appUrl = () => CFG.app_url || `${SITE}/hub/`;
+export const bookUrl = () => CFG.book_url || `${SITE}/book/`;
+export const manageLink = (token: string) => `${bookUrl()}?m=${token}`;
+
 export const cors = {
   "access-control-allow-origin": "*",
   "access-control-allow-headers": "authorization, apikey, content-type, x-client-info",
@@ -26,7 +48,8 @@ export async function secret(key: string): Promise<string | null> {
   return data?.value ?? null;
 }
 export async function setting<T = unknown>(key: string): Promise<T | null> {
-  const { data } = await db.from("settings").select("value").eq("key", key).maybeSingle();
+  const { data, error } = await db.from("settings").select("value").eq("key", key).maybeSingle();
+  if (error) return null; // standalone installs have no studio settings table
   return (data?.value ?? null) as T | null;
 }
 
@@ -49,7 +72,7 @@ export function splitName(full?: string | null) {
   return { first_name: parts[0] ?? null, last_name: parts.slice(1).join(" ") || null };
 }
 
-export const bookingLink = (a: Account) => a.booking_url || `${SITE}/book/?a=${a.slug}`;
+export const bookingLink = (a: Account) => a.booking_url || `${bookUrl()}?a=${a.slug}`;
 export function when(iso: string, tz: string) {
   return new Intl.DateTimeFormat("en-US", { timeZone: tz, weekday: "long", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })
     .format(new Date(iso));
@@ -145,9 +168,9 @@ export async function twilioValid(req: Request, params: Record<string, string>) 
 
 // ---- Email (Resend, same key and verified domain as the other KWS automations) ----
 export async function sendEmail(a: Account | null, to: string, subject: string, text: string, replyTo?: string | null) {
-  const key = Deno.env.get("RESEND_API_KEY") ?? (await setting<string>("kws_resend_key"));
+  const key = CFG.resend_key || Deno.env.get("RESEND_API_KEY") || (await setting<string>("kws_resend_key"));
   if (!key) return { ok: false, error: "No email key" };
-  const from = (await setting<string>("kws_from_email")) ?? "KnightWebstudio <christian@knightwebstudio.com>";
+  const from = CFG.from_email || (await setting<string>("kws_from_email")) || "KnightWebstudio <christian@knightwebstudio.com>";
   const addr = from.match(/<([^>]+)>/)?.[1] ?? from;
   const name = (a?.name ?? "KnightWebstudio").replace(/[<>"]/g, "");
   const r = await fetch("https://api.resend.com/emails", {
@@ -174,7 +197,7 @@ export async function deliver(a: Account, c: Contact | null, channel: "sms" | "e
 
 // Tell the business owner (email always; text too when asked and possible).
 export async function notifyOwner(a: Account, subject: string, text: string, sms?: string) {
-  if (a.notify_email) await sendEmail(a, a.notify_email, subject, text + `\n\nOpen KWS Hub: ${SITE}/hub/`);
+  if (a.notify_email) await sendEmail(a, a.notify_email, subject, text + `\n\nOpen ${appName()}: ${appUrl()}`);
   if (sms && a.owner_phone && a.sms_number && a.forward_sms_to_owner) await sendSms(a, a.owner_phone, sms);
 }
 

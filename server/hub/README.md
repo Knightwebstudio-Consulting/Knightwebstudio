@@ -26,6 +26,18 @@ The `hub` function has four entry points: `?fn=public` (booking and forms, no lo
 `?fn=twilio` (Twilio webhooks, signature checked), `?fn=api` (the app, session checked) and
 `?fn=runner` (pg_cron, shared secret in `hub_secrets.cron_secret`).
 
+## Client installs (one-time setup)
+
+For a business that wants its own Hub without a monthly fee to the studio, `server/hub/install/`
+builds a standalone copy on the client's own Supabase, Resend and Twilio accounts: run
+`install.mjs`, publish the folder it writes (`c/<slug>/` by default), and hand it over. The
+step-by-step runbook is `server/hub/install/README.md`.
+
+The same function code serves both: per-install settings live in `hub_secrets` (`fn_url`,
+`app_url`, `book_url`, `owner_email`, `from_email`, `resend_key`, `app_name`) and fall back to the
+studio's values when missing. A client copy of the app has `STUDIO = false`, which hides the
+client-accounts section.
+
 ## Deploying the function
 
 The Supabase deploy takes the files as `hub/index.ts`, `hub/public.ts`, `hub/twilio.ts`,
@@ -61,7 +73,7 @@ on and no policies, so only the service role can read it.
 ## Sign-in
 
 `/hub/` → "First time, or forgot your password?" → a 6-digit code is emailed (only to the
-studio admin in `admin_users` or someone already given access) → choose a password.
+studio admin in `admin_users`, a client install's `owner_email`, or someone already given access) → choose a password.
 Settings → People with access gives a client owner their own login.
 
 ## Texting rules

@@ -4,7 +4,7 @@
 // ?t=vm     voicemail saved -> log it, tell the owner
 // ?t=sms    incoming text   -> conversation, STOP/START, stop follow-ups, forward to owner; owner replies are relayed
 // ?t=status delivery report -> update the message status
-import { Account, db, deliver, esc, FN, log, notifyOwner, render, sendSms, twilioValid, upsertContact, xml } from "../_shared/hub.ts";
+import { Account, appName, db, deliver, esc, FN, log, notifyOwner, render, sendSms, twilioValid, upsertContact, xml } from "../_shared/hub.ts";
 
 const STOP = /^\s*(stop|stopall|unsubscribe|cancel|end|quit)\s*$/i;
 const START = /^\s*(start|unstop|yes)\s*$/i;
@@ -57,7 +57,7 @@ export default async function handler(req: Request): Promise<Response> {
       const { data: c } = await db.from("hub_contacts").select("id").eq("account_id", a.id).eq("phone", p.From).maybeSingle();
       if (p.RecordingUrl && Number(p.RecordingDuration ?? 0) > 1) {
         await log(a, c?.id ?? null, { channel: "call", direction: "in", body: `Voicemail (${p.RecordingDuration}s): ${p.RecordingUrl}.mp3`, kind: "voicemail", meta: { url: p.RecordingUrl } });
-        await notifyOwner(a, `New voicemail from ${p.From}`, `Voicemail from ${p.From} (${p.RecordingDuration}s). It's in the conversation in KWS Hub.`);
+        await notifyOwner(a, `New voicemail from ${p.From}`, `Voicemail from ${p.From} (${p.RecordingDuration}s). It's in the conversation in ${appName()}.`);
       }
       return xml("<Hangup/>");
     }

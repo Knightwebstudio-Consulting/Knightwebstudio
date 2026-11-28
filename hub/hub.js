@@ -4,8 +4,12 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
 const SUPABASE_URL = "https://uhmyfoibrwdkdhrnnaah.supabase.co";
 const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVobXlmb2licndka2Rocm5uYWFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ2ODYwMTUsImV4cCI6MjExMDI2MjAxNX0.qcM1s6smmKavFEOZ8MthpQa_uciMjL6lZSo5w8zOTVw";
+// The installer (server/hub/install) rewrites these lines in each client's copy.
+const STUDIO = true; // false in a client's standalone copy: hides the studio-only client accounts
+const APP_NAME = "KWS Hub";
+const APP_URL = "https://knightwebstudio.com/hub/";
+const BOOK_URL = "https://knightwebstudio.com/book/";
 const FN = `${SUPABASE_URL}/functions/v1/hub`;
-const SITE = "https://knightwebstudio.com";
 const sb = createClient(SUPABASE_URL, ANON, { auth: { persistSession: true, storageKey: "kws-hub" } });
 
 // ---------- tiny helpers ----------
@@ -66,7 +70,7 @@ const state = { user: null, accounts: [], acct: null, isAgency: false, unread: 0
 // ---------- sign in ----------
 function authView(mode = "signin", email = "") {
   app.innerHTML = `<div class="auth"><form class="card" id="authf">
-    <div class="brand"><img src="/assets/img/crest.svg" alt="" width="34" height="35">KWS Hub</div>
+    <div class="brand"><img src="crest.svg" alt="" width="34" height="35">${esc(APP_NAME)}</div>
     <p class="lead">${mode === "signin" ? "Sign in to your leads, texts and bookings." : mode === "code" ? "We'll email you a 6-digit code." : "Enter the code and choose a password."}</p>
     <div class="field"><label for="em">Email</label><input id="em" type="email" autocomplete="email" required value="${esc(email)}" ${mode === "set" ? "readonly" : ""}></div>
     ${mode === "signin" ? `<div class="field"><label for="pw">Password</label><input id="pw" type="password" autocomplete="current-password" required></div>` : ""}
@@ -120,11 +124,11 @@ function localStorageGet(k) { try { return localStorage.getItem(k); } catch { re
 function localStorageSet(k, v) { try { localStorage.setItem(k, v); } catch { /* private mode */ } }
 
 function shell(view, inner) {
-  const opts = state.accounts.map((a) => `<option value="${a.id}" ${a.id === state.acct.id ? "selected" : ""}>${esc(a.name)}${a.kind === "agency" ? " (studio)" : ""}</option>`).join("");
+  const opts = state.accounts.map((a) => `<option value="${a.id}" ${a.id === state.acct.id ? "selected" : ""}>${esc(a.name)}${STUDIO && a.kind === "agency" ? " (studio)" : ""}</option>`).join("");
   const sel = state.accounts.length > 1 ? `<select aria-label="Business" class="acctsel">${opts}</select>` : `<div class="small muted" style="padding:0 6px">${esc(state.acct.name)}</div>`;
   app.innerHTML = `<div class="shell">
     <aside class="side">
-      <div class="brand"><img src="/assets/img/crest.svg" alt="" width="30" height="31">KWS Hub</div>
+      <div class="brand"><img src="crest.svg" alt="" width="30" height="31">${esc(APP_NAME)}</div>
       <div class="acct">${sel}</div>
       <nav class="nav" aria-label="Main">${VIEWS.map(([k, l]) => `<a href="#/${k}" class="${k === "more" ? "phone-only" : PHONE_TABS.has(k) ? "" : "desk-only"}" ${k === view || (k === "more" && !PHONE_TABS.has(view)) ? 'aria-current="page"' : ""}>${ic(k)}<span>${l}</span>${k === "inbox" && state.unread ? `<span class="count">${state.unread}</span>` : ""}</a>`).join("")}</nav>
       <div class="me">${esc(state.user.email)}<br><button class="btn small" id="signout">Sign out</button></div>
@@ -509,7 +513,7 @@ async function calendar() {
   ]);
   const byDay = {}; for (const p of appts) (byDay[fmtDay(p.start_at)] ??= []).push(p);
   const cal = cals[0];
-  const link = cal ? `${SITE}/book/?a=${state.acct.slug}&c=${cal.slug}` : "";
+  const link = cal ? `${BOOK_URL}?a=${state.acct.slug}&c=${cal.slug}` : "";
   setMain(`<div class="head"><div><h1>Calendar</h1><p class="muted">Bookings come in from your link, get a confirmation and reminders, and land in your pipeline.</p></div>
       <div class="row">${cal ? `<a class="btn" href="${link}" target="_blank" rel="noopener">Open booking page</a><button class="btn" id="copyL">Copy link</button><button class="btn primary" id="calS">Booking settings</button>` : ""}</div></div>
     <div class="two"><section class="card"><h2>Appointments</h2>${Object.keys(byDay).length ? Object.entries(byDay).map(([d, list]) => `<h3 style="margin:14px 0 4px">${esc(d)}</h3><ul class="list">${list.map((p) => `<li>
@@ -610,7 +614,7 @@ async function automations(tab = "auto") {
   if (tab === "forms") {
     const f = forms[0];
     const fields = ["name", "phone", "email", "company", "address", "service", "message"];
-    const snippet = `<div data-kws-form="${a.slug}/${f?.slug ?? "contact"}"></div>\n<script src="${SITE}/hub/form.js?v=14" async></script>`;
+    const snippet = `<div data-kws-form="${a.slug}/${f?.slug ?? "contact"}"></div>\n<script src="${APP_URL}form.js?v=14" async></script>`;
     body.innerHTML = f ? `<div class="two"><form class="card" id="ff"><h2>Your website form</h2>
       <label>Fields</label><div class="row" style="margin-bottom:14px">${fields.map((k) => `<label class="badge" style="cursor:pointer;margin:0"><input type="checkbox" data-f="${k}" ${f.fields.includes(k) ? "checked" : ""} style="width:auto;min-height:0;margin-right:4px">${k}</label>`).join("")}</div>
       <div class="field"><label for="fb">Button text</label><input id="fb" value="${esc(f.button_text)}"></div>
@@ -792,7 +796,7 @@ async function settings() {
       <div class="field"><label for="op">Owner's cell</label><input id="op" type="tel" value="${esc(fmtPhone(a.owner_phone))}"><div class="hint">Missed calls ring here first; lead alerts text here.</div></div>
       <div class="field"><label for="ne">Alerts email</label><input id="ne" type="email" value="${esc(a.notify_email)}"><div class="hint">New leads, bookings and voicemails.</div></div>
       <div class="field"><label for="ws">Website</label><input id="ws" type="url" value="${esc(a.website)}"></div>
-      <div class="field"><label for="bu">Booking link override</label><input id="bu" type="url" value="${esc(a.booking_url)}"><div class="hint">Leave blank to use the KWS Hub booking page.</div></div>
+      <div class="field"><label for="bu">Booking link override</label><input id="bu" type="url" value="${esc(a.booking_url)}"><div class="hint">Leave blank to use the built-in booking page.</div></div>
       <div class="field"><label for="tzs">Time zone</label><select id="tzs">${["America/Chicago", "America/New_York", "America/Denver", "America/Phoenix", "America/Los_Angeles"].map((z) => `<option ${a.timezone === z ? "selected" : ""}>${z}</option>`).join("")}</select></div>
       <div class="field"><label for="ma">Mailing address</label><input id="ma" value="${esc(a.mailing_address)}"><div class="hint">Printed at the bottom of campaign emails, as US law asks.</div></div>
       <div class="field"><label for="bc">Brand color</label><input id="bc" type="color" value="${esc(a.brand_color || "#2C46C4")}" style="padding:4px;height:40px"></div></div>
@@ -800,7 +804,7 @@ async function settings() {
     <section class="card" id="texting"><h2>Texting number</h2><div class="empty">Checking…</div></section></div>
     <section class="card"><h2>People with access</h2><p class="small muted">${team.length} ${team.length === 1 ? "person" : "people"} can sign in to ${esc(a.name)}${state.isAgency && a.kind === "client" ? ", plus you as the studio" : ""}.</p>
       ${state.isAgency ? `<form id="inv" class="row" style="margin-top:8px"><input id="ie" type="email" placeholder="owner@theirbusiness.com" style="max-width:320px" aria-label="Email to invite"><button class="btn">Give access</button></form>` : ""}</section>
-    ${state.isAgency ? `<section class="card"><h2>Client accounts</h2><p class="small muted">Each client gets their own contacts, inbox, pipeline, booking page, form and automations, with no monthly software fee. Texting costs only what Twilio charges for their number and messages.</p>
+    ${state.isAgency && STUDIO ? `<section class="card"><h2>Client accounts</h2><p class="small muted">Each client gets their own contacts, inbox, pipeline, booking page, form and automations, with no monthly software fee. Texting costs only what Twilio charges for their number and messages.</p>
       <ul class="list">${state.accounts.filter((x) => x.kind === "client").map((x) => `<li><span class="grow"><span class="t">${esc(x.name)}</span><span class="s">${esc(x.sms_number ? fmtPhone(x.sms_number) : "No texting number")} · ${esc(x.slug)}</span></span></li>`).join("") || "<li class='muted'>None yet</li>"}</ul>
       <form id="newA" class="row" style="margin-top:12px"><input id="na" placeholder="Client business name" style="max-width:320px" aria-label="Client business name"><button class="btn primary">Add client</button></form></section>` : ""}`);
   $("#bf").addEventListener("submit", async (e) => {
@@ -857,6 +861,6 @@ async function texting() {
 }
 
 // ---------- go ----------
-if ("serviceWorker" in navigator) navigator.serviceWorker.register("/hub/sw.js", { scope: "/hub/" }).catch(() => {});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 sb.auth.onAuthStateChange((ev) => { if (ev === "SIGNED_OUT") authView(); });
 start().catch(fail);

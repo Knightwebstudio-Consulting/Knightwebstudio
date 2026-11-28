@@ -2,7 +2,7 @@
 // Sign-in without email links: request_code -> 6-digit code by email -> set_password.
 // Everything else needs the user's session (Authorization: Bearer <jwt>) and access to the account.
 import { createClient } from "jsr:@supabase/supabase-js@2";
-import { db, deliver, FN, json, cors, sendEmail, SITE, SUPABASE_URL, twilio } from "../_shared/hub.ts";
+import { appName, appUrl, CFG, db, deliver, FN, json, cors, sendEmail, SUPABASE_URL, twilio } from "../_shared/hub.ts";
 
 const sha = async (s: string) =>
   Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s)))).map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -23,9 +23,14 @@ async function canUse(as: any, accountId: string) {
   const { data } = await as.rpc("hub_can", { acct: accountId });
   return data === true;
 }
+// the install's owner: hub_secrets.owner_email, or (studio project) the admin_users table
+async function isOwnerEmail(e: string) {
+  if (CFG.owner_email && CFG.owner_email.toLowerCase() === e) return true;
+  const { data: admin, error } = await db.from("admin_users").select("email").ilike("email", e).limit(1);
+  return !error && (admin?.length ?? 0) > 0;
+}
 async function allowedEmail(e: string) {
-  const { data: admin } = await db.from("admin_users").select("email").ilike("email", e).limit(1);
-  if (admin?.length) return true;
+  if (await isOwnerEmail(e)) return true;
   const { data: list } = await db.auth.admin.listUsers({ perPage: 1000 });
   const u = list?.users.find((x) => x.email?.toLowerCase() === e);
   if (!u) return false;
@@ -46,7 +51,7 @@ export default async function handler(req: Request): Promise<Response> {
       if (e && (await allowedEmail(e))) {
         const code = String(crypto.getRandomValues(new Uint32Array(1))[0] % 1_000_000).padStart(6, "0");
         await db.from("hub_login_codes").upsert({ email: e, code_hash: await sha(code), expires_at: new Date(Date.now() + 15 * 60_000).toISOString(), tries: 0 });
-        await sendEmail(null, e, `Your KWS Hub code: ${code}`, `Your KWS Hub sign-in code is ${code}\n\nIt works for 15 minutes. If you didn't ask for it, ignore this email.`);
+        await sendEmail(null, e, `Your ${appName()} code: ${code}`, `Your ${appName()} sign-in code is ${code}\n\nIt works for 15 minutes. If you didn't ask for it, ignore this email.`);
       }
       return json({ ok: true }); // same answer either way
     }
@@ -64,9 +69,8 @@ export default async function handler(req: Request): Promise<Response> {
       let u = list?.users.find((x) => x.email?.toLowerCase() === e);
       if (u) await db.auth.admin.updateUserById(u.id, { password: pw, email_confirm: true });
       else u = (await db.auth.admin.createUser({ email: e, password: pw, email_confirm: true })).data.user!;
-      // the studio's admin becomes owner of the agency account
-      const { data: admin } = await db.from("admin_users").select("email").ilike("email", e).limit(1);
-      if (admin?.length) {
+      // the install's owner becomes owner of the main account
+      if (await isOwnerEmail(e)) {
         const { data: ag } = await db.from("hub_accounts").select("id").eq("kind", "agency").limit(1).single();
         await db.from("hub_members").upsert({ account_id: ag!.id, user_id: u.id, role: "owner" });
       }
@@ -128,14 +132,14 @@ export default async function handler(req: Request): Promise<Response> {
       const { data: a } = await db.from("hub_accounts").select("id,name").eq("id", acct).single();
       let sid: string | null = null;
       if (op === "buy_number") {
-        const r = await twilio("/IncomingPhoneNumbers.json", { PhoneNumber: num, FriendlyName: `KWS Hub: ${a!.name}`, ...hooks });
+        const r = await twilio("/IncomingPhoneNumbers.json", { PhoneNumber: num, FriendlyName: `${appName()}: ${a!.name}`, ...hooks });
         if (!r.ok) return json({ error: r.data?.message ?? "Couldn't buy that number" }, 400);
         sid = r.data.sid;
       } else {
         const r = await twilio(`/IncomingPhoneNumbers.json?PhoneNumber=${encodeURIComponent(num)}`);
         sid = r.data?.incoming_phone_numbers?.[0]?.sid ?? null;
         if (!sid) return json({ error: "That number isn't in your Twilio account." }, 404);
-        const u = await twilio(`/IncomingPhoneNumbers/${sid}.json`, { FriendlyName: `KWS Hub: ${a!.name}`, ...hooks });
+        const u = await twilio(`/IncomingPhoneNumbers/${sid}.json`, { FriendlyName: `${appName()}: ${a!.name}`, ...hooks });
         if (!u.ok) return json({ error: u.data?.message ?? "Couldn't update the number" }, 400);
       }
       await db.from("hub_accounts").update({ sms_number: null }).eq("sms_number", num);
@@ -152,13 +156,13 @@ export default async function handler(req: Request): Promise<Response> {
       if (!u) u = (await db.auth.admin.createUser({ email: e, email_confirm: true, password: crypto.randomUUID() + "Aa1!" })).data.user!;
       await db.from("hub_members").upsert({ account_id: acct, user_id: u.id, role: b.role === "admin" ? "admin" : "member" });
       const { data: a } = await db.from("hub_accounts").select("name").eq("id", acct).single();
-      await sendEmail(null, e, `You're set up in KWS Hub for ${a!.name}`,
-        `Hi,\n\nYou now have access to KWS Hub for ${a!.name}: your leads, texts, bookings and follow-ups in one place.\n\nTo sign in, open ${SITE}/hub/ , choose "First time or forgot password", and enter this email. We'll send you a code.\n\nChristian\nKnightWebstudio`);
+      await sendEmail(null, e, `You're set up in ${appName()} for ${a!.name}`,
+        `Hi,\n\nYou now have access to ${appName()} for ${a!.name}: your leads, texts, bookings and follow-ups in one place.\n\nTo sign in, open ${appUrl()} , choose "First time or forgot password", and enter this email. We'll send you a code.`);
       return json({ ok: true });
     }
 
     if (op === "test_email") {
-      const r = await sendEmail(null, me.user.email!, "KWS Hub test email", "Email sending from KWS Hub works.");
+      const r = await sendEmail(null, me.user.email!, `${appName()} test email`, `Email sending from ${appName()} works.`);
       return json(r, r.ok ? 200 : 400);
     }
     return json({ error: "Unknown op" }, 400);

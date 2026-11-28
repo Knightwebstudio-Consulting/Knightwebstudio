@@ -52,9 +52,11 @@ footer a { color: inherit; }
 <footer>Booking by <a href="https://knightwebstudio.com/">KWS Hub</a></footer></main>
 <script>
 (function () {
+  // The installer (server/hub/install) rewrites these two lines in each client's copy.
   var FN = "https://uhmyfoibrwdkdhrnnaah.supabase.co/functions/v1/hub";
+  var DEFAULT_ACCOUNT = "";
   var p = new URLSearchParams(location.search), box = document.getElementById("box");
-  var A = p.get("a"), C = p.get("c") || "estimate", M = p.get("m");
+  var A = p.get("a") || DEFAULT_ACCOUNT, C = p.get("c") || "estimate", M = p.get("m");
   var info = null, tz = "America/Chicago", picked = null, manage = null;
   function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]; }); }
   function get(q) { return fetch(FN + "?" + q).then(function (r) { return r.json(); }); }
